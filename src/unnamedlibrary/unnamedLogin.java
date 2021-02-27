@@ -10,6 +10,14 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  *
@@ -17,7 +25,8 @@ import javax.swing.event.DocumentListener;
  */
 public class unnamedLogin extends javax.swing.JFrame {
     
-    boolean filledUsername = false, filledPassword = false;
+    boolean filledUsername = false, filledPassword = false; // Boolean to hide or show Login button depending on rules fulfillment
+    
     /**
      * Creates new form unnamedLogin
      */
@@ -43,16 +52,19 @@ public class unnamedLogin extends javax.swing.JFrame {
         panTop = new javax.swing.JPanel();
         lblTitle = new javax.swing.JLabel();
         lblSubtitle = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jPanel5 = new javax.swing.JPanel();
+        spTitle = new javax.swing.JSeparator();
+        panCenter = new javax.swing.JPanel();
         panCredentials = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblUsername = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
         txtUsername = new javax.swing.JTextField();
-        jSeparator2 = new javax.swing.JSeparator();
+        spCredentials = new javax.swing.JSeparator();
+        lblDesigner = new javax.swing.JLabel();
+        lblGitHub = new javax.swing.JLabel();
+        lblLinkedin = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,7 +103,6 @@ public class unnamedLogin extends javax.swing.JFrame {
         setTitle("Login to unnamed Library Management System");
         setBackground(new java.awt.Color(0, 0, 0));
         setName("loginFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         setSize(new java.awt.Dimension(800, 600));
 
@@ -125,7 +136,7 @@ public class unnamedLogin extends javax.swing.JFrame {
                         .addGap(313, 313, 313)
                         .addComponent(lblSubtitle)))
                 .addContainerGap(206, Short.MAX_VALUE))
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(spTitle, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         panTopLayout.setVerticalGroup(
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +144,7 @@ public class unnamedLogin extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(lblTitle)
                 .addGap(7, 7, 7)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(lblSubtitle)
                 .addContainerGap(15, Short.MAX_VALUE))
@@ -141,19 +152,23 @@ public class unnamedLogin extends javax.swing.JFrame {
 
         panMain.add(panTop, java.awt.BorderLayout.PAGE_START);
 
-        jPanel5.setBackground(new java.awt.Color(34, 34, 34));
+        panCenter.setBackground(new java.awt.Color(34, 34, 34));
 
         panCredentials.setBackground(new java.awt.Color(48, 48, 48));
+        panCredentials.setMaximumSize(new java.awt.Dimension(800, 426));
+        panCredentials.setMinimumSize(new java.awt.Dimension(800, 426));
 
-        jLabel1.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel1.setText("Username:");
+        lblUsername.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
+        lblUsername.setText("Username:");
 
         lblPassword.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
         lblPassword.setText("Password:");
 
         btnLogin.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
         btnLogin.setText("Login");
+        btnLogin.setToolTipText("Login to your Librarian account");
         btnLogin.setActionCommand("");
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
@@ -162,9 +177,12 @@ public class unnamedLogin extends javax.swing.JFrame {
 
         btnRegister.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
         btnRegister.setText("Register");
+        btnRegister.setToolTipText("Opens registration form");
         btnRegister.setActionCommand("");
+        btnRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         txtPassword.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtPassword.setToolTipText("Insert your password");
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);
@@ -172,6 +190,7 @@ public class unnamedLogin extends javax.swing.JFrame {
         });
 
         txtUsername.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtUsername.setToolTipText("Insert your username");
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsernameActionPerformed(evt);
@@ -191,7 +210,7 @@ public class unnamedLogin extends javax.swing.JFrame {
                         .addComponent(btnRegister))
                     .addGroup(panCredentialsLayout.createSequentialGroup()
                         .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
+                            .addComponent(lblUsername)
                             .addComponent(lblPassword))
                         .addGap(18, 18, 18)
                         .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -199,7 +218,7 @@ public class unnamedLogin extends javax.swing.JFrame {
                             .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panCredentialsLayout.createSequentialGroup()
                         .addGap(5, 5, 5)
-                        .addComponent(jSeparator2)))
+                        .addComponent(spCredentials)))
                 .addContainerGap(221, Short.MAX_VALUE))
         );
         panCredentialsLayout.setVerticalGroup(
@@ -207,14 +226,14 @@ public class unnamedLogin extends javax.swing.JFrame {
             .addGroup(panCredentialsLayout.createSequentialGroup()
                 .addGap(116, 116, 116)
                 .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblUsername)
                     .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPassword)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegister)
@@ -222,47 +241,126 @@ public class unnamedLogin extends javax.swing.JFrame {
                 .addContainerGap(149, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        lblDesigner.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 8)); // NOI18N
+        lblDesigner.setText("Designed by: Fuad Abdullah");
+
+        lblGitHub.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 14)); // NOI18N
+        lblGitHub.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblGitHub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/github1.png"))); // NOI18N
+        lblGitHub.setText("GitHub");
+        lblGitHub.setToolTipText("Opens GitHub page.");
+        lblGitHub.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblGitHub.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblGitHubMouseClicked(evt);
+            }
+        });
+
+        lblLinkedin.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 14)); // NOI18N
+        lblLinkedin.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblLinkedin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/linkedin1.png"))); // NOI18N
+        lblLinkedin.setText("LinkedIn");
+        lblLinkedin.setToolTipText("Opens LinkedIn page");
+        lblLinkedin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblLinkedin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblLinkedinMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panCenterLayout = new javax.swing.GroupLayout(panCenter);
+        panCenter.setLayout(panCenterLayout);
+        panCenterLayout.setHorizontalGroup(
+            panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panCenterLayout.createSequentialGroup()
+                .addGroup(panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(panCenterLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblGitHub)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblLinkedin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblDesigner))
+                    .addComponent(panCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        panCenterLayout.setVerticalGroup(
+            panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panCenterLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(panCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGroup(panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDesigner, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panCenterLayout.createSequentialGroup()
+                        .addGroup(panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblGitHub)
+                            .addComponent(lblLinkedin))
+                        .addContainerGap())))
         );
 
-        panMain.add(jPanel5, java.awt.BorderLayout.CENTER);
+        panMain.add(panCenter, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(panMain, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // TO COMMENT
     private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
         // TODO add your handling code here:
         txtPassword.requestFocus();
     }//GEN-LAST:event_txtUsernameActionPerformed
 
+    // TO COMMENT
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
+        if (txtUsername.getText().equals("admin") && txtPassword.getText().equals("admin")) {
+            new unnamedMainMenu().setVisible(true);
+            this.dispose();
+        } else {
+        
+        }
         
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    // TO COMMENT
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
         if (btnLogin.isVisible()) {
-            btnLogin.requestFocus();
+            btnLogin.doClick();
         }
         else{
             btnRegister.requestFocus();
         }
     }//GEN-LAST:event_txtPasswordActionPerformed
 
+    // TO COMMENT
+    private void lblGitHubMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGitHubMouseClicked
+        // TODO add your handling code here:
+        String url = "https://github.com/FuadAbdullah/unnamedlibrary";
+        
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (URISyntaxException | IOException ex) {
+            JOptionPane.showMessageDialog(null, "Something went wrong while trying to access the website", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_lblGitHubMouseClicked
+
+    // TO COMMENT
+    private void lblLinkedinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLinkedinMouseClicked
+        // TODO add your handling code here:
+        String url = "https://www.linkedin.com/in/muhammad-fuad-abdullah-4b4812193/";
+        
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (URISyntaxException | IOException ex) {
+            JOptionPane.showMessageDialog(null, "Something went wrong while trying to access the website", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_lblLinkedinMouseClicked
+
+    // This method determines if btnLogin should be displayed or not depending on the rules fulfillment
     private void showLoginButton(){
         if (filledUsername && filledPassword){
             btnLogin.setVisible(true);
@@ -330,7 +428,6 @@ public class unnamedLogin extends javax.swing.JFrame {
                 }
             }
         });
-        
     }
     
     /**
@@ -343,12 +440,6 @@ public class unnamedLogin extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//          }
               UIManager.setLookAndFeel(new FlatDarkLaf());
             
         } catch (Exception ex) {
@@ -368,19 +459,22 @@ public class unnamedLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnRegister;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lblDesigner;
+    private javax.swing.JLabel lblGitHub;
+    private javax.swing.JLabel lblLinkedin;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblSubtitle;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblUsername;
+    private javax.swing.JPanel panCenter;
     private javax.swing.JPanel panCredentials;
     private javax.swing.JPanel panMain;
     private javax.swing.JPanel panTop;
+    private javax.swing.JSeparator spCredentials;
+    private javax.swing.JSeparator spTitle;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
