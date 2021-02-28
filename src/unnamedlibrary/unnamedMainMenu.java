@@ -22,6 +22,7 @@ public class unnamedMainMenu extends javax.swing.JFrame {
      */
     public unnamedMainMenu() {
         initComponents();
+        initGUI();
     }
 
     /**
@@ -132,13 +133,18 @@ public class unnamedMainMenu extends javax.swing.JFrame {
 
         panButtons.setMaximumSize(new java.awt.Dimension(788, 414));
         panButtons.setMinimumSize(new java.awt.Dimension(788, 414));
-        panButtons.setLayout(new java.awt.GridLayout());
+        panButtons.setLayout(new java.awt.GridLayout(1, 0));
 
         btnBorrow.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
         btnBorrow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/book1.png"))); // NOI18N
         btnBorrow.setText("   Borrow");
         btnBorrow.setToolTipText("Opens borrowing form");
         btnBorrow.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrowActionPerformed(evt);
+            }
+        });
         panButtons.add(btnBorrow);
 
         btnRenew.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
@@ -213,6 +219,28 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    // This method closes main menu and opens borrowing form
+    private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
+        // TODO add your handling code here:
+        new unnamedBorrowMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnBorrowActionPerformed
+
+    private void initGUI(){
+        
+        // This anon class handles window closing event
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e){
+                int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selection == JOptionPane.YES_OPTION) {
+                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                } else {
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
+    }
+    
     /**
      * @param args the command line arguments
      */
