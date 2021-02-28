@@ -26,11 +26,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.NumberFormatter;
 
+
 /**
  *
  * @author fab07
  */
-public class unnamedBorrowMenu extends javax.swing.JFrame {
+public class unnamedRenewMenu extends javax.swing.JFrame {
 
     String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
@@ -39,9 +40,9 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
     Color fgtxt = new Color(187,187,187); // Default foreground color for text
     
     /**
-     * Creates new form unnamedBorrowMenu
+     * Creates new form unnamedRenewMenu
      */
-    public unnamedBorrowMenu() {
+    public unnamedRenewMenu() {
         initComponents();
         initGUI();
     }
@@ -61,7 +62,6 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         lblClientID = new javax.swing.JLabel();
         txtClientID = new javax.swing.JFormattedTextField();
         btnLoadBook = new javax.swing.JButton();
-        txtBookID = new javax.swing.JFormattedTextField();
         lblBookID = new javax.swing.JLabel();
         txtBorrowDate = new javax.swing.JFormattedTextField();
         btnGetDate = new javax.swing.JButton();
@@ -74,6 +74,9 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         txtBorrowDue = new javax.swing.JFormattedTextField();
         btnCancel = new javax.swing.JButton();
         btnLoadClient = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        txtBookID = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
         panCenter = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblClientTitle = new javax.swing.JLabel();
@@ -121,12 +124,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         txtBookSummary = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Borrowing a Book - unnamed Library Management System");
-        setBackground(new java.awt.Color(0, 0, 0));
+        setTitle("Renewing a borrow - unnamed Library Management System");
         setMaximumSize(new java.awt.Dimension(1218, 820));
-        setMinimumSize(new java.awt.Dimension(1218, 820));
-        setName("borrowFrame"); // NOI18N
-        setResizable(false);
 
         panMain.setBackground(new java.awt.Color(51, 51, 51));
         panMain.setMaximumSize(new java.awt.Dimension(1218, 820));
@@ -137,7 +136,6 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         panTop.setBackground(new java.awt.Color(43, 44, 45));
         panTop.setMaximumSize(new java.awt.Dimension(1218, 160));
         panTop.setMinimumSize(new java.awt.Dimension(1218, 160));
-        panTop.setPreferredSize(new java.awt.Dimension(1218, 160));
 
         cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
@@ -170,15 +168,6 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         btnLoadBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoadBookActionPerformed(evt);
-            }
-        });
-
-        txtBookID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
-        txtBookID.setText("Book ID");
-        txtBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        txtBookID.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtBookIDFocusGained(evt);
             }
         });
 
@@ -217,14 +206,11 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         lblBorrowID.setText("Borrow ID:");
 
         lblBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblBorrowDue.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblBorrowDue.setText("Borrow Due On:");
 
-        txtBorrowID.setEditable(false);
         txtBorrowID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
         txtBorrowID.setText("000000");
         txtBorrowID.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
-        txtBorrowID.setFocusable(false);
         txtBorrowID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtBorrowDue.setEditable(false);
@@ -235,7 +221,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         txtBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        btnCancel.setText("Cancel Borrow");
+        btnCancel.setText("Cancel Renew");
         btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -251,6 +237,25 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        jButton1.setText("Load Borrowing Information");
+
+        txtBookID.setEditable(false);
+        txtBookID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtBookID.setText("Book ID");
+        txtBookID.setFocusable(false);
+        txtBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookID.setRequestFocusEnabled(false);
+        txtBookID.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtBookIDFocusGained(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.red);
+        jLabel1.setText("*Overdue");
+
         javax.swing.GroupLayout panTopLayout = new javax.swing.GroupLayout(panTop);
         panTop.setLayout(panTopLayout);
         panTopLayout.setHorizontalGroup(
@@ -258,39 +263,46 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             .addGroup(panTopLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblClientID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblBookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBorrowDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblBorrowID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lblClientID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBorrowID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panTopLayout.createSequentialGroup()
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbxClientID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtBookID)
-                            .addComponent(txtBorrowDate))
+                        .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBorrowDue)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1))
+                    .addGroup(panTopLayout.createSequentialGroup()
+                        .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panTopLayout.createSequentialGroup()
-                                .addComponent(btnCalendar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnGetDate))
-                            .addComponent(btnLoadBook)
-                            .addGroup(panTopLayout.createSequentialGroup()
-                                .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLoadClient))))
+                        .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLoadClient))
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblBorrowDue)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(panTopLayout.createSequentialGroup()
+                        .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCalendar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGetDate)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 374, Short.MAX_VALUE)
-                .addComponent(btnCancel)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
+                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panTopLayout.createSequentialGroup()
+                        .addComponent(btnCancel)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panTopLayout.createSequentialGroup()
+                        .addComponent(btnLoadBook)
+                        .addGap(32, 32, 32))))
         );
         panTopLayout.setVerticalGroup(
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,25 +318,27 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                             .addComponent(btnLoadClient))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnLoadBook)
+                            .addComponent(jButton1)
+                            .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBorrowID))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBorrowDate)
+                            .addComponent(lblBorrowDue)
+                            .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblBookID)
-                            .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnGetDate)
-                                .addComponent(btnCalendar)
-                                .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblBorrowDate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBorrowID)
-                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblBorrowDue)
-                                .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(btnCancel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnCalendar)
+                            .addComponent(btnGetDate)))
+                    .addGroup(panTopLayout.createSequentialGroup()
+                        .addComponent(btnCancel)
+                        .addGap(69, 69, 69)
+                        .addComponent(btnLoadBook)))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         panMain.add(panTop, java.awt.BorderLayout.PAGE_START);
@@ -458,7 +472,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblClientTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(13, 13, 13)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -488,7 +502,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblClientHomeAddress)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         panCenter.add(jPanel2);
@@ -499,10 +513,9 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(33, 31, 31));
         jPanel1.setMaximumSize(new java.awt.Dimension(609, 70));
         jPanel1.setMinimumSize(new java.awt.Dimension(609, 70));
-        jPanel1.setPreferredSize(new java.awt.Dimension(609, 70));
 
         btnSubmit.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        btnSubmit.setText("Submit");
+        btnSubmit.setText("Renew");
         btnSubmit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSubmit.setEnabled(false);
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -527,7 +540,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(109, Short.MAX_VALUE)
+                .addContainerGap(114, Short.MAX_VALUE)
                 .addComponent(lblAmountBorrowed)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtAmountBorrowed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -544,9 +557,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSubmit)
                     .addComponent(jButton4)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtAmountBorrowed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblAmountBorrowed)))
+                    .addComponent(txtAmountBorrowed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAmountBorrowed))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -656,21 +668,23 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                             .addComponent(lblBookDetailsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSeparator3)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblBookQuantity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblBookPublisher, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addComponent(lblPublishDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblArrivalDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
+                                .addGap(47, 47, 47)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(lblBookSummary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblBookGenre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lblBookQuantity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblBookPublisher, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(lblPublishDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblArrivalDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblBookSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lblBookGenre, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                                        .addComponent(lblBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addGap(35, 35, 35)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtBookQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -725,7 +739,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtArrivalDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblArrivalDate))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -740,12 +754,11 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    // This code handles Client ID behaviour upon selection
     private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
         // TODO add your handling code here:
-        
+
         int ctype = cbxClientID.getSelectedIndex(); // Get client type
-        
+
         if (ctype == 0) { // Will reset fields to default appearance
             lblClientID.setText("Staff/Student ID:");
             txtClientID.setText("Staff/Student ID");
@@ -754,45 +767,117 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             txtClientID.setRequestFocusEnabled(false);
             txtClientID.setFocusable(false);
         } else { // Will display fields according to selected user type
-            try { 
-            lblClientID.setText(cbxClientID.getSelectedItem().toString() + " ID:");
-            txtClientID.setText(cbxClientID.getSelectedItem().toString() + " ID");
-            lblClientTitle.setText(cbxClientID.getSelectedItem().toString() + " Personal Information:");
-            txtClientID.setEditable(true);            
-            txtClientID.setRequestFocusEnabled(true);
-            txtClientID.setFocusable(true);
-                
-            switch (ctype){
-                case 1:
+            try {
+                lblClientID.setText(cbxClientID.getSelectedItem().toString() + " ID:");
+                txtClientID.setText(cbxClientID.getSelectedItem().toString() + " ID");
+                lblClientTitle.setText(cbxClientID.getSelectedItem().toString() + " Personal Information:");
+                txtClientID.setEditable(true);
+                txtClientID.setRequestFocusEnabled(true);
+                txtClientID.setFocusable(true);
+
+                switch (ctype){
+                    case 1:
                     cspecies = "STA";
                     break;
-                case 2:
+                    case 2:
                     cspecies = "STU";
                     break;
-                default:
+                    default:
                     cspecies = "NUL";
                     break;
-            }
+                }
 
             } catch (Exception e) {
-            // Popup messagebox to inform user of unexpected error
+                // Popup messagebox to inform user of unexpected error
             }
         }
-        
+
     }//GEN-LAST:event_cbxClientIDActionPerformed
 
     private void txtClientIDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtClientIDFocusGained
         // TODO add your handling code here:
-        
+
         String[] ctype = new String[]{"Staff/Student ID", "Staff ID", "Student ID"};
         String temp = txtClientID.getText();
-        
+
         if (Arrays.asList(ctype).contains(temp)) {
             txtClientID.setText("");
         }
-        
-        
+
     }//GEN-LAST:event_txtClientIDFocusGained
+
+    private void btnLoadBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadBookActionPerformed
+        // TODO add your handling code here:
+        // This handles formatter for the integer to consist of 6 digits
+        DecimalFormat dc = new DecimalFormat("000000");
+        // This is to ensure the entire method have access to the matchedID array
+        String[] matchedID;
+        // This is a flag to tell the method that there is result and if the book quantity is 0
+        boolean hasResult = false, qty0 = false;
+        // To clean up previous or default values from fields
+        txtBookTitle.setText("");
+        txtBookGenre.setText("");
+        txtBookSummary.setText("");
+        txtBookQuantity.setText("");
+        txtBookPublisher.setText("");
+        txtBookAuthor.setText("");
+        txtPublishDate.setText("");
+        txtArrivalDate.setText("");
+        try {
+            bID = dc.format(Integer.parseInt(txtBookID.getText()));
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // For debugging purpose only
+            // JOptionPane.showMessageDialog(null, bID);
+            File booktxt = new File(saveDir + "book.txt");
+            Scanner inputFile;
+            try {
+                inputFile = new Scanner(booktxt);
+                // Read lines from the file until no more are left.
+                while (inputFile.hasNext())
+                {
+                    // Read the next line.
+                    String bEntry = inputFile.nextLine();
+                    // Split the line by using the delimiter ":" (semicolon) and store into array.
+                    matchedID = bEntry.split(":");
+                    if (matchedID[0].equals(bpfix + bID)){
+                        hasResult = true;
+                        fetchedBook = true;
+                        txtBookTitle.setText(matchedID[1]);
+                        txtBookGenre.setText(matchedID[2]);
+                        txtBookSummary.setText(matchedID[3]);
+                        txtBookQuantity.setText(matchedID[4]);
+                        txtBookPublisher.setText(matchedID[5]);
+                        txtBookAuthor.setText(matchedID[6]);
+                        txtPublishDate.setText(matchedID[7]);
+                        txtArrivalDate.setText(matchedID[8]);
+                        if (Integer.parseInt(matchedID[4]) <= 0) {
+                            qty0 = true;
+                        }
+                    }
+                }
+                inputFile.close();
+                lblBookQuantity.setForeground(fgtxt); // Reenabling the default foreground color
+                if (!hasResult) {
+                    JOptionPane.showMessageDialog(null, "No book of the inserted ID found!", "Book not found!", JOptionPane.ERROR_MESSAGE);
+                    fetchedBook = false;
+                }
+                if (qty0) { // Check and see if the quantity of book is 0
+                    lblBookQuantity.setForeground(Color.yellow);
+                    fetchedBook = false;
+                    JOptionPane.showMessageDialog(null, "There is not enough book of this title available for borrowing!", "Book quantity is 0!", JOptionPane.ERROR_MESSAGE);
+                    qty0 = false;
+                }
+                fetchedBookClientInfo();
+                hasResult = false;
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnLoadBookActionPerformed
 
     private void txtBookIDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBookIDFocusGained
         // TODO add your handling code here:
@@ -800,14 +885,101 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             txtBookID.setText("");
         }
     }//GEN-LAST:event_txtBookIDFocusGained
-    
-    // Main method of this page as the booking details created and saved here
-    // Files include borrowing details, and staff/student information
-    // book details will be rewritten with new information about available quantity
+
+    private void btnGetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDateActionPerformed
+        // TODO add your handling code here:
+
+        // To get current date
+        Calendar bdate = Calendar.getInstance();
+        SimpleDateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
+
+        // To display date into borrow date textfield
+        txtBorrowDate.setText(datef.format(bdate.getTime()));
+
+        // To add 2 weeks for due date
+        bdate.add(Calendar.DAY_OF_MONTH, 14);
+
+        // To display date into due date textfield
+        txtBorrowDue.setText(datef.format(bdate.getTime()));
+
+        // To highlight the due date
+        lblBorrowDue.setForeground(Color.red);
+
+    }//GEN-LAST:event_btnGetDateActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel the ongoing borrowing process. Continue?", "Cancelling Borrowing Process", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (selection == JOptionPane.YES_OPTION) {
+            new unnamedMainMenu().setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnLoadClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadClientActionPerformed
+        // TODO add your handling code here:
+        // This handles formatter for the integer to consist of 6 digits
+        DecimalFormat dc = new DecimalFormat("000000");
+        // This is to ensure the entire method have access to the matchedID array
+        String[] matchedID;
+        // This is a flag to tell the method that there is result
+        boolean hasResult = false;
+        // To empty previous or default values from fields
+        txtClientFirstName.setText("");
+        txtClientLastName.setText("");
+        txtClientDoB.setText("");
+        txtClientGender.setText("");
+        txtClientPhoneNumber.setText("");
+        txtClientEmailAddress.setText("");
+        txtClientHomeAddress.setText("");
+        try {
+            cID = dc.format(Integer.parseInt(txtClientID.getText()));
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // For debugging purpose only
+            // JOptionPane.showMessageDialog(null, bID);
+            File clienttxt = new File(saveDir + "client.txt");
+            Scanner inputFile;
+            try {
+                inputFile = new Scanner(clienttxt);
+                // Read lines from the file until no more are left.
+                while (inputFile.hasNext())
+                {
+                    // Read the next line.
+                    String cEntry = inputFile.nextLine();
+                    // Split the line by using the delimiter ":" (semicolon) and store into array.
+                    matchedID = cEntry.split(":");
+                    if (matchedID[0].equals(cspecies + cID)){
+                        hasResult = true;
+                        fetchedClient = true;
+                        txtClientFirstName.setText(matchedID[1]);
+                        txtClientLastName.setText(matchedID[2]);
+                        txtClientDoB.setText(matchedID[3]);
+                        txtClientGender.setText(matchedID[4]);
+                        txtClientPhoneNumber.setText(matchedID[5]);
+                        txtClientEmailAddress.setText(matchedID[6]);
+                        txtClientHomeAddress.setText(matchedID[7]);
+                    }
+                }
+                inputFile.close();
+                if (!hasResult) {
+                    JOptionPane.showMessageDialog(null, "No client of the inserted ID found!", "Client not found!", JOptionPane.ERROR_MESSAGE);
+                    fetchedClient = false;
+                }
+                fetchedBookClientInfo();
+                hasResult = false;
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input! Client ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnLoadClientActionPerformed
+
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
         // Declaring file extension used
-        ext = ".txt";        
+        ext = ".txt";
         saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
         // Formatting ID into formal 6-digit mask
         DecimalFormat dc = new DecimalFormat("000000");
@@ -876,40 +1048,40 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                     PrintWriter brdp = new PrintWriter(brd); //PrintWriter for borrowing details
                     // To print the line into Borrowing textfile
                     brdp.println(brpfix + brID + ":" +
-                                 cspecies + cID + ":" +
-                                 bpfix + bID + ":" +
-                                 bdate + ":" +
-                                 ddate + ":" +
-                                 bqty + ":" + 
-                                 "no" + ":" +
-                                 "false" + ":" + 
-                                 "0"); // no to indicate hasn't returned status while false indicate is not overdue status and 0 to specify null fine amount
+                        cspecies + cID + ":" +
+                        bpfix + bID + ":" +
+                        bdate + ":" +
+                        ddate + ":" +
+                        bqty + ":" +
+                        "no" + ":" +
+                        "false" + ":" +
+                        "0"); // no to indicate hasn't returned status while false indicate is not overdue status and 0 to specify null fine amount
                     brdp.close();
                     // To print the line into Client textfile
                     // For debugging only!
                     /*
                     cdp.println(cspecies + cID + ":" +
-                                cFirstName + ":" + 
-                                cLastName + ":" +
-                                cDoB + ":" +
-                                cGender + ":" + 
-                                cPhoneNumber + ":" +
-                                cEmailAddress + ":" + 
-                                cHomeAddress);
+                        cFirstName + ":" +
+                        cLastName + ":" +
+                        cDoB + ":" +
+                        cGender + ":" +
+                        cPhoneNumber + ":" +
+                        cEmailAddress + ":" +
+                        cHomeAddress);
                     cdp.close();
                     */
                     // To print the line into Book textfile
                     // is Temporary and used for debugging only!
                     /*
                     bdp.println(bID + ":" +
-                                bTitle + ":" + 
-                                bGenre + ":" +
-                                bSummary + ":" +
-                                bQuantity + ":" +
-                                bPublisher + ":" +
-                                bAuthor + ":" +
-                                bPublishDate + ":" +
-                                bArrivalDate);
+                        bTitle + ":" +
+                        bGenre + ":" +
+                        bSummary + ":" +
+                        bQuantity + ":" +
+                        bPublisher + ":" +
+                        bAuthor + ":" +
+                        bPublishDate + ":" +
+                        bArrivalDate);
                     bdp.close();
                     */
                     // To rename original book.txt to book.bak
@@ -926,10 +1098,10 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                     // This is to open, find and replace a specific book record
                     // Requires temporary file to store current state
                     // FileWriter to write into a new file called book.txt
-                    FileWriter bd = new FileWriter(saveDir + "book.txt"); 
+                    FileWriter bd = new FileWriter(saveDir + "book.txt");
                     // PrintWriter to print into book.txt
-                    PrintWriter bdp = new PrintWriter(bd); 
-                    // This is to open and read bookBak.txt 
+                    PrintWriter bdp = new PrintWriter(bd);
+                    // This is to open and read bookBak.txt
                     File booktxt = new File(saveDir + "bookBak.txt");
                     // This is to instantiate the file opened earlier
                     Scanner inputFile = new Scanner(booktxt);
@@ -954,14 +1126,14 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                         }
                         // Rewrite the new book.txt with values found in bookBak.txt
                         bdp.println(matchedID[0] + ":" +
-                                    matchedID[1] + ":" +
-                                    matchedID[2] + ":" +
-                                    matchedID[3] + ":" +
-                                    matchedID[4] + ":" +
-                                    matchedID[5] + ":" +
-                                    matchedID[6] + ":" +
-                                    matchedID[7] + ":" +
-                                    matchedID[8]);
+                            matchedID[1] + ":" +
+                            matchedID[2] + ":" +
+                            matchedID[3] + ":" +
+                            matchedID[4] + ":" +
+                            matchedID[5] + ":" +
+                            matchedID[6] + ":" +
+                            matchedID[7] + ":" +
+                            matchedID[8]);
 
                     }
                     // Close the bookBak.txt reader
@@ -972,7 +1144,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                     /* if (bookBak.delete()) {
                         JOptionPane.showMessageDialog(null, "deleted");
                     }*/
-                    // This closes the book.txt printer 
+                    // This closes the book.txt printer
                     bdp.close();
                     /* if (itWorked) {
                         JOptionPane.showMessageDialog(null, "Yes it worked");
@@ -995,7 +1167,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Requested number of books to borrow exceeded available number! Please reduce to exactly or below the available number to proceed with borrowing..", "Insufficient number of books to lend!", JOptionPane.ERROR_MESSAGE);
             }
-            
+
         }
         catch (Exception ex) {
             if (cbxClientID.getSelectedIndex() == 0) {
@@ -1009,174 +1181,10 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
             // Continue with displaying which field was affected. ensure it appears before the mnessagebox
         }
-        
+
     }//GEN-LAST:event_btnSubmitActionPerformed
 
-    // Method to set borrow date to today and add borrowing due date automatically
-    private void btnGetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDateActionPerformed
-        // TODO add your handling code here:
-        
-        // To get current date
-        Calendar bdate = Calendar.getInstance();
-        SimpleDateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
-        
-        // To display date into borrow date textfield
-        txtBorrowDate.setText(datef.format(bdate.getTime()));
-        
-        // To add 2 weeks for due date
-        bdate.add(Calendar.DAY_OF_MONTH, 14);
-        
-        // To display date into due date textfield
-        txtBorrowDue.setText(datef.format(bdate.getTime()));
-        
-        // To highlight the due date
-        lblBorrowDue.setForeground(Color.red);
-        
-    }//GEN-LAST:event_btnGetDateActionPerformed
-
-    // This method handles borrow cancellation
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
-        int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel the ongoing borrowing process. Continue?", "Cancelling Borrowing Process", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (selection == JOptionPane.YES_OPTION) {
-            new unnamedMainMenu().setVisible(true);
-            this.dispose();
-        } 
-    }//GEN-LAST:event_btnCancelActionPerformed
-
-    private void btnLoadBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadBookActionPerformed
-        // TODO add your handling code here:
-        // This handles formatter for the integer to consist of 6 digits
-        DecimalFormat dc = new DecimalFormat("000000");
-        // This is to ensure the entire method have access to the matchedID array
-        String[] matchedID;
-        // This is a flag to tell the method that there is result and if the book quantity is 0
-        boolean hasResult = false, qty0 = false;
-        // To clean up previous or default values from fields
-        txtBookTitle.setText("");
-        txtBookGenre.setText("");
-        txtBookSummary.setText("");
-        txtBookQuantity.setText("");
-        txtBookPublisher.setText("");
-        txtBookAuthor.setText("");
-        txtPublishDate.setText("");
-        txtArrivalDate.setText("");
-        try {
-            bID = dc.format(Integer.parseInt(txtBookID.getText()));
-            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-            // For debugging purpose only
-            // JOptionPane.showMessageDialog(null, bID);
-            File booktxt = new File(saveDir + "book.txt");
-            Scanner inputFile;
-            try {
-                inputFile = new Scanner(booktxt);
-                // Read lines from the file until no more are left.
-                while (inputFile.hasNext())
-                {
-                   // Read the next line.
-                   String bEntry = inputFile.nextLine();
-                   // Split the line by using the delimiter ":" (semicolon) and store into array.
-                   matchedID = bEntry.split(":");
-                   if (matchedID[0].equals(bpfix + bID)){
-                       hasResult = true;
-                       fetchedBook = true;
-                       txtBookTitle.setText(matchedID[1]);
-                       txtBookGenre.setText(matchedID[2]);
-                       txtBookSummary.setText(matchedID[3]);
-                       txtBookQuantity.setText(matchedID[4]);
-                       txtBookPublisher.setText(matchedID[5]);
-                       txtBookAuthor.setText(matchedID[6]);
-                       txtPublishDate.setText(matchedID[7]);
-                       txtArrivalDate.setText(matchedID[8]);
-                       if (Integer.parseInt(matchedID[4]) <= 0) {
-                           qty0 = true;
-                       } 
-                   }
-                }
-                inputFile.close();
-                lblBookQuantity.setForeground(fgtxt); // Reenabling the default foreground color
-                if (!hasResult) {
-                    JOptionPane.showMessageDialog(null, "No book of the inserted ID found!", "Book not found!", JOptionPane.ERROR_MESSAGE);
-                    fetchedBook = false;
-                }
-                if (qty0) { // Check and see if the quantity of book is 0
-                    lblBookQuantity.setForeground(Color.yellow);
-                    fetchedBook = false;
-                    JOptionPane.showMessageDialog(null, "There is not enough book of this title available for borrowing!", "Book quantity is 0!", JOptionPane.ERROR_MESSAGE);
-                    qty0 = false;
-                }
-                fetchedBookClientInfo();
-                hasResult = false;
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-        }
-        
-    }//GEN-LAST:event_btnLoadBookActionPerformed
-
-    private void btnLoadClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadClientActionPerformed
-        // TODO add your handling code here:
-        // This handles formatter for the integer to consist of 6 digits
-        DecimalFormat dc = new DecimalFormat("000000");
-        // This is to ensure the entire method have access to the matchedID array
-        String[] matchedID;
-        // This is a flag to tell the method that there is result
-        boolean hasResult = false;
-        // To empty previous or default values from fields
-        txtClientFirstName.setText("");
-        txtClientLastName.setText("");
-        txtClientDoB.setText("");
-        txtClientGender.setText("");
-        txtClientPhoneNumber.setText("");
-        txtClientEmailAddress.setText("");
-        txtClientHomeAddress.setText("");
-        try {
-            cID = dc.format(Integer.parseInt(txtClientID.getText()));
-            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-            // For debugging purpose only
-            // JOptionPane.showMessageDialog(null, bID);
-            File clienttxt = new File(saveDir + "client.txt");
-            Scanner inputFile;
-            try {
-                inputFile = new Scanner(clienttxt);
-                // Read lines from the file until no more are left.
-                while (inputFile.hasNext())
-                {
-                   // Read the next line.
-                   String cEntry = inputFile.nextLine();
-                   // Split the line by using the delimiter ":" (semicolon) and store into array.
-                   matchedID = cEntry.split(":");
-                   if (matchedID[0].equals(cspecies + cID)){
-                       hasResult = true;
-                       fetchedClient = true;
-                       txtClientFirstName.setText(matchedID[1]);
-                       txtClientLastName.setText(matchedID[2]);
-                       txtClientDoB.setText(matchedID[3]);
-                       txtClientGender.setText(matchedID[4]);
-                       txtClientPhoneNumber.setText(matchedID[5]);
-                       txtClientEmailAddress.setText(matchedID[6]);
-                       txtClientHomeAddress.setText(matchedID[7]);
-                   }
-                }
-                inputFile.close();
-                if (!hasResult) {
-                    JOptionPane.showMessageDialog(null, "No client of the inserted ID found!", "Client not found!", JOptionPane.ERROR_MESSAGE);
-                    fetchedClient = false;
-                }
-                fetchedBookClientInfo();
-                hasResult = false;
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Invalid input! Client ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnLoadClientActionPerformed
-
+    
     private void fetchedBookClientInfo(){
         if (fetchedBook && fetchedClient) {
             btnSubmit.setEnabled(true);
@@ -1250,6 +1258,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
     }
     
     
+    
     /**
      * @param args the command line arguments
      */
@@ -1269,7 +1278,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new unnamedBorrowMenu().setVisible(true);
+                new unnamedRenewMenu().setVisible(true);
             }
         });
     }
@@ -1282,7 +1291,9 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadClient;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JComboBox<String> cbxClientID;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
