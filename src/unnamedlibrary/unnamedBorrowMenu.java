@@ -881,9 +881,10 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                                  bdate + ":" +
                                  ddate + ":" +
                                  bqty + ":" + 
-                                 "no" + ":" +
+                                 "false" + ":" +
+                                 "false" + ":" +
                                  "false" + ":" + 
-                                 "0"); // no to indicate hasn't returned status while false indicate is not overdue status and 0 to specify null fine amount
+                                 "0.00"); // false to indicate hasn't returned status while false indicate is not overdue status and another false to say it hasn't been renewed and 0 to specify null fine amount
                     brdp.close();
                     // To print the line into Client textfile
                     // For debugging only!

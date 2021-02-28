@@ -24,6 +24,7 @@ public class unnamedReferences {
     //  https://beginnersbook.com/2017/10/java-add-days-to-date/    
     //  https://www.w3schools.com/java/java_files_delete.asp
     //  https://stackoverflow.com/questions/1158777/rename-a-file-using-java
+    //  https://stackoverflow.com/questions/13386107/how-to-remove-single-character-from-a-string
     
     
 }

@@ -32,7 +32,6 @@ public class unnamedLogin extends javax.swing.JFrame {
      */
     public unnamedLogin() {
         initComponents();
-        btnLogin.setVisible(false); // This will prevent the login button from being pressed right after startup
         initGUI();
     }
 
@@ -372,7 +371,7 @@ public class unnamedLogin extends javax.swing.JFrame {
     }
     
     private void initGUI(){
-
+        btnLogin.setVisible(false); // This will prevent the login button from being pressed right after startup
         // This anon class handles textfield changes for username entry
         txtUsername.getDocument().addDocumentListener(new unnamedDocumentListener(){
 

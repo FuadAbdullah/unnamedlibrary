@@ -1,2 +1,8 @@
 000456:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:5:Dummies:Nusantara:01/01/2001:01/01/2001
 000457:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:5:Dummies:Nusantara:01/01/2001:01/01/2001
+
+BOR000000:STA000123:BOO000456:28/02/2021:14/03/2021:5:false:false:false:0.00
+BOR000001:STA000123:BOO000456:28/02/2021:14/03/2021:5:true:true:true:0.01
+BOR000002:STA000123:BOO000457:28/02/2021:14/03/2021:1:false:false:false:0.00
+BOR000003:STA000123:BOO000457:28/02/2021:14/03/2021:1:false:false:false:0.00
+
