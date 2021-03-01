@@ -133,7 +133,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         lblPublishDate = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Renewing a borrow - unnamed Library Management System");
+        setTitle("Renewing a borrow record - unnamed Library Management System");
         setMaximumSize(new java.awt.Dimension(1218, 820));
         setResizable(false);
 
@@ -262,34 +262,35 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     .addComponent(lblClientID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBorrowID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGap(18, 19, Short.MAX_VALUE)
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panTopLayout.createSequentialGroup()
-                        .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
                         .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLoadClient))
-                    .addGroup(panTopLayout.createSequentialGroup()
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtBorrowID)
-                            .addComponent(txtBorrowDate, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panTopLayout.createSequentialGroup()
-                                .addComponent(lblBorrowDue)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblIsOverdue))
-                            .addComponent(btnLoadBorrow))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                    .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panTopLayout.createSequentialGroup()
+                            .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panTopLayout.createSequentialGroup()
+                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtBorrowID)
+                                .addComponent(txtBorrowDate, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panTopLayout.createSequentialGroup()
+                                    .addComponent(lblBorrowDue)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lblIsOverdue))
+                                .addComponent(btnLoadBorrow)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
                 .addComponent(btnCancel)
                 .addContainerGap())
         );
@@ -495,8 +496,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(33, 31, 31));
-        jPanel1.setMaximumSize(new java.awt.Dimension(609, 100));
-        jPanel1.setMinimumSize(new java.awt.Dimension(609, 100));
+        jPanel1.setMaximumSize(new java.awt.Dimension(609, 120));
+        jPanel1.setMinimumSize(new java.awt.Dimension(609, 120));
         jPanel1.setPreferredSize(new java.awt.Dimension(609, 120));
 
         txtFineAmount.setEditable(false);
@@ -1244,105 +1245,109 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Cannot load borrowing information without Client ID!", "Empty Client ID entry!", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid input! Borrow ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-
-        }
-    }
-//            } else {
-//            JOptionPane.showMessageDialog(null, ex);
-//
-//        }
+                // JOptionPane.showMessageDialog(null, ex);
+            }
+        }   
             
 
     }//GEN-LAST:event_btnLoadBorrowActionPerformed
 
     private void setOverdue() {
-        DateTimeFormatter datef = DateTimeFormat.forPattern("dd/MM/yyyy");
-        // To get current date
-        LocalDate tdate = LocalDate.now();
-        // To get current overdue date and parse into Date object
-        LocalDate oddate = LocalDate.parse(txtBorrowDue.getText(), datef);
-        // To save the differences between today's date and the overdue date
-        int datediff = Days.daysBetween(tdate, oddate).getDays();
-        // To enable the Renew button if and only if it is the day before or on the day of overdue itself
-        if (datediff < 0 && !isOverdue) {
-            // Debugging only!
-            // JOptionPane.showMessageDialog(null, "Date comparison worked.");
-            // Formatting ID into formal 6-digit mask
-            try {
-                DecimalFormat dc = new DecimalFormat("000000");
-                // Setting the working directory
-                saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-                // Fetching IDs from the textfields
-                brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
-                cID = dc.format(Integer.parseInt(txtClientID.getText()));
-                // To rename original book.txt to book.bak
-                File borrowOri = new File(saveDir + "borrowing.txt");
-                File borrowBak = new File(saveDir + "borrowingBak.txt");
-                // To check if bookBak.txt is present or not
-                if (!borrowBak.exists()){
-                    borrowOri.createNewFile();
-                }
-                // This is for debugging only!
-                // JOptionPane.showMessageDialog(null, "renamed");
-                // This is to rename the existing book.txt to bookBak.txt
-                borrowOri.renameTo(borrowBak);
-                // This is to open, find and replace a specific book record
-                // Requires temporary file to store current state
-                // FileWriter to write into a new file called book.txt
-                FileWriter brd = new FileWriter(saveDir + "borrowing.txt"); 
-                // PrintWriter to print into book.txt
-                PrintWriter brdp = new PrintWriter(brd); 
-                // This is to open and read bookBak.txt 
-                File borrowingtxt = new File(saveDir + "borrowingBak.txt");
-                // This is to instantiate the file opened earlier
-                Scanner inputFile = new Scanner(borrowingtxt);
-                // This array is to contain all lines
-                String[] matchedID;
-                // This is only for debugging!
-                // boolean itWorked = false;
-                // Read lines from the file until no more are left.
-                while (inputFile.hasNext())
-                {
-                    // This is for debugging only!
-                    // JOptionPane.showMessageDialog(null, "In loop");
-                    // Read the next line.
-                    String brEntry = inputFile.nextLine();
-                    // Split the line by using the delimiter ":" (semicolon) and store into array.
-                    matchedID = brEntry.split(":");
-                    // Check if the read line has current book ID
-                    if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
-                        // Resetting the fine amount to 0
-                        matchedID[7] = "true";
-                        // JOptionPane.showMessageDialog(null, "Yes it worked");
+        
+        try {
+            DateTimeFormatter datef = DateTimeFormat.forPattern("dd/MM/yyyy");
+            // To get current date
+            LocalDate tdate = LocalDate.now();
+            // To get current overdue date and parse into Date object
+            LocalDate oddate = LocalDate.parse(txtBorrowDue.getText(), datef);
+            // To save the differences between today's date and the overdue date
+            int datediff = Days.daysBetween(tdate, oddate).getDays();
+            // To enable the Renew button if and only if it is the day before or on the day of overdue itself
+            if (datediff < 0 && !isOverdue) {
+                // Debugging only!
+                // JOptionPane.showMessageDialog(null, "Date comparison worked.");
+                // Formatting ID into formal 6-digit mask
+                try {
+                    DecimalFormat dc = new DecimalFormat("000000");
+                    // Setting the working directory
+                    saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+                    // Fetching IDs from the textfields
+                    brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
+                    cID = dc.format(Integer.parseInt(txtClientID.getText()));
+                    // To rename original book.txt to book.bak
+                    File borrowOri = new File(saveDir + "borrowing.txt");
+                    File borrowBak = new File(saveDir + "borrowingBak.txt");
+                    // To check if bookBak.txt is present or not
+                    if (!borrowBak.exists()){
+                        borrowOri.createNewFile();
                     }
-                    // Rewrite the new book.txt with values found in bookBak.txt
-                    brdp.println(matchedID[0] + ":" +
-                                matchedID[1] + ":" +
-                                matchedID[2] + ":" +
-                                matchedID[3] + ":" +
-                                matchedID[4] + ":" +
-                                matchedID[5] + ":" +
-                                matchedID[6] + ":" +
-                                matchedID[7] + ":" +
-                                matchedID[8] + ":" +
-                                matchedID[9]);
+                    // This is for debugging only!
+                    // JOptionPane.showMessageDialog(null, "renamed");
+                    // This is to rename the existing book.txt to bookBak.txt
+                    borrowOri.renameTo(borrowBak);
+                    // This is to open, find and replace a specific book record
+                    // Requires temporary file to store current state
+                    // FileWriter to write into a new file called book.txt
+                    FileWriter brd = new FileWriter(saveDir + "borrowing.txt"); 
+                    // PrintWriter to print into book.txt
+                    PrintWriter brdp = new PrintWriter(brd); 
+                    // This is to open and read bookBak.txt 
+                    File borrowingtxt = new File(saveDir + "borrowingBak.txt");
+                    // This is to instantiate the file opened earlier
+                    Scanner inputFile = new Scanner(borrowingtxt);
+                    // This array is to contain all lines
+                    String[] matchedID;
+                    // This is only for debugging!
+                    // boolean itWorked = false;
+                    // Read lines from the file until no more are left.
+                    while (inputFile.hasNext())
+                    {
+                        // This is for debugging only!
+                        // JOptionPane.showMessageDialog(null, "In loop");
+                        // Read the next line.
+                        String brEntry = inputFile.nextLine();
+                        // Split the line by using the delimiter ":" (semicolon) and store into array.
+                        matchedID = brEntry.split(":");
+                        // Check if the read line has current book ID
+                        if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                            // Resetting the fine amount to 0
+                            matchedID[7] = "true";
+                            // JOptionPane.showMessageDialog(null, "Yes it worked");
+                        }
+                        // Rewrite the new book.txt with values found in bookBak.txt
+                        brdp.println(matchedID[0] + ":" +
+                                    matchedID[1] + ":" +
+                                    matchedID[2] + ":" +
+                                    matchedID[3] + ":" +
+                                    matchedID[4] + ":" +
+                                    matchedID[5] + ":" +
+                                    matchedID[6] + ":" +
+                                    matchedID[7] + ":" +
+                                    matchedID[8] + ":" +
+                                    matchedID[9]);
 
+                    }
+                    // Close the bookBak.txt reader
+                    inputFile.close();
+                    // This deletes bookBak.txt
+                    borrowBak.delete();
+                    // This closes the book.txt printer 
+                    brdp.close();
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                    // Set the current file as 
+                    // isOverdue = true;
+                    // Refresh the form with new data
+                    btnLoadBorrow.doClick();
+                } catch (Exception ex) {
+                    
                 }
-                // Close the bookBak.txt reader
-                inputFile.close();
-                // This deletes bookBak.txt
-                borrowBak.delete();
-                // This closes the book.txt printer 
-                brdp.close();
-                // JOptionPane.showMessageDialog(null, "Yes it worked");
-                // Set the current file as 
-                // isOverdue = true;
-                // Refresh the form with new data
-                btnLoadBorrow.doClick();
-            } catch (Exception ex) {
-                
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Empty borrow due date!", "Empty input!", JOptionPane.ERROR_MESSAGE);
+
         }
+        
+        
     }
     
     private void btnPayFineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayFineActionPerformed
@@ -1574,6 +1579,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         // btnRenew.setEnabled(false);
         // Reset the due date label to original foreground
         lblBorrowDue.setForeground(fgtxt);
+        btnRenew.setEnabled(false);
         if (fetchedBorrow && fetchedClient && fetchedBook) {
             // Debugging only!
             // JOptionPane.showMessageDialog(null, "All rules satisfied");
@@ -1585,23 +1591,35 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
             LocalDate oddate = LocalDate.parse(txtBorrowDue.getText(), datef);
             // To save the differences between today's date and the overdue date
             int datediff = Days.daysBetween(tdate, oddate).getDays();
+            // To get a day before due date
+            int earlydate = datediff - 1;
             // To enable the Renew button if and only if it is the day before or on the day of overdue itself
             if (!hasFine && !isOverdue & !hasRenewed && !hasReturned) {
                 if (datediff >= 0 && datediff <= 1) {
                     // Debugging only!
                     // JOptionPane.showMessageDialog(null, "Date comparison worked.");
-                    btnRenew.setEnabled(true);
-                    // Setting the label of due date to red
-                    lblBorrowDue.setForeground(Color.red);
                     // fetchedBorrow = false;
                     // fetchedClient = false;  
                     // Displaying days to due date
-                    lblMessage.setVisible(true);
-                    lblMessage.setText("Can renew in " + datediff + " days.");
+                    if (earlydate == 0) {
+                        lblMessage.setVisible(true);
+                        lblMessage.setText("Can begin renewing today.");
+                        btnRenew.setEnabled(true);
+                        lblBorrowDue.setForeground(Color.red);
+                    } else if (datediff == 0) {
+                        lblMessage.setVisible(true);
+                        lblMessage.setText("Last day for renewal.");
+                        btnRenew.setEnabled(true);
+                        // Setting the label of due date to red
+                        lblBorrowDue.setForeground(Color.red);
+                    } else {
+                        lblMessage.setVisible(true);
+                        lblMessage.setText("Can renew in " + earlydate + " day(s).");
+                }
                 } else{
                     // Displaying days to due date
                     lblMessage.setVisible(true);
-                    lblMessage.setText("Can renew in " + datediff + " days.");
+                    lblMessage.setText("Can renew in " + earlydate + " day(s).");
                 }
             } else if (hasRenewed || hasReturned) {
                 // Displaying client inability to renew

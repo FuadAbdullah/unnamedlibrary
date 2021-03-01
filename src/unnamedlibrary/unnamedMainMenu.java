@@ -164,6 +164,11 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         btnReturn.setText("   Return");
         btnReturn.setToolTipText("Opens borrow return form");
         btnReturn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnActionPerformed(evt);
+            }
+        });
         panButtons.add(btnReturn);
 
         btnHistory.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
@@ -236,6 +241,12 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         new unnamedRenewMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRenewActionPerformed
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        // TODO add your handling code here:
+        new unnamedReturnMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnReturnActionPerformed
 
     private void initGUI(){
         

@@ -5,17 +5,51 @@
  */
 package unnamedlibrary;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Scanner;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.NumberFormatter;
+import org.joda.time.*;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 /**
  *
  * @author fab07
  */
 public class unnamedReturnMenu extends javax.swing.JFrame {
 
+    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
+    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
+    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
+    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
+    final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
+    Color fgtxt = new Color(187,187,187); // Default foreground color for text
+    
     /**
      * Creates new form unnamedReturnMenu
      */
     public unnamedReturnMenu() {
         initComponents();
+        initGUI();
     }
 
     /**
@@ -27,22 +61,1471 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        panMain = new javax.swing.JPanel();
+        panTop = new javax.swing.JPanel();
+        cbxClientID = new javax.swing.JComboBox<>();
+        lblClientID = new javax.swing.JLabel();
+        txtClientID = new javax.swing.JFormattedTextField();
+        lblBookID = new javax.swing.JLabel();
+        txtBorrowDate = new javax.swing.JFormattedTextField();
+        lblBorrowDate = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        lblBorrowID = new javax.swing.JLabel();
+        lblBorrowDue = new javax.swing.JLabel();
+        txtBorrowID = new javax.swing.JFormattedTextField();
+        txtBorrowDue = new javax.swing.JFormattedTextField();
+        btnCancel = new javax.swing.JButton();
+        btnLoadClient = new javax.swing.JButton();
+        btnLoadBorrow = new javax.swing.JButton();
+        txtBookID = new javax.swing.JFormattedTextField();
+        lblIsOverdue = new javax.swing.JLabel();
+        lblMessage = new javax.swing.JLabel();
+        panCenter = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        lblClientTitle = new javax.swing.JLabel();
+        lblClientFirstName = new javax.swing.JLabel();
+        lblClientLastName = new javax.swing.JLabel();
+        lblClientDoB = new javax.swing.JLabel();
+        lblClientGender = new javax.swing.JLabel();
+        lblClientPhoneNumber = new javax.swing.JLabel();
+        lblClientEmailAddress = new javax.swing.JLabel();
+        lblClientHomeAddress = new javax.swing.JLabel();
+        txtClientFirstName = new javax.swing.JTextField();
+        txtClientLastName = new javax.swing.JTextField();
+        txtClientDoB = new javax.swing.JFormattedTextField();
+        txtClientPhoneNumber = new javax.swing.JFormattedTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtClientHomeAddress = new javax.swing.JTextArea();
+        txtClientEmailAddress = new javax.swing.JTextField();
+        jSeparator2 = new javax.swing.JSeparator();
+        txtClientGender = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        txtFineAmount = new javax.swing.JFormattedTextField();
+        lblIsReturned = new javax.swing.JLabel();
+        lblAmountBorrowed1 = new javax.swing.JLabel();
+        lblIsRenewed = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        lblBorrowStatus = new javax.swing.JLabel();
+        btnReturn = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        lblBookDetailsTitle = new javax.swing.JLabel();
+        lblBookTitle = new javax.swing.JLabel();
+        lblBookGenre = new javax.swing.JLabel();
+        lblBookSummary = new javax.swing.JLabel();
+        lblBookQuantity = new javax.swing.JLabel();
+        lblBookPublisher = new javax.swing.JLabel();
+        lblBookAuthor = new javax.swing.JLabel();
+        lblArrivalDate = new javax.swing.JLabel();
+        txtBookTitle = new javax.swing.JTextField();
+        txtBookGenre = new javax.swing.JTextField();
+        txtBookPublisher = new javax.swing.JTextField();
+        txtPublishDate = new javax.swing.JFormattedTextField();
+        txtArrivalDate = new javax.swing.JFormattedTextField();
+        txtBookQuantity = new javax.swing.JFormattedTextField();
+        txtBookAuthor = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtBookSummary = new javax.swing.JTextArea();
+        lblPublishDate = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Returning a borrow record- unnamed Library Management System");
+        setMaximumSize(new java.awt.Dimension(1218, 820));
+        setMinimumSize(new java.awt.Dimension(1218, 820));
+        setPreferredSize(new java.awt.Dimension(1218, 820));
+        setResizable(false);
+
+        panMain.setBackground(new java.awt.Color(51, 51, 51));
+        panMain.setMaximumSize(new java.awt.Dimension(1218, 820));
+        panMain.setMinimumSize(new java.awt.Dimension(1218, 820));
+        panMain.setPreferredSize(new java.awt.Dimension(1218, 820));
+        panMain.setLayout(new java.awt.BorderLayout());
+
+        panTop.setBackground(new java.awt.Color(43, 44, 45));
+        panTop.setMaximumSize(new java.awt.Dimension(1218, 160));
+        panTop.setMinimumSize(new java.awt.Dimension(1218, 160));
+
+        cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
+        cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxClientID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxClientIDActionPerformed(evt);
+            }
+        });
+
+        lblClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientID.setText("Staff/Student ID:");
+
+        txtClientID.setEditable(false);
+        txtClientID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtClientID.setText("Staff/Student ID");
+        txtClientID.setFocusable(false);
+        txtClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientID.setRequestFocusEnabled(false);
+        txtClientID.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtClientIDFocusGained(evt);
+            }
+        });
+
+        lblBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBookID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBookID.setText("Book ID:");
+
+        txtBorrowDate.setEditable(false);
+        txtBorrowDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtBorrowDate.setText("DD/MM/YYYY");
+        txtBorrowDate.setFocusable(false);
+        txtBorrowDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBorrowDate.setRequestFocusEnabled(false);
+
+        lblBorrowDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBorrowDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBorrowDate.setText("Borrowing Date:");
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblBorrowID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBorrowID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBorrowID.setText("Borrow ID:");
+
+        lblBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBorrowDue.setText("Borrow Due On:");
+
+        txtBorrowID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtBorrowID.setText("Borrow ID");
+        txtBorrowID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBorrowID.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtBorrowIDFocusGained(evt);
+            }
+        });
+
+        txtBorrowDue.setEditable(false);
+        txtBorrowDue.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtBorrowDue.setText("DD/MM/YYYY");
+        txtBorrowDue.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+        txtBorrowDue.setFocusable(false);
+        txtBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+
+        btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnCancel.setText("Cancel Return");
+        btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        btnLoadClient.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnLoadClient.setText("Load Client Information");
+        btnLoadClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadClientActionPerformed(evt);
+            }
+        });
+
+        btnLoadBorrow.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnLoadBorrow.setText("Load Borrowing Information");
+        btnLoadBorrow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadBorrowActionPerformed(evt);
+            }
+        });
+
+        txtBookID.setEditable(false);
+        txtBookID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtBookID.setText("000000");
+        txtBookID.setFocusable(false);
+        txtBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookID.setRequestFocusEnabled(false);
+
+        lblIsOverdue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblIsOverdue.setForeground(java.awt.Color.red);
+        lblIsOverdue.setText("*Overdue");
+
+        lblMessage.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblMessage.setText("No Message.");
+
+        javax.swing.GroupLayout panTopLayout = new javax.swing.GroupLayout(panTop);
+        panTop.setLayout(panTopLayout);
+        panTopLayout.setHorizontalGroup(
+            panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panTopLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblBorrowDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBorrowID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panTopLayout.createSequentialGroup()
+                        .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLoadClient))
+                    .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panTopLayout.createSequentialGroup()
+                            .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panTopLayout.createSequentialGroup()
+                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtBorrowID)
+                                .addComponent(txtBorrowDate, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panTopLayout.createSequentialGroup()
+                                    .addComponent(lblBorrowDue)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lblIsOverdue))
+                                .addComponent(btnLoadBorrow)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                .addComponent(btnCancel)
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        panTopLayout.setVerticalGroup(
+            panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addGroup(panTopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panTopLayout.createSequentialGroup()
+                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblClientID)
+                            .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLoadClient))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnLoadBorrow)
+                            .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBorrowID))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBorrowDate)
+                            .addComponent(lblBorrowDue)
+                            .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblIsOverdue))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBookID)
+                            .addComponent(lblMessage)))
+                    .addComponent(btnCancel))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
+
+        panMain.add(panTop, java.awt.BorderLayout.PAGE_START);
+
+        panCenter.setBackground(new java.awt.Color(34, 34, 34));
+        panCenter.setLayout(new java.awt.GridLayout());
+
+        jPanel2.setBackground(new java.awt.Color(34, 34, 34));
+
+        lblClientTitle.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 24)); // NOI18N
+        lblClientTitle.setText("Staff/Student Personal Information:");
+
+        lblClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientFirstName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientFirstName.setText("First Name:");
+
+        lblClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientLastName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientLastName.setText("Last Name:");
+
+        lblClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientDoB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientDoB.setText("Date of Birth:");
+
+        lblClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientGender.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientGender.setText("Gender:");
+
+        lblClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientPhoneNumber.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientPhoneNumber.setText("Phone Number:");
+
+        lblClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientEmailAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientEmailAddress.setText("Email Address:");
+
+        lblClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientHomeAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientHomeAddress.setText("Home Address:");
+
+        txtClientFirstName.setEditable(false);
+        txtClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientFirstName.setText("First name");
+        txtClientFirstName.setFocusable(false);
+        txtClientFirstName.setRequestFocusEnabled(false);
+
+        txtClientLastName.setEditable(false);
+        txtClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientLastName.setText("Last name");
+        txtClientLastName.setFocusable(false);
+        txtClientLastName.setRequestFocusEnabled(false);
+
+        txtClientDoB.setEditable(false);
+        txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtClientDoB.setText("Date of birth");
+        txtClientDoB.setFocusable(false);
+        txtClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientDoB.setRequestFocusEnabled(false);
+
+        txtClientPhoneNumber.setEditable(false);
+        try {
+            txtClientPhoneNumber.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtClientPhoneNumber.setText("000000000");
+        txtClientPhoneNumber.setFocusable(false);
+        txtClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientPhoneNumber.setRequestFocusEnabled(false);
+
+        txtClientHomeAddress.setEditable(false);
+        txtClientHomeAddress.setColumns(20);
+        txtClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientHomeAddress.setLineWrap(true);
+        txtClientHomeAddress.setRows(5);
+        txtClientHomeAddress.setText("Home address");
+        txtClientHomeAddress.setFocusable(false);
+        txtClientHomeAddress.setRequestFocusEnabled(false);
+        jScrollPane1.setViewportView(txtClientHomeAddress);
+
+        txtClientEmailAddress.setEditable(false);
+        txtClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientEmailAddress.setText("Email address");
+        txtClientEmailAddress.setFocusable(false);
+        txtClientEmailAddress.setRequestFocusEnabled(false);
+
+        txtClientGender.setEditable(false);
+        txtClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientGender.setText("Gender");
+        txtClientGender.setFocusable(false);
+        txtClientGender.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jSeparator2)
+                    .addComponent(lblClientTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblClientPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientEmailAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientHomeAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientGender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientDoB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtClientGender, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtClientEmailAddress, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtClientPhoneNumber, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtClientDoB, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtClientLastName, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtClientFirstName, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(138, 138, 138))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblClientTitle)
+                .addGap(13, 13, 13)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientFirstName)
+                    .addComponent(txtClientFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientLastName)
+                    .addComponent(txtClientLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientDoB)
+                    .addComponent(txtClientDoB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientGender)
+                    .addComponent(txtClientGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientPhoneNumber)
+                    .addComponent(txtClientPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientEmailAddress)
+                    .addComponent(txtClientEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblClientHomeAddress)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(134, Short.MAX_VALUE))
+        );
+
+        panCenter.add(jPanel2);
+
+        jPanel3.setBackground(new java.awt.Color(28, 28, 28));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setBackground(new java.awt.Color(33, 31, 31));
+        jPanel1.setMaximumSize(new java.awt.Dimension(609, 100));
+        jPanel1.setMinimumSize(new java.awt.Dimension(609, 100));
+
+        txtFineAmount.setEditable(false);
+        txtFineAmount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#.##"))));
+        txtFineAmount.setText("0.00");
+        txtFineAmount.setFocusable(false);
+        txtFineAmount.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtFineAmount.setRequestFocusEnabled(false);
+
+        lblIsReturned.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblIsReturned.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblIsReturned.setText("Has not been returned.");
+
+        lblAmountBorrowed1.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblAmountBorrowed1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblAmountBorrowed1.setText("Fine (RM):");
+
+        lblIsRenewed.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblIsRenewed.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblIsRenewed.setText("Has not been renewed.");
+
+        lblBorrowStatus.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
+        lblBorrowStatus.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblBorrowStatus.setText("Borrowing Status:");
+
+        btnReturn.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnReturn.setText("Return");
+        btnReturn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReturn.setEnabled(false);
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnActionPerformed(evt);
+            }
+        });
+
+        jButton5.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        jButton5.setText("Reset");
+        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblIsRenewed, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblIsReturned, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBorrowStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReturn)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblAmountBorrowed1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFineAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1))
+                    .addComponent(jSeparator4)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFineAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAmountBorrowed1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton5)
+                    .addComponent(btnReturn))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblBorrowStatus)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIsReturned)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIsRenewed)
+                .addGap(21, 21, 21))
+        );
+
+        jPanel3.add(jPanel1, java.awt.BorderLayout.PAGE_END);
+
+        jPanel4.setBackground(new java.awt.Color(28, 28, 28));
+
+        lblBookDetailsTitle.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 24)); // NOI18N
+        lblBookDetailsTitle.setText("Book Details:");
+
+        lblBookTitle.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBookTitle.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBookTitle.setText("Book Title:");
+
+        lblBookGenre.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBookGenre.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBookGenre.setText("Book Genre:");
+
+        lblBookSummary.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBookSummary.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBookSummary.setText("Book Summary:");
+
+        lblBookQuantity.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBookQuantity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBookQuantity.setText("Quantity Borrowed:");
+
+        lblBookPublisher.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBookPublisher.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBookPublisher.setText("Book Publisher:");
+
+        lblBookAuthor.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblBookAuthor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblBookAuthor.setText("Book Author:");
+
+        lblArrivalDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblArrivalDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblArrivalDate.setText("Book Arrival Date:");
+
+        txtBookTitle.setEditable(false);
+        txtBookTitle.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookTitle.setText("Title of the book");
+        txtBookTitle.setFocusable(false);
+        txtBookTitle.setRequestFocusEnabled(false);
+
+        txtBookGenre.setEditable(false);
+        txtBookGenre.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookGenre.setText("Genre of the book");
+        txtBookGenre.setFocusable(false);
+        txtBookGenre.setRequestFocusEnabled(false);
+
+        txtBookPublisher.setEditable(false);
+        txtBookPublisher.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookPublisher.setText("Publisher of the book");
+        txtBookPublisher.setFocusable(false);
+        txtBookPublisher.setRequestFocusEnabled(false);
+
+        txtPublishDate.setEditable(false);
+        txtPublishDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtPublishDate.setText("01/01/2001");
+        txtPublishDate.setFocusable(false);
+        txtPublishDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtPublishDate.setRequestFocusEnabled(false);
+
+        txtArrivalDate.setEditable(false);
+        txtArrivalDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtArrivalDate.setText("01/01/2001");
+        txtArrivalDate.setFocusable(false);
+        txtArrivalDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtArrivalDate.setRequestFocusEnabled(false);
+
+        txtBookQuantity.setEditable(false);
+        txtBookQuantity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtBookQuantity.setText("0");
+        txtBookQuantity.setFocusable(false);
+        txtBookQuantity.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookQuantity.setRequestFocusEnabled(false);
+
+        txtBookAuthor.setEditable(false);
+        txtBookAuthor.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookAuthor.setText("Author of the book");
+        txtBookAuthor.setFocusable(false);
+        txtBookAuthor.setRequestFocusEnabled(false);
+
+        txtBookSummary.setEditable(false);
+        txtBookSummary.setColumns(20);
+        txtBookSummary.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookSummary.setLineWrap(true);
+        txtBookSummary.setRows(3);
+        txtBookSummary.setText("Summary of the book");
+        txtBookSummary.setFocusable(false);
+        txtBookSummary.setRequestFocusEnabled(false);
+        jScrollPane2.setViewportView(txtBookSummary);
+
+        lblPublishDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblPublishDate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPublishDate.setText("Book Publish Date:");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblBookDetailsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator3)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lblBookQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblBookPublisher, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblBookAuthor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblBookSummary, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblBookGenre, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                                    .addComponent(lblBookTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(35, 35, 35)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtBookQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtBookPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(txtBookGenre, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtBookTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(232, 232, 232)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPublishDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPublishDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblArrivalDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtArrivalDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 51, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblBookDetailsTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBookTitle)
+                    .addComponent(txtBookTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBookGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBookGenre))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBookSummary))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBookQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBookQuantity))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBookPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBookPublisher))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBookAuthor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblArrivalDate)
+                    .addComponent(lblPublishDate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPublishDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtArrivalDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(93, 93, 93))
+        );
+
+        jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        panCenter.add(jPanel3);
+
+        panMain.add(panCenter, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(panMain, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
+        // TODO add your handling code here:
+
+        int ctype = cbxClientID.getSelectedIndex(); // Get client type
+
+        if (ctype == 0) { // Will reset fields to default appearance
+            lblClientID.setText("Staff/Student ID:");
+            txtClientID.setText("Staff/Student ID");
+            lblClientTitle.setText("Staff/Student Personal Information:");
+            txtClientID.setEditable(false);
+            txtClientID.setRequestFocusEnabled(false);
+            txtClientID.setFocusable(false);
+        } else { // Will display fields according to selected user type
+            try {
+                lblClientID.setText(cbxClientID.getSelectedItem().toString() + " ID:");
+                txtClientID.setText(cbxClientID.getSelectedItem().toString() + " ID");
+                lblClientTitle.setText(cbxClientID.getSelectedItem().toString() + " Personal Information:");
+                txtClientID.setEditable(true);
+                txtClientID.setRequestFocusEnabled(true);
+                txtClientID.setFocusable(true);
+
+                switch (ctype){
+                    case 1:
+                    cspecies = "STA";
+                    break;
+                    case 2:
+                    cspecies = "STU";
+                    break;
+                    default:
+                    cspecies = "NUL";
+                    break;
+                }
+
+            } catch (Exception e) {
+                // Popup messagebox to inform user of unexpected error
+            }
+        }
+    }//GEN-LAST:event_cbxClientIDActionPerformed
+
+    private void txtClientIDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtClientIDFocusGained
+        // TODO add your handling code here:
+
+        String[] ctype = new String[]{"Staff/Student ID", "Staff ID", "Student ID"};
+        String temp = txtClientID.getText();
+
+        if (Arrays.asList(ctype).contains(temp)) {
+            txtClientID.setText("");
+        }
+    }//GEN-LAST:event_txtClientIDFocusGained
+
+    private void txtBorrowIDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBorrowIDFocusGained
+        // TODO add your handling code here:
+        if ("Borrow ID".equals(txtBorrowID.getText())) {
+            txtBorrowID.setText("");
+        }
+    }//GEN-LAST:event_txtBorrowIDFocusGained
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel the ongoing returning process. Continue?", "Cancelling Return Process", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (selection == JOptionPane.YES_OPTION) {
+            new unnamedMainMenu().setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnLoadClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadClientActionPerformed
+        // TODO add your handling code here:
+        // This handles formatter for the integer to consist of 6 digits
+        DecimalFormat dc = new DecimalFormat("000000");
+        // This is to ensure the entire method have access to the matchedID array
+        String[] matchedID;
+        // This is a flag to tell the method that there is result
+        boolean hasResult = false;
+        fetchedClient = false;
+        // To empty previous or default values from fields
+        txtClientFirstName.setText("");
+        txtClientLastName.setText("");
+        txtClientDoB.setText("");
+        txtClientGender.setText("");
+        txtClientPhoneNumber.setText("");
+        txtClientEmailAddress.setText("");
+        txtClientHomeAddress.setText("");
+        try {
+            cID = dc.format(Integer.parseInt(txtClientID.getText()));
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // For debugging purpose only
+            // JOptionPane.showMessageDialog(null, bID);
+            File clienttxt = new File(saveDir + "client.txt");
+            Scanner inputFile;
+            try {
+                inputFile = new Scanner(clienttxt);
+                // Read lines from the file until no more are left.
+                while (inputFile.hasNext())
+                {
+                    // Read the next line.
+                    String cEntry = inputFile.nextLine();
+                    // Split the line by using the delimiter ":" (semicolon) and store into array.
+                    matchedID = cEntry.split(":");
+                    if (matchedID[0].equals(cspecies + cID)){
+                        hasResult = true;
+                        fetchedClient = true;
+                        matchedID[0] = matchedID[0].replace(cspecies, "");
+                        txtClientID.setText(matchedID[0]);
+                        txtClientFirstName.setText(matchedID[1]);
+                        txtClientLastName.setText(matchedID[2]);
+                        txtClientDoB.setText(matchedID[3]);
+                        txtClientGender.setText(matchedID[4]);
+                        txtClientPhoneNumber.setText(matchedID[5]);
+                        txtClientEmailAddress.setText(matchedID[6]);
+                        txtClientHomeAddress.setText(matchedID[7]);
+                    }
+                }
+                inputFile.close();
+                if (!hasResult) {
+                    JOptionPane.showMessageDialog(null, "No client of the inserted ID found!", "Client not found!", JOptionPane.ERROR_MESSAGE);
+                }
+                fetchedBookClientInfo();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input! Client ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnLoadClientActionPerformed
+
+    private void btnLoadBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadBorrowActionPerformed
+        // TODO add your handling code here:
+        // This handles formatter for the integer to consist of 6 digits
+        DecimalFormat dc = new DecimalFormat("000000");
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedIDbr = null;
+        // This is to ensure the entire method have access to book matchedID array
+        // String[] matchedIDbk;
+        // This is a flag to tell the method that there is result
+        boolean hasBorrow = false, hasBook = false;
+        fetchedBorrow = false;
+        fetchedBook = false;
+        // To clean up previous or default values from fields
+        txtBorrowDate.setText("");
+        txtBorrowDue.setText("");
+        txtBookID.setText("");
+        txtBookTitle.setText("");
+        txtBookGenre.setText("");
+        txtBookSummary.setText("");
+        txtBookQuantity.setText("");
+        txtBookPublisher.setText("");
+        txtBookAuthor.setText("");
+        txtPublishDate.setText("");
+        txtArrivalDate.setText("");
+        txtFineAmount.setText("");
+        cID = "";
+        bID = "";
+        brID = "";
+        lblIsReturned.setForeground(fgtxt);
+        lblIsRenewed.setForeground(fgtxt);
+        lblIsOverdue.setVisible(false);
+        lblMessage.setVisible(false);
+        lblMessage.setText("");
+        // Declaring variables to store borrowing and book information
+        try {
+            cID = dc.format(Integer.parseInt(txtClientID.getText()));
+            brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // For debugging purpose only
+            // JOptionPane.showMessageDialog(null, bID);
+            File borrowingtxt = new File(saveDir + "borrowing.txt");
+            File booktxt = new File(saveDir + "book.txt");
+            Scanner intBorrow, intBook;
+            try {
+                intBorrow = new Scanner(borrowingtxt);
+                // Read lines from the file until no more are left.
+                while (intBorrow.hasNext())
+                {
+                    // Read the next line.
+                    String brEntry = intBorrow.nextLine();
+                    // Split the line by using the delimiter ":" (semicolon) and store into array.
+                    matchedIDbr = brEntry.split(":");
+                    if (matchedIDbr[0].equals(brpfix + brID) && matchedIDbr[1].equals(cspecies + cID)){
+                        hasBorrow = true;
+                        fetchedBorrow = true;
+                        matchedIDbr[0] = matchedIDbr[0].replace("BOR", ""); // Remove prefix
+                        matchedIDbr[2] = matchedIDbr[2].replace("BOO", ""); // Remove prefix
+                        txtBorrowID.setText(matchedIDbr[0]);
+                        txtBookID.setText(matchedIDbr[2]);
+                        txtBorrowDate.setText(matchedIDbr[3]);
+                        txtBorrowDue.setText(matchedIDbr[4]);
+                        txtBookQuantity.setText(matchedIDbr[5]);
+                        // Check if book has been returned
+                        if ("false".equals(matchedIDbr[6])) {
+                            lblIsReturned.setForeground(fgtxt);
+                            lblIsReturned.setText("Has not been returned.");
+                            hasReturned = false;
+                        } else {
+                            lblIsReturned.setForeground(Color.green);
+                            lblIsReturned.setText("Has been returned.");
+                            hasReturned = true;
+                        }
+                        // Check if the book is overdue
+                        if ("false".equals(matchedIDbr[7])) {
+                            lblIsOverdue.setVisible(false);
+                            isOverdue = false;
+                        } else {
+                            lblIsOverdue.setVisible(true);
+                            isOverdue = true;
+                        }
+                        // Check if book has been renewed
+                        if ("false".equals(matchedIDbr[8])) {
+                            lblIsRenewed.setForeground(fgtxt);
+                            lblIsRenewed.setText("Has not been renewed.");
+                            hasRenewed = false;
+                        } else {
+                            lblIsRenewed.setForeground(Color.green);
+                            lblIsRenewed.setText("Has been renewed.");
+                            hasRenewed = true;
+                        }
+                        // Check if book has unpaid fine
+                        txtFineAmount.setText(matchedIDbr[9]);
+                        if (Double.parseDouble(matchedIDbr[9]) > 0) {
+                            hasFine = true;
+                        } else {
+                            hasFine = false;
+                        }
+
+                    }
+                }
+                intBorrow.close();
+
+                if (!"".equals(txtBookID.getText())) {
+                    bID = dc.format(Integer.parseInt(txtBookID.getText()));
+                }
+
+                // This part loads book information after borrowing info is retrieved
+                intBook = new Scanner(booktxt);
+                // Read lines from the file until no more are left.
+                while (intBook.hasNext())
+                {
+                    // Read the next line.
+                    String bEntry = intBook.nextLine();
+                    // Split the line by using the delimiter ":" (semicolon) and store into array.
+                    String[] matchedIDbk = bEntry.split(":");
+                    if (matchedIDbk[0].equals(bpfix + bID)){
+                        hasBook = true;
+                        fetchedBook = true;
+                        // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
+                        txtBookTitle.setText(matchedIDbk[1]);
+                        txtBookGenre.setText(matchedIDbk[2]);
+                        txtBookSummary.setText(matchedIDbk[3]);
+                        txtBookPublisher.setText(matchedIDbk[5]);
+                        txtBookAuthor.setText(matchedIDbk[6]);
+                        txtPublishDate.setText(matchedIDbk[7]);
+                        txtArrivalDate.setText(matchedIDbk[8]);
+                    }
+                }
+                intBook.close();
+                // JOptionPane.showMessageDialog(null, hasBook);
+                if (!hasBorrow) {
+                    JOptionPane.showMessageDialog(null, "No borrow record for the inserted ID found!", "Borrow record not found!", JOptionPane.ERROR_MESSAGE);
+
+                }
+                if (!hasBook) {
+                    JOptionPane.showMessageDialog(null, "No book record for the inserted ID found!", "Book record not found!", JOptionPane.ERROR_MESSAGE);
+                }
+                // Check the book due date and see if it is overdue
+                // Will mark the borrowing status as overdue in file when detected
+                if (!isOverdue) {
+                    setOverdue();
+                }
+                fetchedBookClientInfo();
+                // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
+                // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            if (!txtClientID.isEnabled() | "".equals(txtClientID.getText()) | "Staff/Student ID".equals(txtClientID.getText())) {
+                JOptionPane.showMessageDialog(null, "Cannot load borrowing information without Client ID!", "Empty Client ID entry!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid input! Borrow ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+
+            }
+        }
+        //            } else {
+        //            JOptionPane.showMessageDialog(null, ex);
+        //
+        //        }
+
+    }//GEN-LAST:event_btnLoadBorrowActionPerformed
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        // TODO add your handling code here:
+        // This method will rewrite borrowing.txt by clearing the fine amount
+        // WILL NOT RESET hasReturned flag as that is changed during return sequence
+        // WILL NOT RESET hasRenewed flag as that is managed by renewing sequence
+        // WILL NOT RESET isOverdue flag as that is set permanently
+        if (Double.parseDouble(txtFineAmount.getText()) > 0) {
+            // Creating a local JFormattedTextField to accept input
+            JTextField paytxt = new JTextField();
+            // Input popup to allow librarian to key in paid amount
+            String payIn = JOptionPane.showInputDialog(paytxt, "Insert total amount paid:" , "Paying fine.", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                DecimalFormat dc = new DecimalFormat("0.00"); // Prepare 2 decimal digit format
+                double payInConv = Double.parseDouble(payIn); // Attempt conversion to double
+                // JOptionPane.showMessageDialog(null, dc.format(payInConv)); // For debugging only
+                // Converting the current fine amount to double for arithmetic logic
+                double currFine = Double.parseDouble(txtFineAmount.getText());
+                if (payInConv <= 0) { // Check if payment done is 0 or less which is not acceptable
+                    JOptionPane.showMessageDialog(null, "Payment amount made is not possible! Please check your input and try again!", "Illogical payment amount made!", JOptionPane.ERROR_MESSAGE);
+                } else { // Proceed with checking the amount paid against total fine to be paid // Proceed with handling flags and rewriting into borrowing.txt
+                    if (payInConv < currFine) {
+                        // Payment made is less than the total amount required!
+                        JOptionPane.showMessageDialog(null, "Payment made is not enough! Please check your input and try again!", "Insufficient payment amount made!", JOptionPane.ERROR_MESSAGE);
+                    } else { // Payment made is either exact or exceeded the amount of fine
+                        if (payInConv > currFine) { // Has no change
+                            JOptionPane.showMessageDialog(null, "Payment successful! Change amount is RM" + dc.format(payInConv - currFine), "Paid fine successfully!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        returnBook();
+                    }
+                }
+            } catch (Exception ex) {
+                if ("".equals(payIn)) { // Check if input is null
+                    JOptionPane.showMessageDialog(null, "Input cannot be empty!", "Empty string!", JOptionPane.ERROR_MESSAGE);
+                } else { // Check if input is not numerical
+                    JOptionPane.showMessageDialog(null, "Only numbers are accepted!", "Illegal input detected!", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+        } else {
+            returnBook();
+        }
+        
+        
+    }//GEN-LAST:event_btnReturnActionPerformed
+    
+    private void returnBook(){
+        try {
+            // Formatting ID into formal 6-digit mask
+            DecimalFormat dc = new DecimalFormat("000000");
+            // Setting the working directory
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // Fetching IDs from the textfields
+            brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
+            cID = dc.format(Integer.parseInt(txtClientID.getText()));
+            // To rename original book.txt to book.bak
+            File borrowOri = new File(saveDir + "borrowing.txt");
+            File borrowBak = new File(saveDir + "borrowingBak.txt");
+            // To check if bookBak.txt is present or not
+            if (!borrowBak.exists()){
+                borrowOri.createNewFile();
+            }
+            // This is for debugging only!
+            // JOptionPane.showMessageDialog(null, "renamed");
+            // This is to rename the existing book.txt to bookBak.txt
+            borrowOri.renameTo(borrowBak);
+            // This is to open, find and replace a specific book record
+            // Requires temporary file to store current state
+            // FileWriter to write into a new file called book.txt
+            FileWriter brd = new FileWriter(saveDir + "borrowing.txt");
+            // PrintWriter to print into book.txt
+            PrintWriter brdp = new PrintWriter(brd);
+            // This is to open and read bookBak.txt
+            File borrowingtxt = new File(saveDir + "borrowingBak.txt");
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(borrowingtxt);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String brEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = brEntry.split(":");
+                // Check if the read line has current book ID
+                if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                    // flagging the record as hasReturned
+                    matchedID[6] = "true";
+                    // Resetting the fine amount to 0
+                    matchedID[9] = "0.00";
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                    // Flipping hasReturned status to true
+                    hasReturned = true;
+                }
+                // Rewrite the new book.txt with values found in bookBak.txt
+                brdp.println(matchedID[0] + ":" +
+                    matchedID[1] + ":" +
+                    matchedID[2] + ":" +
+                    matchedID[3] + ":" +
+                    matchedID[4] + ":" +
+                    matchedID[5] + ":" +
+                    matchedID[6] + ":" +
+                    matchedID[7] + ":" +
+                    matchedID[8] + ":" +
+                    matchedID[9]);
+            }
+            // Close the bookBak.txt reader
+            inputFile.close();
+            // This deletes bookBak.txt
+            borrowBak.delete();
+            // This closes the book.txt printer
+            brdp.close();
+            // JOptionPane.showMessageDialog(null, "Yes it worked");
+            // Refresh the form with new data
+            btnLoadBorrow.doClick();
+            // Return borrowed books into book inventory
+            refreshBookAmount();
+            btnReturn.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Returned successfully! Press OK to return to returning form.", "Borrowed book(s) has been returned!", JOptionPane.INFORMATION_MESSAGE);
+            btnCancel.setText("Return");
+        } catch (Exception ex) {
+
+        }
+    }
+    
+    private void setOverdue() {
+        
+        try {
+            DateTimeFormatter datef = DateTimeFormat.forPattern("dd/MM/yyyy");
+            // To get current date
+            LocalDate tdate = LocalDate.now();
+            // To get current overdue date and parse into Date object
+            LocalDate oddate = LocalDate.parse(txtBorrowDue.getText(), datef);
+            // To save the differences between today's date and the overdue date
+            int datediff = Days.daysBetween(tdate, oddate).getDays();
+            // To enable the Renew button if and only if it is the day before or on the day of overdue itself
+            if (datediff < 0 && !isOverdue) {
+                // Debugging only!
+                // JOptionPane.showMessageDialog(null, "Date comparison worked.");
+                // Formatting ID into formal 6-digit mask
+                try {
+                    DecimalFormat dc = new DecimalFormat("000000");
+                    // Setting the working directory
+                    saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+                    // Fetching IDs from the textfields
+                    brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
+                    cID = dc.format(Integer.parseInt(txtClientID.getText()));
+                    // To rename original book.txt to book.bak
+                    File borrowOri = new File(saveDir + "borrowing.txt");
+                    File borrowBak = new File(saveDir + "borrowingBak.txt");
+                    // To check if bookBak.txt is present or not
+                    if (!borrowBak.exists()){
+                        borrowOri.createNewFile();
+                    }
+                    // This is for debugging only!
+                    // JOptionPane.showMessageDialog(null, "renamed");
+                    // This is to rename the existing book.txt to bookBak.txt
+                    borrowOri.renameTo(borrowBak);
+                    // This is to open, find and replace a specific book record
+                    // Requires temporary file to store current state
+                    // FileWriter to write into a new file called book.txt
+                    FileWriter brd = new FileWriter(saveDir + "borrowing.txt"); 
+                    // PrintWriter to print into book.txt
+                    PrintWriter brdp = new PrintWriter(brd); 
+                    // This is to open and read bookBak.txt 
+                    File borrowingtxt = new File(saveDir + "borrowingBak.txt");
+                    // This is to instantiate the file opened earlier
+                    Scanner inputFile = new Scanner(borrowingtxt);
+                    // This array is to contain all lines
+                    String[] matchedID;
+                    // This is only for debugging!
+                    // boolean itWorked = false;
+                    // Read lines from the file until no more are left.
+                    while (inputFile.hasNext())
+                    {
+                        // This is for debugging only!
+                        // JOptionPane.showMessageDialog(null, "In loop");
+                        // Read the next line.
+                        String brEntry = inputFile.nextLine();
+                        // Split the line by using the delimiter ":" (semicolon) and store into array.
+                        matchedID = brEntry.split(":");
+                        // Check if the read line has current book ID
+                        if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                            // Resetting the fine amount to 0
+                            matchedID[7] = "true";
+                            // JOptionPane.showMessageDialog(null, "Yes it worked");
+                        }
+                        // Rewrite the new book.txt with values found in bookBak.txt
+                        brdp.println(matchedID[0] + ":" +
+                                    matchedID[1] + ":" +
+                                    matchedID[2] + ":" +
+                                    matchedID[3] + ":" +
+                                    matchedID[4] + ":" +
+                                    matchedID[5] + ":" +
+                                    matchedID[6] + ":" +
+                                    matchedID[7] + ":" +
+                                    matchedID[8] + ":" +
+                                    matchedID[9]);
+
+                    }
+                    // Close the bookBak.txt reader
+                    inputFile.close();
+                    // This deletes bookBak.txt
+                    borrowBak.delete();
+                    // This closes the book.txt printer 
+                    brdp.close();
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                    // Set the current file as 
+                    // isOverdue = true;
+                    // Refresh the form with new data
+                    btnLoadBorrow.doClick();
+                } catch (Exception ex) {
+                    
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Empty borrow due date!", "Empty input!", JOptionPane.ERROR_MESSAGE);
+
+        }
+        
+        
+    }
+    
+    // This methods amend the current amount of books available by adding 
+    // borrowed books amount that was returned by the client.
+    private void refreshBookAmount() throws IOException {
+        // Formatting ID into formal 6-digit mask
+        DecimalFormat dc = new DecimalFormat("000000");
+        // Setting the working directory
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // Fetching IDs from the textfields
+        bID = dc.format(Integer.parseInt(txtBookID.getText()));
+        // To rename original book.txt to book.bak
+        File bookOri = new File(saveDir + "book.txt");
+        File bookBak = new File(saveDir + "bookBak.txt");
+        // To check if bookBak.txt is present or not
+        if (!bookBak.exists()){
+            bookOri.createNewFile();
+        }
+        // This is for debugging only!
+        // JOptionPane.showMessageDialog(null, "renamed");
+        // This is to rename the existing book.txt to bookBak.txt
+        bookOri.renameTo(bookBak);
+        // This is to open, find and replace a specific book record
+        // Requires temporary file to store current state
+        // FileWriter to write into a new file called book.txt
+        FileWriter bd = new FileWriter(saveDir + "book.txt"); 
+        // PrintWriter to print into book.txt
+        PrintWriter bdp = new PrintWriter(bd); 
+        // This is to open and read bookBak.txt 
+        File booktxt = new File(saveDir + "bookBak.txt");
+        // This is to instantiate the file opened earlier
+        Scanner inputFile = new Scanner(booktxt);
+        // This array is to contain all lines
+        String[] matchedID;
+        // This is only for debugging!
+        // boolean itWorked = false;
+        // Read lines from the file until no more are left.
+        while (inputFile.hasNext())
+        {
+            // This is for debugging only!
+            // JOptionPane.showMessageDialog(null, "In loop");
+            // Read the next line.
+            String bEntry = inputFile.nextLine();
+            // Split the line by using the delimiter ":" (semicolon) and store into array.
+            matchedID = bEntry.split(":");
+            // Check if the read line has current book ID
+            if (matchedID[0].equals(bpfix + bID)) {
+                // itWorked = true;
+                // Reassign the quantity by adding the current value with books available in the quantity field
+                matchedID[4] = String.valueOf(Integer.parseInt(matchedID[4]) + Integer.parseInt(txtBookQuantity.getText()));
+            }
+            // Rewrite the new book.txt with values found in bookBak.txt
+            bdp.println(matchedID[0] + ":" +
+                        matchedID[1] + ":" +
+                        matchedID[2] + ":" +
+                        matchedID[3] + ":" +
+                        matchedID[4] + ":" +
+                        matchedID[5] + ":" +
+                        matchedID[6] + ":" +
+                        matchedID[7] + ":" +
+                        matchedID[8]);
+
+        }
+        // Close the bookBak.txt reader
+        inputFile.close();
+        // This deletes bookBak.txt
+        bookBak.delete();
+        // This is for debugging only!
+        /* if (bookBak.delete()) {
+            JOptionPane.showMessageDialog(null, "deleted");
+        }*/
+        // This closes the book.txt printer 
+        bdp.close();
+    }
+    
+    private void fetchedBookClientInfo(){
+        // Debugging only!
+        // JOptionPane.showMessageDialog(null, fetchedBorrow + " " + fetchedClient + " " + fetchedBook + " " + hasFine + " " + isOverdue + " " + hasRenewed);
+        // btnRenew.setEnabled(false);
+        // Reset the due date label to original foreground
+        lblBorrowDue.setForeground(fgtxt);
+        if (fetchedBorrow && fetchedClient && fetchedBook) {
+            // Debugging only!
+            // JOptionPane.showMessageDialog(null, "All rules satisfied");
+            // Default dd/MM/yyyy formatter for Joda LocalDate instances
+            DateTimeFormatter datef = DateTimeFormat.forPattern("dd/MM/yyyy");
+            // To get current date
+            LocalDate tdate = LocalDate.now();
+            // To get current overdue date and parse into Date object
+            LocalDate oddate = LocalDate.parse(txtBorrowDue.getText(), datef);
+            // To save the differences between today's date and the overdue date
+            int datediff = Days.daysBetween(tdate, oddate).getDays();
+            // To enable the Renew button if and only if it is the day before or on the day of overdue itself
+            if (!hasFine && !isOverdue & !hasRenewed && !hasReturned) {
+                if (datediff >= 0 && datediff <= 1) {
+                    // Debugging only!
+                    // JOptionPane.showMessageDialog(null, "Date comparison worked.");
+                    // fetchedBorrow = false;
+                    // fetchedClient = false;  
+                    // Displaying days to due date
+                    if (datediff == 0) {
+                        lblMessage.setVisible(true);
+                        lblMessage.setText("Client may return the book(s) today.");
+                        btnReturn.setEnabled(true);
+                        // Setting the label of due date to red
+                        lblBorrowDue.setForeground(Color.red);
+                    } else {
+                        lblMessage.setVisible(true);
+                        lblMessage.setText("Can return in " + datediff + " day(s).");
+                    }
+                } else{
+                    // Displaying days to due date
+                    lblMessage.setVisible(true);
+                    lblMessage.setText("Can return in " + datediff + " day(s).");
+                }
+            } else if (hasReturned) {
+                // Displaying client has returned the book(s)
+                lblMessage.setVisible(true);
+                lblMessage.setText("Client has returned the book(s).");
+            } else if (hasRenewed && !isOverdue) {
+                // Displaying client is in renew term
+                if (datediff == 0) {
+                    // Setting the label of due date to red
+                    lblBorrowDue.setForeground(Color.red);
+                    lblMessage.setVisible(true);
+                    lblMessage.setText("Client may return the book(s) today. ");
+                    btnReturn.setEnabled(true);
+                } else {
+                    lblMessage.setVisible(true);
+                    lblMessage.setText("Extended borrowing term ends in " + datediff + " day(s).");
+                }
+            } else if (isOverdue && !hasReturned) {
+                // This statement handles fine calculation after load borrow information is pressed
+                // It will store the amount need to be paid straightaway
+                // Setting up DecimalFormat
+                DecimalFormat dc = new DecimalFormat("0.00");
+                // Calculate fine
+                // Convert current fine amount
+                double currfine = Double.parseDouble(txtFineAmount.getText());
+                // RM 1 per missed day
+                double fine;
+                if (hasFine) {
+                    // Add with previous fine amount
+                    // Absolute value is applied to remove negative multiplication
+                    fine = currfine + (1 * java.lang.Math.abs(datediff));
+                } else {
+                    fine = 1 * java.lang.Math.abs(datediff);
+                }
+                // Display fine amount
+                txtFineAmount.setText(dc.format(fine));
+                if (Double.parseDouble(txtFineAmount.getText()) > 0.00 ) {
+                    btnReturn.setEnabled(true);
+
+                } else {
+                    btnReturn.setEnabled(true);
+                }
+                // Displaying term ended notification
+                lblMessage.setVisible(true);
+                lblMessage.setText("Borrowing term has ended!");
+            } else {
+                btnReturn.setEnabled(false);
+            }
+        } else {
+            btnReturn.setEnabled(false);
+            // Debugging only!
+            // JOptionPane.showMessageDialog(null, "Disabled");
+        }
+    }
+    
+    
+    private void initGUI(){
+        lblIsOverdue.setVisible(false);
+        lblMessage.setVisible(false);
+        // This anon class handles window closing event
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e){
+                int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selection == JOptionPane.YES_OPTION) {
+                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                } else {
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
+        // This anon class handles textfield changes for client ID entry
+        txtClientID.getDocument().addDocumentListener(new unnamedDocumentListener(){
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (txtClientID.getText().equals("")){
+                    cerr = true;
+                    lblClientID.setForeground(Color.yellow);
+                }
+                else {
+                    cerr = false;
+                    lblClientID.setForeground(fgtxt);
+                }
+                
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (txtClientID.getText().equals("")){
+                    cerr = true;
+                    lblClientID.setForeground(Color.yellow);
+                }
+            }
+        });
+        // This anon class handles textfield changes for book ID entry
+        txtBorrowID.getDocument().addDocumentListener(new unnamedDocumentListener(){
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (txtBorrowID.getText().equals("")){
+                    brerr = true;
+                    lblBorrowID.setForeground(Color.yellow);
+                }
+                else {
+                    brerr = false;
+                    lblBorrowID.setForeground(fgtxt);
+                }
+                
+                
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (txtBorrowID.getText().equals("")){
+                    brerr = true;
+                    lblBorrowID.setForeground(Color.yellow);
+                }
+            }
+        });
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -53,20 +1536,9 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(unnamedReturnMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(unnamedReturnMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(unnamedReturnMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(unnamedReturnMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatDarkLaf");
         }
         //</editor-fold>
 
@@ -79,5 +1551,73 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnLoadBorrow;
+    private javax.swing.JButton btnLoadClient;
+    private javax.swing.JButton btnReturn;
+    private javax.swing.JComboBox<String> cbxClientID;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JLabel lblAmountBorrowed1;
+    private javax.swing.JLabel lblArrivalDate;
+    private javax.swing.JLabel lblBookAuthor;
+    private javax.swing.JLabel lblBookDetailsTitle;
+    private javax.swing.JLabel lblBookGenre;
+    private javax.swing.JLabel lblBookID;
+    private javax.swing.JLabel lblBookPublisher;
+    private javax.swing.JLabel lblBookQuantity;
+    private javax.swing.JLabel lblBookSummary;
+    private javax.swing.JLabel lblBookTitle;
+    private javax.swing.JLabel lblBorrowDate;
+    private javax.swing.JLabel lblBorrowDue;
+    private javax.swing.JLabel lblBorrowID;
+    private javax.swing.JLabel lblBorrowStatus;
+    private javax.swing.JLabel lblClientDoB;
+    private javax.swing.JLabel lblClientEmailAddress;
+    private javax.swing.JLabel lblClientFirstName;
+    private javax.swing.JLabel lblClientGender;
+    private javax.swing.JLabel lblClientHomeAddress;
+    private javax.swing.JLabel lblClientID;
+    private javax.swing.JLabel lblClientLastName;
+    private javax.swing.JLabel lblClientPhoneNumber;
+    private javax.swing.JLabel lblClientTitle;
+    private javax.swing.JLabel lblIsOverdue;
+    private javax.swing.JLabel lblIsRenewed;
+    private javax.swing.JLabel lblIsReturned;
+    private javax.swing.JLabel lblMessage;
+    private javax.swing.JLabel lblPublishDate;
+    private javax.swing.JPanel panCenter;
+    private javax.swing.JPanel panMain;
+    private javax.swing.JPanel panTop;
+    private javax.swing.JFormattedTextField txtArrivalDate;
+    private javax.swing.JTextField txtBookAuthor;
+    private javax.swing.JTextField txtBookGenre;
+    private javax.swing.JFormattedTextField txtBookID;
+    private javax.swing.JTextField txtBookPublisher;
+    private javax.swing.JFormattedTextField txtBookQuantity;
+    private javax.swing.JTextArea txtBookSummary;
+    private javax.swing.JTextField txtBookTitle;
+    private javax.swing.JFormattedTextField txtBorrowDate;
+    private javax.swing.JFormattedTextField txtBorrowDue;
+    private javax.swing.JFormattedTextField txtBorrowID;
+    private javax.swing.JFormattedTextField txtClientDoB;
+    private javax.swing.JTextField txtClientEmailAddress;
+    private javax.swing.JTextField txtClientFirstName;
+    private javax.swing.JTextField txtClientGender;
+    private javax.swing.JTextArea txtClientHomeAddress;
+    private javax.swing.JFormattedTextField txtClientID;
+    private javax.swing.JTextField txtClientLastName;
+    private javax.swing.JFormattedTextField txtClientPhoneNumber;
+    private javax.swing.JFormattedTextField txtFineAmount;
+    private javax.swing.JFormattedTextField txtPublishDate;
     // End of variables declaration//GEN-END:variables
 }
