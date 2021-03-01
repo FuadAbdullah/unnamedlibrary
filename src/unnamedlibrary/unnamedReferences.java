@@ -25,6 +25,17 @@ public class unnamedReferences {
     //  https://www.w3schools.com/java/java_files_delete.asp
     //  https://stackoverflow.com/questions/1158777/rename-a-file-using-java
     //  https://stackoverflow.com/questions/13386107/how-to-remove-single-character-from-a-string
+    //  https://www.tutorialspoint.com/how-to-compare-two-dates-in-java
+    //  https://stackoverflow.com/questions/4208655/empty-an-array-in-java-processing
+    //  https://stackoverflow.com/questions/5050170/how-do-i-get-a-date-without-time-in-java
+    //  https://www.joda.org/joda-time/key_format.html
+    //  https://www.joda.org/joda-time/timezones.html
+    //  https://stackoverflow.com/questions/20331163/how-to-format-joda-time-datetime-to-only-mm-dd-yyyy/20331243
+    //  https://stackoverflow.com/questions/2721614/joda-time-how-to-convert-string-to-localdate
+    //  https://www.joda.org/joda-time/
+    //  https://stackoverflow.com/questions/17509781/how-to-read-last-line-in-a-text-file-using-java/17509803
+    
+    
     
     
 }
