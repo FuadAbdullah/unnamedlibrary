@@ -330,7 +330,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         panMain.add(panTop, java.awt.BorderLayout.PAGE_START);
 
         panCenter.setBackground(new java.awt.Color(34, 34, 34));
-        panCenter.setLayout(new java.awt.GridLayout());
+        panCenter.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel2.setBackground(new java.awt.Color(34, 34, 34));
 
@@ -431,9 +431,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                 .addGap(61, 61, 61)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblClientPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblClientEmailAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblClientHomeAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblClientEmailAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblClientHomeAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblClientGender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblClientDoB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblClientLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -541,12 +540,13 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSubmit)
-                    .addComponent(jButton4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtAmountBorrowed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblAmountBorrowed)))
+                        .addComponent(lblAmountBorrowed))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSubmit)
+                        .addComponent(jButton4)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -659,10 +659,9 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                         .addGap(47, 47, 47)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblBookQuantity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblBookPublisher, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lblBookQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblBookPublisher, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblBookAuthor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lblPublishDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lblArrivalDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -866,10 +865,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                 }
                 JOptionPane.showMessageDialog(null, newqty);
                 */
-
                 // FileWriter and PrintWriter to create and write into textfiles
                 try {
-
                     // FileWriter cd = new FileWriter(saveDir + "client.txt", true); // FileWriter for staff/student info
                     // PrintWriter cdp = new PrintWriter(cd); // PrintWriter for staff/student info
                     FileWriter brd = new FileWriter(saveDir + "borrowing.txt", true); // FileWriter for borrowing details
@@ -988,6 +985,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                     // To display completed borrowing process status
                     JOptionPane.showMessageDialog(null, "Successfully booked! Press OK to return to borrowing form.", "Borrowing succeeded!", JOptionPane.INFORMATION_MESSAGE);
                     btnCancel.setText("Return");
+                    // To refresh new ID 
+                    borrowIncrementor();
                     // To reload the book information
                     btnLoadBook.doClick();
                 } catch (IOException ex) {
@@ -1081,6 +1080,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                    if (matchedID[0].equals(bpfix + bID)){
                        hasResult = true;
                        fetchedBook = true;
+                       matchedID[0] = matchedID[0].replace("BOO", "");
+                       txtBookID.setText(matchedID[0]);
                        txtBookTitle.setText(matchedID[1]);
                        txtBookGenre.setText(matchedID[2]);
                        txtBookSummary.setText(matchedID[3]);
@@ -1152,7 +1153,9 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                    matchedID = cEntry.split(":");
                    if (matchedID[0].equals(cspecies + cID)){
                        hasResult = true;
-                       fetchedClient = true;
+                       fetchedClient = true;                       
+                       matchedID[0] = matchedID[0].replace(cspecies, "");
+                       txtClientID.setText(matchedID[0]);
                        txtClientFirstName.setText(matchedID[1]);
                        txtClientLastName.setText(matchedID[2]);
                        txtClientDoB.setText(matchedID[3]);
@@ -1188,8 +1191,46 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method will check through borrowing.txt and look for latest ID and increments from there
+    private void borrowIncrementor(){
+        DecimalFormat dc = new DecimalFormat("000000");
+        // This is to ensure the entire method have access to the matchedID array
+        String[] matchedID = null;
+        // This is a flag to tell the method that there is result and if the book quantity is 0
+        boolean hasResult = false, qty0 = false;
+        try {
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // For debugging purpose only
+            // JOptionPane.showMessageDialog(null, bID);
+            File booktxt = new File(saveDir + "borrowing.txt");
+            Scanner inputFile;
+            try {
+                String lastBookID;
+                inputFile = new Scanner(booktxt);
+                // Read lines from the file until no more are left.
+                while (inputFile.hasNext())
+                {
+                   // Read the next line.
+                   String bEntry = inputFile.nextLine();
+                   // Split the line by using the delimiter ":" (semicolon) and store into array.
+                   matchedID = bEntry.split(":");
+                   matchedID[0] = matchedID[0].replace("BOR", "");
+                }
+                inputFile.close();
+                int newBorrowID = Integer.parseInt(matchedID[0]) + 1;
+                txtBorrowID.setText(dc.format(newBorrowID));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     private void initGUI(){
         // This anon class handles window closing event
+        borrowIncrementor();
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e){
                 int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

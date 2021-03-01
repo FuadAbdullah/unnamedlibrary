@@ -7,6 +7,7 @@
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1218, 820]"/>
     </Property>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -84,9 +85,7 @@
                           <Group type="102" attributes="0">
                               <Component id="txtBookID" min="-2" pref="154" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnCalendar" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnGetDate" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblMessage" min="-2" pref="263" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="cbxClientID" min="-2" pref="130" max="-2" attributes="0"/>
@@ -152,8 +151,7 @@
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="txtBookID" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblBookID" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnCalendar" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnGetDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblMessage" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="btnCancel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -236,20 +234,6 @@
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="btnGetDate">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Leelawadee UI" size="18" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Get Current Date"/>
-                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Hand Cursor"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGetDateActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JLabel" name="lblBorrowDate">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -257,17 +241,6 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="Borrowing Date:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnCalendar">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Leelawadee UI" size="18" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Open Calendar"/>
-                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Hand Cursor"/>
-                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JSeparator" name="jSeparator1">
@@ -381,6 +354,14 @@
                 <Property name="text" type="java.lang.String" value="*Overdue"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="lblMessage">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Leelawadee UI" size="18" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="No Message."/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="panCenter">
@@ -422,10 +403,8 @@
                           <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="lblClientPhoneNumber" alignment="1" max="32767" attributes="0"/>
-                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblClientEmailAddress" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="lblClientHomeAddress" alignment="1" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="lblClientEmailAddress" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblClientHomeAddress" alignment="1" max="32767" attributes="0"/>
                               <Component id="lblClientGender" alignment="1" max="32767" attributes="0"/>
                               <Component id="lblClientDoB" alignment="1" max="32767" attributes="0"/>
                               <Component id="lblClientLastName" alignment="1" max="32767" attributes="0"/>
@@ -710,25 +689,30 @@
                                   <Component id="lblIsReturned" alignment="0" max="32767" attributes="0"/>
                                   <Component id="lblBorrowStatus" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jSeparator4" max="32767" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="lblAmountBorrowed1" min="-2" pref="197" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtFineAmount" min="-2" pref="92" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace pref="120" max="32767" attributes="0"/>
+                                      <Component id="btnPayFine" min="-2" pref="103" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jButton5" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnRenew" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnPayFine" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jSeparator4" alignment="1" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              <Component id="lblAmountBorrowed1" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                              <Component id="txtFineAmount" min="-2" pref="92" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -743,7 +727,7 @@
                                   </Group>
                                   <Component id="lblBorrowStatus" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="lblIsReturned" min="-2" max="-2" attributes="0"/>
@@ -754,9 +738,9 @@
                                       <Component id="jSeparator4" min="-2" pref="10" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="btnPayFine" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="btnRenew" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="jButton5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btnPayFine" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -768,13 +752,16 @@
                   <SubComponents>
                     <Component class="javax.swing.JFormattedTextField" name="txtFineAmount">
                       <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#.##" subtype="-1" type="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="0.00"/>
+                        <Property name="focusable" type="boolean" value="false"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="requestFocusEnabled" type="boolean" value="false"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblIsReturned">

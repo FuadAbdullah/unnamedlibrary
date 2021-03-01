@@ -426,10 +426,8 @@
                           <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="lblClientPhoneNumber" alignment="1" max="32767" attributes="0"/>
-                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblClientEmailAddress" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="lblClientHomeAddress" alignment="1" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="lblClientEmailAddress" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblClientHomeAddress" alignment="1" max="32767" attributes="0"/>
                               <Component id="lblClientGender" alignment="1" max="32767" attributes="0"/>
                               <Component id="lblClientDoB" alignment="1" max="32767" attributes="0"/>
                               <Component id="lblClientLastName" alignment="1" max="32767" attributes="0"/>
@@ -724,12 +722,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="btnSubmit" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                       <Component id="txtAmountBorrowed" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblAmountBorrowed" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="btnSubmit" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace pref="21" max="32767" attributes="0"/>
@@ -813,11 +813,9 @@
                                       <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="lblBookQuantity" alignment="1" max="32767" attributes="0"/>
-                                                  <Component id="lblBookPublisher" alignment="1" max="32767" attributes="0"/>
-                                                  <Component id="lblBookAuthor" alignment="1" max="32767" attributes="0"/>
-                                              </Group>
+                                              <Component id="lblBookQuantity" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="lblBookPublisher" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="lblBookAuthor" alignment="1" max="32767" attributes="0"/>
                                               <Component id="lblPublishDate" alignment="1" max="32767" attributes="0"/>
                                               <Component id="lblArrivalDate" alignment="1" max="32767" attributes="0"/>
                                           </Group>

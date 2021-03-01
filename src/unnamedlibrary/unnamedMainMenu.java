@@ -152,6 +152,11 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         btnRenew.setText("   Renew");
         btnRenew.setToolTipText("Opens borrow renew form");
         btnRenew.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRenew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRenewActionPerformed(evt);
+            }
+        });
         panButtons.add(btnRenew);
 
         btnReturn.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
@@ -225,6 +230,12 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         new unnamedBorrowMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBorrowActionPerformed
+
+    private void btnRenewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRenewActionPerformed
+        // TODO add your handling code here:
+        new unnamedRenewMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRenewActionPerformed
 
     private void initGUI(){
         
