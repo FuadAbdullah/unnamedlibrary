@@ -9,12 +9,12 @@ package unnamedlibrary;
  *
  * @author fab07
  */
-public class unnamedStatus extends javax.swing.JFrame {
+public class unnamedClient extends javax.swing.JFrame {
 
     /**
      * Creates new form unnamedStatus
      */
-    public unnamedStatus() {
+    public unnamedClient() {
         initComponents();
     }
 
@@ -60,20 +60,21 @@ public class unnamedStatus extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(unnamedStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(unnamedStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(unnamedStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(unnamedStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new unnamedStatus().setVisible(true);
+                new unnamedClient().setVisible(true);
             }
         });
     }

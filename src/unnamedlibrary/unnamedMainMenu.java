@@ -47,19 +47,21 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         btnRenew = new javax.swing.JButton();
         btnReturn = new javax.swing.JButton();
         btnHistory = new javax.swing.JButton();
+        btnManageClient = new javax.swing.JButton();
+        btnManageBook = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Main Menu - unnamed Library Management System");
-        setMaximumSize(new java.awt.Dimension(804, 450));
-        setMinimumSize(new java.awt.Dimension(804, 450));
+        setMaximumSize(new java.awt.Dimension(804, 550));
+        setMinimumSize(new java.awt.Dimension(804, 550));
         setName("mainMenuFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(804, 450));
+        setPreferredSize(new java.awt.Dimension(804, 550));
         setResizable(false);
 
         panMain.setBackground(new java.awt.Color(51, 51, 51));
-        panMain.setMaximumSize(new java.awt.Dimension(800, 400));
-        panMain.setMinimumSize(new java.awt.Dimension(800, 400));
-        panMain.setPreferredSize(new java.awt.Dimension(800, 400));
+        panMain.setMaximumSize(new java.awt.Dimension(804, 450));
+        panMain.setMinimumSize(new java.awt.Dimension(804, 450));
+        panMain.setPreferredSize(new java.awt.Dimension(804, 450));
         panMain.setLayout(new java.awt.BorderLayout());
 
         panTop.setBackground(new java.awt.Color(43, 44, 45));
@@ -133,7 +135,7 @@ public class unnamedMainMenu extends javax.swing.JFrame {
 
         panButtons.setMaximumSize(new java.awt.Dimension(788, 414));
         panButtons.setMinimumSize(new java.awt.Dimension(788, 414));
-        panButtons.setLayout(new java.awt.GridLayout(1, 0));
+        panButtons.setLayout(new java.awt.GridLayout(2, 3));
 
         btnBorrow.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
         btnBorrow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/book1.png"))); // NOI18N
@@ -183,6 +185,20 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         });
         panButtons.add(btnHistory);
 
+        btnManageClient.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
+        btnManageClient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/user1.png"))); // NOI18N
+        btnManageClient.setText("    Manage Client");
+        btnManageClient.setToolTipText("Opens client management page.");
+        btnManageClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        panButtons.add(btnManageClient);
+
+        btnManageBook.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
+        btnManageBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/books1.png"))); // NOI18N
+        btnManageBook.setText("   Manage Book");
+        btnManageBook.setToolTipText("Opens book management page.");
+        btnManageBook.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        panButtons.add(btnManageBook);
+
         javax.swing.GroupLayout panControlLayout = new javax.swing.GroupLayout(panControl);
         panControl.setLayout(panControlLayout);
         panControlLayout.setHorizontalGroup(
@@ -208,10 +224,10 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         );
         panCenterLayout.setVerticalGroup(
             panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panCenterLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(panControl, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+            .addGroup(panCenterLayout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(panControl, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         panMain.add(panCenter, java.awt.BorderLayout.CENTER);
@@ -302,6 +318,8 @@ public class unnamedMainMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrow;
     private javax.swing.JButton btnHistory;
+    private javax.swing.JButton btnManageBook;
+    private javax.swing.JButton btnManageClient;
     private javax.swing.JButton btnRenew;
     private javax.swing.JButton btnReturn;
     private javax.swing.JButton jButton1;
