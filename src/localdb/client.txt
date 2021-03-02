@@ -1,3 +1,5 @@
 STA000123:John:Doe:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America
-STA000123:John:Doe:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America
-STA000123:John:Doe:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America
+STA000124:John:Bruh:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America
+STA000125:John:Moe:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America
+STA000126:John:Steve:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America
+STA000127:John:Bond:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America

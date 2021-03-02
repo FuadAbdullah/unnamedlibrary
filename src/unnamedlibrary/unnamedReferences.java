@@ -34,6 +34,10 @@ public class unnamedReferences {
     //  https://stackoverflow.com/questions/2721614/joda-time-how-to-convert-string-to-localdate
     //  https://www.joda.org/joda-time/
     //  https://stackoverflow.com/questions/17509781/how-to-read-last-line-in-a-text-file-using-java/17509803
+    //  https://stackoverflow.com/questions/14446539/an-elegant-way-of-initialising-an-empty-string-array-in-java
+    //  https://www.handcoded.co.uk/php/app-1/
+    //  https://www.tutorialspoint.com/when-does-a-java-array-throws-a-nullpointerexception
+    
     
     
     
