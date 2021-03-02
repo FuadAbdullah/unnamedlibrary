@@ -1196,8 +1196,6 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         DecimalFormat dc = new DecimalFormat("000000");
         // This is to ensure the entire method have access to the matchedID array
         String[] matchedID = null;
-        // This is a flag to tell the method that there is result and if the book quantity is 0
-        boolean hasResult = false, qty0 = false;
         try {
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
             // For debugging purpose only
