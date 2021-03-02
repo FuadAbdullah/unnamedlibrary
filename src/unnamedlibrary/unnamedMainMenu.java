@@ -176,6 +176,11 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         btnHistory.setText("   History");
         btnHistory.setToolTipText("Opens borrowing history page");
         btnHistory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistoryActionPerformed(evt);
+            }
+        });
         panButtons.add(btnHistory);
 
         javax.swing.GroupLayout panControlLayout = new javax.swing.GroupLayout(panControl);
@@ -247,6 +252,12 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         new unnamedReturnMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistoryActionPerformed
+        // TODO add your handling code here:
+        new unnamedHistory().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnHistoryActionPerformed
 
     private void initGUI(){
         

@@ -135,6 +135,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Renewing a borrow record - unnamed Library Management System");
         setMaximumSize(new java.awt.Dimension(1218, 820));
+        setName("renewFrame"); // NOI18N
         setResizable(false);
 
         panMain.setBackground(new java.awt.Color(51, 51, 51));
