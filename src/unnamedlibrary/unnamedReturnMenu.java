@@ -1462,7 +1462,6 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         }
     }
     
-    
     private void initGUI(){
         lblIsOverdue.setVisible(false);
         lblMessage.setVisible(false);
