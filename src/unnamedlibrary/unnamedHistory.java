@@ -900,7 +900,7 @@ public class unnamedHistory extends javax.swing.JFrame {
                     inputFile.close();
                     // Check if there are no clients at all for each type
                     if (cList.isEmpty()) {
-                        cList.addElement("No borrowing record(s) available for this client.");
+                        cList.addElement("No client(s) available for this user type.");
                         lstClient.setEnabled(false);
                     }
                     // Attempt to list all fetched client ID into the list box

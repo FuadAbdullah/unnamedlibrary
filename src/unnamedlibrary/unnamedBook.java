@@ -44,6 +44,7 @@ public class unnamedBook extends javax.swing.JFrame {
     final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
     Color fgtxt = new Color(187,187,187); // Default foreground color for text
     int newBookID; // To store new book ID
+    DefaultComboBoxModel bkList; // ComboBoxModel for Book ID
     
     /**
      * Creates new form unnamedBook
@@ -147,7 +148,7 @@ public class unnamedBook extends javax.swing.JFrame {
         panMain.add(panTop, java.awt.BorderLayout.PAGE_START);
 
         panCenter.setBackground(new java.awt.Color(34, 34, 34));
-        panCenter.setLayout(new java.awt.GridLayout());
+        panCenter.setLayout(new java.awt.GridLayout(1, 0));
 
         panFormCont.setBackground(new java.awt.Color(28, 28, 28));
         panFormCont.setLayout(new java.awt.BorderLayout());
@@ -160,6 +161,11 @@ public class unnamedBook extends javax.swing.JFrame {
         btnDelete.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnDelete.setText("Delete");
         btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         lblActionButton.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
         lblActionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -286,6 +292,11 @@ public class unnamedBook extends javax.swing.JFrame {
         cbxBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxBookID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Book ID" }));
         cbxBookID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxBookID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxBookIDActionPerformed(evt);
+            }
+        });
 
         lblBookID.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
         lblBookID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -297,11 +308,6 @@ public class unnamedBook extends javax.swing.JFrame {
             panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panFormLayout.createSequentialGroup()
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(panFormLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panFormLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jSeparator3))
@@ -332,7 +338,12 @@ public class unnamedBook extends javax.swing.JFrame {
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                         .addComponent(txtBookGenre, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(txtBookTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(txtBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panFormLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 31, Short.MAX_VALUE))
         );
         panFormLayout.setVerticalGroup(
@@ -409,11 +420,10 @@ public class unnamedBook extends javax.swing.JFrame {
         
         // To display date into publish date textfield
         txt.setText(datef.format(bdate.getTime()));
-        
     }
     
     // NOTE TO SELF FOR TOMORROW
-    // IMPLEMENT DELETE > UPDATE and lastly LOAD FROM EXISTING BOOK ID
+    // IMPLEMENT LOAD FROM EXISTING BOOK ID > DELETE > UPDATE 
     // FOLLOW THIS ORDER WILL BE MUCH EASIER
     // This method handles addition of books into the system
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -426,6 +436,8 @@ public class unnamedBook extends javax.swing.JFrame {
         try {
             // Fetching IDs from the textfields
             bID = dc.format(newBookID);
+            // Check if textfields are empty
+            emptyFields();
             // Storing Borrowing entries into variables
             // Check if the date is unset or left empty
             if ("".equals(txtPublishDate.getText()) || "01/01/2001".equals(txtPublishDate.getText())) {
@@ -436,6 +448,11 @@ public class unnamedBook extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Arrival date is empty or unset! Autosetting value to today's date", "Invalid arrival date!", JOptionPane.ERROR_MESSAGE);
                 getTodayDate(txtArrivalDate); // Setting publish textfield to today's date
             }
+            // Checking if book quantity to be added is 0
+            if ("".equals(txtBookQuantity.getText())) {
+                JOptionPane.showMessageDialog(null, "Book quantity to be added cannot be 0! Autosetting value to 1.", "Invalid book quantity!", JOptionPane.ERROR_MESSAGE);
+                txtBookQuantity.setText("1");
+            }
             String bTitle = txtBookTitle.getText();
             String bGenre = txtBookGenre.getText();
             String bSummary = txtBookSummary.getText();
@@ -444,11 +461,6 @@ public class unnamedBook extends javax.swing.JFrame {
             String bAuthor = txtBookPublisher.getText();
             String bPublishDate = txtPublishDate.getText();
             String bArrivalDate = txtArrivalDate.getText();
-            // Checking if book quantity to be added is 0
-            if (Integer.parseInt(bQuantity) == 0) {
-                JOptionPane.showMessageDialog(null, "Book quantity to be added cannot be 0! Autosetting value to 1.", "Invalid book quantity!", JOptionPane.ERROR_MESSAGE);
-                bQuantity = "1";
-            }
             // FileWriter and PrintWriter to create and write into book.txt
             try {
                 // FileWriter to write into a new file called book.txt
@@ -471,19 +483,265 @@ public class unnamedBook extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Book is successfully added! Press OK to return to book management form.", "Adding book succeeded!", JOptionPane.INFORMATION_MESSAGE);
                 // To refresh new ID 
                 borrowIncrementor();
-                JOptionPane.showMessageDialog(null, newBookID);
+                // JOptionPane.showMessageDialog(null, newBookID);
                 // To reload the book information
                 // Integrate the reload part with combo box implementation of Book ID
+                setBookOption();
+                // Refresh the currently displayed book with the latest ID
+                cbxBookID.setSelectedIndex(cbxBookID.getItemCount() - 1);
             } catch (IOException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         catch (Exception ex) {
+            
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
             // Continue with displaying which field was affected. ensure it appears before the mnessagebox
+        } finally {
         }
                 
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void highlightEmpty() {
+        if ("".equals(txtBookTitle.getText())) {
+           txtBookTitle.setForeground(Color.yellow);
+        }
+        if ("".equals(txtBookGenre.getText())) {
+            txtBookGenre.setForeground(Color.yellow);
+        }
+        if ("".equals(txtBookSummary.getText())) {
+            txtBookSummary.setForeground(Color.yellow);
+        }        
+        if ("".equals(txtBookPublisher.getText())) {
+            txtBookPublisher.setForeground(Color.yellow);
+        }
+        if ("".equals(txtBookAuthor.getText())) {
+            txtBookAuthor.setForeground(Color.yellow);
+        }  
+    }
+    
+    // This method is to handle empty book fields
+    // Create a new exception class!
+    private void emptyFields() throws Exception {
+        if ("".equals(txtBookTitle.getText())) {
+            throw new Exception("Empty book title");
+        }
+        if ("".equals(txtBookGenre.getText())) {
+            throw new Exception("Empty book genre");
+        }
+        if ("".equals(txtBookSummary.getText())) {
+            throw new Exception("Empty book summary");
+        }        
+        if ("".equals(txtBookPublisher.getText())) {
+            throw new Exception("Empty book publisher");
+        }
+        if ("".equals(txtBookAuthor.getText())) {
+            throw new Exception("Empty book author");
+        }  
+    }
+    
+    private void cbxBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBookIDActionPerformed
+        // TODO add your handling code here:
+        // Clear previous fields value
+        clearBook();
+        // Loads index with Book ID only
+        if (cbxBookID.getSelectedIndex() != 0 && cbxBookID.getSelectedIndex() != -1) {
+            loadBookID();
+            btnDelete.setEnabled(true);
+            btnUpdate.setEnabled(true);
+        } else {
+            // Disabling action buttons when no book is loaded. Add button is still available to accept new book
+            btnDelete.setEnabled(false);
+            btnUpdate.setEnabled(false);
+        }
+        
+    }//GEN-LAST:event_cbxBookIDActionPerformed
+
+    // This method deletes the book
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int selection = JOptionPane.showConfirmDialog(null, "Are you sure? This action will delete the book from the system but will still be available inside the database.", "Deleting a book!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (selection == JOptionPane.YES_OPTION) {
+            deleteBook();
+            setBookOption();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+    
+    // This method will set option list for book ID using ComboBoxModel
+    private void setBookOption(){
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        bkList = new DefaultComboBoxModel();
+        // Adding default text
+        bkList.addElement("Select Book ID");
+        cbxBookID.setModel(bkList);
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File booktxt = new File(saveDir + "book.txt");
+        Scanner intBook;
+        try {
+            // This part loads all book information
+            intBook = new Scanner(booktxt);
+            // This is to increment the discovered client assignment index
+            int i = 0;
+            // Read lines from the file until no more are left.
+            while (intBook.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intBook.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace("BOO", "");
+                if (i < 200) {
+                    if ("false".equals(matchedID[9])) {
+                        bkList.addElement(matchedID[0]);
+                        i++;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Maximum book entry limit reached! Stopping at 200th record.", "Book list maxed out!", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+            // OptionPane.showMessageDialog(null, i);
+            intBook.close();
+            // Check if there are no clients at all for each type
+            if (bkList.getSize() == 1) {
+                bkList.removeAllElements();
+                bkList.addElement("No book(s) available.");
+            }
+            // Attempt to list all fetched client ID into the list box
+            cbxBookID.setModel(bkList);
+            // Select index 0 as default
+            cbxBookID.setSelectedIndex(0);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // This method will set the deleted flag of the book
+    private void deleteBook(){
+        // TODO add your handling code here:
+        try {
+            // To rename original book.txt to book.bak
+            File bookOri = new File(saveDir + "book.txt");
+            File bookBak = new File(saveDir + "bookBak.txt");
+            // To check if bookBak.txt is present or not
+            if (!bookBak.exists()){
+                bookOri.createNewFile();
+            }
+            // This is for debugging only!
+            // JOptionPane.showMessageDialog(null, "renamed");
+            // This is to rename the existing book.txt to bookBak.txt
+            bookOri.renameTo(bookBak);
+            // This is to open, find and replace a specific book record
+            // Requires temporary file to store current state
+            // FileWriter to write into a new file called book.txt
+            FileWriter bd = new FileWriter(saveDir + "book.txt"); 
+            // PrintWriter to print into book.txt
+            PrintWriter bdp = new PrintWriter(bd); 
+            // This is to open and read bookBak.txt 
+            File booktxt = new File(saveDir + "bookBak.txt");
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(booktxt);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String bEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                // Check if the read line has current book ID
+                if (matchedID[0].equals(bpfix + bID)) {
+                    // Setting the deleted flag to true
+                    matchedID[9] = "true";
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                }
+                // Rewrite the new book.txt with values found in bookBak.txt
+                bdp.println(matchedID[0] + ":" +
+                            matchedID[1] + ":" +
+                            matchedID[2] + ":" +
+                            matchedID[3] + ":" +
+                            matchedID[4] + ":" +
+                            matchedID[5] + ":" +
+                            matchedID[6] + ":" +
+                            matchedID[7] + ":" +
+                            matchedID[8] + ":" +
+                            matchedID[9]);
+
+            }
+            // Close the bookBak.txt reader
+            inputFile.close();
+            // This deletes bookBak.txt
+            bookBak.delete();
+            // This closes the book.txt printer 
+            bdp.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+
+        }
+    }
+    
+    // This method will load the selected book ID
+    private void loadBookID(){
+        // Assigning the bID to the selected index value
+        bID = (String) cbxBookID.getSelectedItem();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        fetchedBook = false;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File booktxt = new File(saveDir + "book.txt");
+        Scanner intBook;
+        try {
+            // This part loads all book information
+            intBook = new Scanner(booktxt);
+            // Read lines from the file until no more are left.
+            while (intBook.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intBook.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace("BOO", "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (cbxBookID.getSelectedItem().equals(matchedID[0])) {
+                    txtBookTitle.setText(matchedID[1]);
+                    txtBookGenre.setText(matchedID[2]);
+                    txtBookSummary.setText(matchedID[3]);
+                    txtBookQuantity.setText(matchedID[4]);
+                    txtBookPublisher.setText(matchedID[5]);
+                    txtBookAuthor.setText(matchedID[6]);
+                    txtPublishDate.setText(matchedID[7]);
+                    txtArrivalDate.setText(matchedID[8]);
+                }
+            }
+            // OptionPane.showMessageDialog(null, i);
+            intBook.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // This method clears book related fields
+    private void clearBook(){
+        // To clean up previous or default values from fields
+        txtBookTitle.setText("");
+        txtBookGenre.setText("");
+        txtBookSummary.setText("");
+        txtBookQuantity.setText("");
+        txtBookPublisher.setText("");
+        txtBookAuthor.setText("");
+        txtPublishDate.setText("");
+        txtArrivalDate.setText("");
+        bID = "";
+    }
     
     // This method will check through borrowing.txt and look for latest ID and increments from there
     private void borrowIncrementor(){
@@ -507,12 +765,19 @@ public class unnamedBook extends javax.swing.JFrame {
                    matchedID[0] = matchedID[0].replace("BOO", "");
                 }
                 inputFile.close();
-                newBookID = Integer.parseInt(matchedID[0]) + 1;
+                if (matchedID == null) {
+                    JOptionPane.showMessageDialog(null, "No book(s) record found! Restarting database entry.", "Book database is empty!", JOptionPane.ERROR_MESSAGE);
+                    newBookID = 1;
+                } else {
+                    newBookID = Integer.parseInt(matchedID[0]) + 1;
+                }
+                JOptionPane.showMessageDialog(null, newBookID);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         catch (Exception ex) {
+            
             JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -520,6 +785,8 @@ public class unnamedBook extends javax.swing.JFrame {
     private void initGUI(){
         // Set the initial value for new book
         borrowIncrementor();
+        // Load all book ID into combobox
+        setBookOption();
         // This anon class handles window closing event
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e){
