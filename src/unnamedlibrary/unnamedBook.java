@@ -174,6 +174,11 @@ public class unnamedBook extends javax.swing.JFrame {
         btnUpdate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnUpdate.setText("Update");
         btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnAdd.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnAdd.setText("Add");
@@ -428,6 +433,22 @@ public class unnamedBook extends javax.swing.JFrame {
     // This method handles addition of books into the system
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        // Reset the highlighted empty fields to original foreground color
+        deHighlightEmpty();
+        // To add the book
+        addBookInformation();
+        // To refresh new ID 
+        borrowIncrementor();
+        // JOptionPane.showMessageDialog(null, newBookID);
+        // To reload the book information
+        // Integrate the reload part with combo box implementation of Book ID
+        setBookOption();
+        // Refresh the currently displayed book with the latest ID
+        cbxBookID.setSelectedIndex(cbxBookID.getItemCount() - 1);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    // This method handles the insertion of book
+    private void addBookInformation(){
         // Declaring file extension used
         ext = ".txt";        
         saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
@@ -481,42 +502,42 @@ public class unnamedBook extends javax.swing.JFrame {
                 bdp.close();
                 // To display completed borrowing process status
                 JOptionPane.showMessageDialog(null, "Book is successfully added! Press OK to return to book management form.", "Adding book succeeded!", JOptionPane.INFORMATION_MESSAGE);
-                // To refresh new ID 
-                borrowIncrementor();
-                // JOptionPane.showMessageDialog(null, newBookID);
-                // To reload the book information
-                // Integrate the reload part with combo box implementation of Book ID
-                setBookOption();
-                // Refresh the currently displayed book with the latest ID
-                cbxBookID.setSelectedIndex(cbxBookID.getItemCount() - 1);
             } catch (IOException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         catch (Exception ex) {
-            
+            highlightEmpty();
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
             // Continue with displaying which field was affected. ensure it appears before the mnessagebox
-        } finally {
-        }
-                
-    }//GEN-LAST:event_btnAddActionPerformed
-
+        }      
+    }
+    
+    // This method will reset the color of the highlighted labels to default foreground
+    private void deHighlightEmpty(){
+        lblBookTitle.setForeground(fgtxt);
+        lblBookGenre.setForeground(fgtxt);
+        lblBookSummary.setForeground(fgtxt);
+        lblBookPublisher.setForeground(fgtxt);
+        lblBookAuthor.setForeground(fgtxt);
+    }
+    
+    // This method will highlight empty fields with yellow color upon call
     private void highlightEmpty() {
         if ("".equals(txtBookTitle.getText())) {
-           txtBookTitle.setForeground(Color.yellow);
+           lblBookTitle.setForeground(Color.yellow);
         }
         if ("".equals(txtBookGenre.getText())) {
-            txtBookGenre.setForeground(Color.yellow);
+            lblBookGenre.setForeground(Color.yellow);
         }
         if ("".equals(txtBookSummary.getText())) {
-            txtBookSummary.setForeground(Color.yellow);
+            lblBookSummary.setForeground(Color.yellow);
         }        
         if ("".equals(txtBookPublisher.getText())) {
-            txtBookPublisher.setForeground(Color.yellow);
+            lblBookPublisher.setForeground(Color.yellow);
         }
         if ("".equals(txtBookAuthor.getText())) {
-            txtBookAuthor.setForeground(Color.yellow);
+            lblBookAuthor.setForeground(Color.yellow);
         }  
     }
     
@@ -565,6 +586,92 @@ public class unnamedBook extends javax.swing.JFrame {
             setBookOption();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    // This method updates the book
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        updateBookInformation();
+        loadBookID();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+    
+    // This method updates the selected book with information found in the fields
+    private void updateBookInformation(){
+        // TODO add your handling code here:
+        try {
+            // To get the book ID
+            bID = (String) cbxBookID.getSelectedItem();
+            // To rename original book.txt to book.bak
+            File bookOri = new File(saveDir + "book.txt");
+            File bookBak = new File(saveDir + "bookBak.txt");
+            // To check if bookBak.txt is present or not
+            if (!bookBak.exists()){
+                bookOri.createNewFile();
+            }
+            // This is for debugging only!
+            // JOptionPane.showMessageDialog(null, "renamed");
+            // This is to rename the existing book.txt to bookBak.txt
+            bookOri.renameTo(bookBak);
+            // This is to open, find and replace a specific book record
+            // Requires temporary file to store current state
+            // FileWriter to write into a new file called book.txt
+            FileWriter bd = new FileWriter(saveDir + "book.txt"); 
+            // PrintWriter to print into book.txt
+            PrintWriter bdp = new PrintWriter(bd); 
+            // This is to open and read bookBak.txt 
+            File booktxt = new File(saveDir + "bookBak.txt");
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(booktxt);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String bEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                // Check if the read line has current book ID
+                if (matchedID[0].equals(bpfix + bID)) {
+                    // Inserting the new information from the text fields into the book line
+                    matchedID[1] = txtBookTitle.getText();
+                    matchedID[2] = txtBookGenre.getText();
+                    matchedID[3] = txtBookSummary.getText();
+                    matchedID[4] = txtBookQuantity.getText();
+                    matchedID[5] = txtBookPublisher.getText();
+                    matchedID[6] = txtBookAuthor.getText();
+                    matchedID[7] = txtPublishDate.getText();
+                    matchedID[8] = txtArrivalDate.getText();
+                    matchedID[9] = "false";
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                }
+                // Rewrite the new book.txt with values found in bookBak.txt
+                bdp.println(matchedID[0] + ":" +
+                            matchedID[1] + ":" +
+                            matchedID[2] + ":" +
+                            matchedID[3] + ":" +
+                            matchedID[4] + ":" +
+                            matchedID[5] + ":" +
+                            matchedID[6] + ":" +
+                            matchedID[7] + ":" +
+                            matchedID[8] + ":" +
+                            matchedID[9]);
+
+            }
+            // Close the bookBak.txt reader
+            inputFile.close();
+            // This deletes bookBak.txt
+            bookBak.delete();
+            // This closes the book.txt printer 
+            bdp.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+
+        }
+    }
     
     // This method will set option list for book ID using ComboBoxModel
     private void setBookOption(){
@@ -798,7 +905,6 @@ public class unnamedBook extends javax.swing.JFrame {
                 }
             }
         });
-        
     }
     
     /**
