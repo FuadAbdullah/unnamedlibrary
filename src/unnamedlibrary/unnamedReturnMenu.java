@@ -109,6 +109,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         lblBorrowStatus = new javax.swing.JLabel();
         btnReturn = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        btnPayFine = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblBookDetailsTitle = new javax.swing.JLabel();
         lblBookTitle = new javax.swing.JLabel();
@@ -536,6 +537,15 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         jButton5.setText("Reset");
         jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        btnPayFine.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnPayFine.setText("Pay Fine");
+        btnPayFine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPayFine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayFineActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -546,18 +556,20 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                     .addComponent(lblIsRenewed, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblIsReturned, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBorrowStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReturn)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblAmountBorrowed1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFineAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(1, 1, 1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnPayFine, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReturn)
+                        .addContainerGap())
                     .addComponent(jSeparator4)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -573,7 +585,9 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton5)
+                                .addComponent(btnPayFine))
                             .addComponent(btnReturn))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -1112,6 +1126,156 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnPayFineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayFineActionPerformed
+        // TODO add your handling code here:
+        // This method will rewrite borrowing.txt by clearing the fine amount
+        // WILL NOT RESET hasReturned flag as that is changed during return sequence
+        // WILL NOT RESET hasRenewed flag as that is managed by renewing sequence
+        // WILL NOT RESET isOverdue flag as that is set permanently
+        // Creating a local JFormattedTextField to accept input
+        JTextField paytxt = new JTextField();
+        // Input popup to allow librarian to key in paid amount
+        String payin = JOptionPane.showInputDialog(paytxt, "Insert total amount paid:" , "Paying fine.", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            DecimalFormat dc = new DecimalFormat("0.00"); // Prepare 2 decimal digit format
+            double payInConv = Double.parseDouble(payin); // Attempt conversion to double
+            // JOptionPane.showMessageDialog(null, dc.format(payInConv)); // For debugging only
+            // Converting the current fine amount to double for arithmetic logic
+            double currFine = Double.parseDouble(txtFineAmount.getText());
+            if (payInConv <= 0) { // Check if payment done is 0 or less which is not acceptable
+                JOptionPane.showMessageDialog(null, "Payment amount made is not possible! Please check your input and try again!", "Illogical payment amount made!", JOptionPane.ERROR_MESSAGE);
+            } else { // Proceed with checking the amount paid against total fine to be paid // Proceed with handling flags and rewriting into borrowing.txt
+                if (payInConv < currFine) {
+                    // Payment made is less than the total amount required!
+                    JOptionPane.showMessageDialog(null, "Payment made is not enough! Please check your input and try again!", "Insufficient payment amount made!", JOptionPane.ERROR_MESSAGE);
+                } else { // Payment made is either exact or exceeded the amount of fine
+                    if (payInConv > currFine) { // Has no change
+                        JOptionPane.showMessageDialog(null, "Payment successful! Change amount is RM" + dc.format(payInConv - currFine), "Paid fine successfully!", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    // Tell the librarian to tell the client to return the book
+                    JOptionPane.showMessageDialog(null, "Due to our lending policy, the customer is required to return the book(s) as the borrowing period has ended. Please retrieve the book from the customer and the system will proceed with returning sequence.", "Borrowing term has ended!", JOptionPane.INFORMATION_MESSAGE);
+                    // Formatting ID into formal 6-digit mask
+                    dc = new DecimalFormat("000000");
+                    // Setting the working directory
+                    saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+                    // Fetching IDs from the textfields
+                    brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
+                    cID = dc.format(Integer.parseInt(txtClientID.getText()));
+                    // To rename original book.txt to book.bak
+                    File borrowOri = new File(saveDir + "borrowing.txt");
+                    File borrowBak = new File(saveDir + "borrowingBak.txt");
+                    // To check if bookBak.txt is present or not
+                    if (!borrowBak.exists()){
+                        borrowOri.createNewFile();
+                    }
+                    // This is for debugging only!
+                    // JOptionPane.showMessageDialog(null, "renamed");
+                    // This is to rename the existing book.txt to bookBak.txt
+                    borrowOri.renameTo(borrowBak);
+                    // This is to open, find and replace a specific book record
+                    // Requires temporary file to store current state
+                    // FileWriter to write into a new file called book.txt
+                    FileWriter brd = new FileWriter(saveDir + "borrowing.txt");
+                    // PrintWriter to print into book.txt
+                    PrintWriter brdp = new PrintWriter(brd);
+                    // This is to open and read bookBak.txt
+                    File borrowingtxt = new File(saveDir + "borrowingBak.txt");
+                    // This is to instantiate the file opened earlier
+                    Scanner inputFile = new Scanner(borrowingtxt);
+                    // This array is to contain all lines
+                    String[] matchedID;
+                    // This is only for debugging!
+                    // boolean itWorked = false;
+                    if (isOverdue){
+                        // Read lines from the file until no more are left.
+                        while (inputFile.hasNext())
+                        {
+                            // This is for debugging only!
+                            // JOptionPane.showMessageDialog(null, "In loop");
+                            // Read the next line.
+                            String brEntry = inputFile.nextLine();
+                            // Split the line by using the delimiter ":" (semicolon) and store into array.
+                            matchedID = brEntry.split(":");
+                            // Check if the read line has current book ID
+                            if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                                // flagging the record as hasReturned
+                                matchedID[6] = "true";
+                                // Resetting the fine amount to 0
+                                matchedID[9] = "0.00";
+                                // JOptionPane.showMessageDialog(null, "Yes it worked");
+                                // Flipping hasReturned status to true
+                                hasReturned = true;
+                            }
+                            // Rewrite the new book.txt with values found in bookBak.txt
+                            brdp.println(matchedID[0] + ":" +
+                                matchedID[1] + ":" +
+                                matchedID[2] + ":" +
+                                matchedID[3] + ":" +
+                                matchedID[4] + ":" +
+                                matchedID[5] + ":" +
+                                matchedID[6] + ":" +
+                                matchedID[7] + ":" +
+                                matchedID[8] + ":" +
+                                matchedID[9]);
+                        }
+                    } else {
+                        // Read lines from the file until no more are left.
+                        while (inputFile.hasNext())
+                        {
+                            // This is for debugging only!
+                            // JOptionPane.showMessageDialog(null, "In loop");
+                            // Read the next line.
+                            String brEntry = inputFile.nextLine();
+                            // Split the line by using the delimiter ":" (semicolon) and store into array.
+                            matchedID = brEntry.split(":");
+                            // Check if the read line has current book ID
+                            if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                                // Resetting the fine amount to 0
+                                matchedID[9] = "0.00";
+                                // JOptionPane.showMessageDialog(null, "Yes it worked");
+                            }
+                            // Rewrite the new book.txt with values found in bookBak.txt
+                            brdp.println(matchedID[0] + ":" +
+                                matchedID[1] + ":" +
+                                matchedID[2] + ":" +
+                                matchedID[3] + ":" +
+                                matchedID[4] + ":" +
+                                matchedID[5] + ":" +
+                                matchedID[6] + ":" +
+                                matchedID[7] + ":" +
+                                matchedID[8] + ":" +
+                                matchedID[9]);
+
+                        }
+                    }
+
+                    // Close the bookBak.txt reader
+                    inputFile.close();
+                    // This deletes bookBak.txt
+                    borrowBak.delete();
+                    // This closes the book.txt printer
+                    brdp.close();
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                    // Refresh the form with new data
+                    btnLoadBorrow.doClick();
+                    // Return borrowed books into book inventory
+                    refreshBookAmount();
+                    btnPayFine.setVisible(false);
+                    JOptionPane.showMessageDialog(null, "Returned successfully! Press OK to return to returning form.", "Borrowed book(s) has been returned!", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            }
+        } catch (Exception ex) {
+            if ("".equals(payin)) { // Check if input is null
+                JOptionPane.showMessageDialog(null, "Input cannot be empty!", "Empty string!", JOptionPane.ERROR_MESSAGE);
+            } else { // Check if input is not numerical
+                JOptionPane.showMessageDialog(null, "Only numbers are accepted!", "Illegal input detected!", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
+    }//GEN-LAST:event_btnPayFineActionPerformed
     
     private void returnBook(){
         try {
@@ -1353,7 +1517,8 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                         matchedID[5] + ":" +
                         matchedID[6] + ":" +
                         matchedID[7] + ":" +
-                        matchedID[8]);
+                        matchedID[8] + ":" +
+                        "false");
 
         }
         // Close the bookBak.txt reader
@@ -1374,6 +1539,8 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         // btnRenew.setEnabled(false);
         // Reset the due date label to original foreground
         lblBorrowDue.setForeground(fgtxt);
+        btnPayFine.setVisible(false);
+        btnReturn.setEnabled(false);
         if (fetchedBorrow && fetchedClient && fetchedBook) {
             // Debugging only!
             // JOptionPane.showMessageDialog(null, "All rules satisfied");
@@ -1444,9 +1611,11 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                 // Display fine amount
                 txtFineAmount.setText(dc.format(fine));
                 if (Double.parseDouble(txtFineAmount.getText()) > 0.00 ) {
-                    btnReturn.setEnabled(true);
+                    btnPayFine.setVisible(true);
+                    btnReturn.setEnabled(false);
 
                 } else {
+                    btnPayFine.setVisible(false);
                     btnReturn.setEnabled(true);
                 }
                 // Displaying term ended notification
@@ -1454,6 +1623,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                 lblMessage.setText("Borrowing term has ended!");
             } else {
                 btnReturn.setEnabled(false);
+                btnPayFine.setVisible(false);
             }
         } else {
             btnReturn.setEnabled(false);
@@ -1465,6 +1635,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
     private void initGUI(){
         lblIsOverdue.setVisible(false);
         lblMessage.setVisible(false);
+        btnPayFine.setVisible(false);
         // This anon class handles window closing event
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e){
@@ -1554,6 +1725,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLoadBorrow;
     private javax.swing.JButton btnLoadClient;
+    private javax.swing.JButton btnPayFine;
     private javax.swing.JButton btnReturn;
     private javax.swing.JComboBox<String> cbxClientID;
     private javax.swing.JButton jButton5;

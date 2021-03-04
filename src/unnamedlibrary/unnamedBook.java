@@ -438,7 +438,7 @@ public class unnamedBook extends javax.swing.JFrame {
         // To add the book
         addBookInformation();
         // To refresh new ID 
-        borrowIncrementor();
+        bookIncrementor();
         // JOptionPane.showMessageDialog(null, newBookID);
         // To reload the book information
         // Integrate the reload part with combo box implementation of Book ID
@@ -851,7 +851,7 @@ public class unnamedBook extends javax.swing.JFrame {
     }
     
     // This method will check through borrowing.txt and look for latest ID and increments from there
-    private void borrowIncrementor(){
+    private void bookIncrementor(){
         // This is to ensure the entire method have access to the matchedID array
         String[] matchedID = null;
         try {
@@ -878,7 +878,7 @@ public class unnamedBook extends javax.swing.JFrame {
                 } else {
                     newBookID = Integer.parseInt(matchedID[0]) + 1;
                 }
-                JOptionPane.showMessageDialog(null, newBookID);
+                // JOptionPane.showMessageDialog(null, newBookID);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -891,7 +891,7 @@ public class unnamedBook extends javax.swing.JFrame {
     
     private void initGUI(){
         // Set the initial value for new book
-        borrowIncrementor();
+        bookIncrementor();
         // Load all book ID into combobox
         setBookOption();
         // This anon class handles window closing event

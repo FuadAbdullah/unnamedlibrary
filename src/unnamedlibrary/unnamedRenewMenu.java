@@ -1559,7 +1559,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                         matchedID[5] + ":" +
                         matchedID[6] + ":" +
                         matchedID[7] + ":" +
-                        matchedID[8]);
+                        matchedID[8] + ":" +
+                        "false");
 
         }
         // Close the bookBak.txt reader
@@ -1580,6 +1581,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         // btnRenew.setEnabled(false);
         // Reset the due date label to original foreground
         lblBorrowDue.setForeground(fgtxt);
+        btnPayFine.setVisible(false);
         btnRenew.setEnabled(false);
         if (fetchedBorrow && fetchedClient && fetchedBook) {
             // Debugging only!

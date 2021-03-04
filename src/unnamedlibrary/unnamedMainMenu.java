@@ -197,6 +197,11 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         btnManageBook.setText("   Manage Book");
         btnManageBook.setToolTipText("Opens book management page.");
         btnManageBook.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnManageBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageBookActionPerformed(evt);
+            }
+        });
         panButtons.add(btnManageBook);
 
         javax.swing.GroupLayout panControlLayout = new javax.swing.GroupLayout(panControl);
@@ -274,6 +279,12 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         new unnamedHistory().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnHistoryActionPerformed
+
+    private void btnManageBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageBookActionPerformed
+        // TODO add your handling code here:
+        new unnamedBook().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnManageBookActionPerformed
 
     private void initGUI(){
         

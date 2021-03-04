@@ -959,7 +959,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                                     matchedID[5] + ":" +
                                     matchedID[6] + ":" +
                                     matchedID[7] + ":" +
-                                    matchedID[8]);
+                                    matchedID[8] + ":" +
+                                    "false");
 
                     }
                     // Close the bookBak.txt reader
