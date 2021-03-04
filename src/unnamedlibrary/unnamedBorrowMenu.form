@@ -108,7 +108,7 @@
                                   <Component id="btnLoadBook" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="txtClientID" min="-2" pref="157" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace pref="17" max="32767" attributes="0"/>
                                       <Component id="btnLoadClient" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -121,9 +121,9 @@
                               <Component id="txtBorrowDue" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="374" max="32767" attributes="0"/>
+                      <EmptySpace pref="384" max="32767" attributes="0"/>
                       <Component id="btnCancel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -222,6 +222,7 @@
               </Properties>
               <Events>
                 <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtClientIDFocusGained"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtClientIDActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnLoadBook">

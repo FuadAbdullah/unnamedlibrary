@@ -163,6 +163,11 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                 txtClientIDFocusGained(evt);
             }
         });
+        txtClientID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClientIDActionPerformed(evt);
+            }
+        });
 
         btnLoadBook.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnLoadBook.setText("Load Book Information");
@@ -278,7 +283,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                             .addComponent(btnLoadBook)
                             .addGroup(panTopLayout.createSequentialGroup()
                                 .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                                 .addComponent(btnLoadClient))))
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,7 +293,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                         .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 374, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
                 .addComponent(btnCancel)
                 .addContainerGap())
         );
@@ -742,7 +747,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
     // This code handles Client ID behaviour upon selection
     private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
         // TODO add your handling code here:
-        
+        clearClient();
+        clearBook();
         int ctype = cbxClientID.getSelectedIndex(); // Get client type
         
         if (ctype == 0) { // Will reset fields to default appearance
@@ -1053,15 +1059,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         String[] matchedID;
         // This is a flag to tell the method that there is result and if the book quantity is 0
         boolean hasResult = false, qty0 = false;
-        // To clean up previous or default values from fields
-        txtBookTitle.setText("");
-        txtBookGenre.setText("");
-        txtBookSummary.setText("");
-        txtBookQuantity.setText("");
-        txtBookPublisher.setText("");
-        txtBookAuthor.setText("");
-        txtPublishDate.setText("");
-        txtArrivalDate.setText("");
+        clearBook();
         try {
             bID = dc.format(Integer.parseInt(txtBookID.getText()));
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
@@ -1079,21 +1077,24 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                    // Split the line by using the delimiter ":" (semicolon) and store into array.
                    matchedID = bEntry.split(":");
                    if (matchedID[0].equals(bpfix + bID)){
-                       hasResult = true;
-                       fetchedBook = true;
-                       matchedID[0] = matchedID[0].replace("BOO", "");
-                       txtBookID.setText(matchedID[0]);
-                       txtBookTitle.setText(matchedID[1]);
-                       txtBookGenre.setText(matchedID[2]);
-                       txtBookSummary.setText(matchedID[3]);
-                       txtBookQuantity.setText(matchedID[4]);
-                       txtBookPublisher.setText(matchedID[5]);
-                       txtBookAuthor.setText(matchedID[6]);
-                       txtPublishDate.setText(matchedID[7]);
-                       txtArrivalDate.setText(matchedID[8]);
-                       if (Integer.parseInt(matchedID[4]) <= 0) {
-                           qty0 = true;
-                       } 
+                       if ("false".equals(matchedID[9])) {
+                            hasResult = true;
+                            fetchedBook = true;
+                            matchedID[0] = matchedID[0].replace("BOO", "");
+                            txtBookID.setText(matchedID[0]);
+                            txtBookTitle.setText(matchedID[1]);
+                            txtBookGenre.setText(matchedID[2]);
+                            txtBookSummary.setText(matchedID[3]);
+                            txtBookQuantity.setText(matchedID[4]);
+                            txtBookPublisher.setText(matchedID[5]);
+                            txtBookAuthor.setText(matchedID[6]);
+                            txtPublishDate.setText(matchedID[7]);
+                            txtArrivalDate.setText(matchedID[8]);
+                            if (Integer.parseInt(matchedID[4]) <= 0) {
+                                qty0 = true;
+                            } 
+                       }
+                       
                    }
                 }
                 inputFile.close();
@@ -1115,6 +1116,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             }
         }
         catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
             JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
         }
         
@@ -1128,14 +1130,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         String[] matchedID;
         // This is a flag to tell the method that there is result
         boolean hasResult = false;
-        // To empty previous or default values from fields
-        txtClientFirstName.setText("");
-        txtClientLastName.setText("");
-        txtClientDoB.setText("");
-        txtClientGender.setText("");
-        txtClientPhoneNumber.setText("");
-        txtClientEmailAddress.setText("");
-        txtClientHomeAddress.setText("");
+        clearClient();
         try {
             cID = dc.format(Integer.parseInt(txtClientID.getText()));
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
@@ -1153,17 +1148,19 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                    // Split the line by using the delimiter ":" (semicolon) and store into array.
                    matchedID = cEntry.split(":");
                    if (matchedID[0].equals(cspecies + cID)){
-                       hasResult = true;
-                       fetchedClient = true;                       
-                       matchedID[0] = matchedID[0].replace(cspecies, "");
-                       txtClientID.setText(matchedID[0]);
-                       txtClientFirstName.setText(matchedID[1]);
-                       txtClientLastName.setText(matchedID[2]);
-                       txtClientDoB.setText(matchedID[3]);
-                       txtClientGender.setText(matchedID[4]);
-                       txtClientPhoneNumber.setText(matchedID[5]);
-                       txtClientEmailAddress.setText(matchedID[6]);
-                       txtClientHomeAddress.setText(matchedID[7]);
+                       if ("false".equals(matchedID[8])) {
+                            hasResult = true;
+                            fetchedClient = true;                       
+                            matchedID[0] = matchedID[0].replace(cspecies, "");
+                            txtClientID.setText(matchedID[0]);
+                            txtClientFirstName.setText(matchedID[1]);
+                            txtClientLastName.setText(matchedID[2]);
+                            txtClientDoB.setText(matchedID[3]);
+                            txtClientGender.setText(matchedID[4]);
+                            txtClientPhoneNumber.setText(matchedID[5]);
+                            txtClientEmailAddress.setText(matchedID[6]);
+                            txtClientHomeAddress.setText(matchedID[7]);
+                       } 
                    }
                 }
                 inputFile.close();
@@ -1182,6 +1179,41 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLoadClientActionPerformed
 
+    private void txtClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClientIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClientIDActionPerformed
+
+    
+    // This method clears book related fields
+    private void clearClient(){
+        // To clean up previous or default values from fields
+        txtClientFirstName.setText("");
+        txtClientLastName.setText("");
+        txtClientDoB.setText("");
+        txtClientGender.setText("");
+        txtClientPhoneNumber.setText("");
+        txtClientEmailAddress.setText("");
+        txtClientHomeAddress.setText("");
+        cID = "";
+    }
+    
+    private void clearBook(){
+        txtBorrowDate.setText("");
+        txtBorrowDue.setText("");
+        txtBookTitle.setText("");
+        txtBookGenre.setText("");
+        txtBookSummary.setText("");
+        txtBookQuantity.setText("");
+        txtBookPublisher.setText("");
+        txtBookAuthor.setText("");
+        txtPublishDate.setText("");
+        txtArrivalDate.setText("");
+        txtAmountBorrowed.setText("");
+        bID = "";
+        brID = "";
+    }
+    
+    
     private void fetchedBookClientInfo(){
         if (fetchedBook && fetchedClient) {
             btnSubmit.setEnabled(true);

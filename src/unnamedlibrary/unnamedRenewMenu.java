@@ -796,7 +796,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
     private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
         // TODO add your handling code here:
-
+        clearClient();
+        clearBorrow();
         int ctype = cbxClientID.getSelectedIndex(); // Get client type
 
         if (ctype == 0) { // Will reset fields to default appearance
@@ -855,6 +856,36 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    // This method clears book related fields
+    private void clearClient(){
+        // To clean up previous or default values from fields
+        txtClientFirstName.setText("");
+        txtClientLastName.setText("");
+        txtClientDoB.setText("");
+        txtClientGender.setText("");
+        txtClientPhoneNumber.setText("");
+        txtClientEmailAddress.setText("");
+        txtClientHomeAddress.setText("");
+        cID = "";
+    }
+    
+    private void clearBorrow(){
+        txtBorrowDate.setText("");
+        txtBorrowDue.setText("");
+        txtBookID.setText("");
+        txtBookTitle.setText("");
+        txtBookGenre.setText("");
+        txtBookSummary.setText("");
+        txtBookQuantity.setText("");
+        txtBookPublisher.setText("");
+        txtBookAuthor.setText("");
+        txtPublishDate.setText("");
+        txtArrivalDate.setText("");
+        txtFineAmount.setText("");
+        bID = "";
+        brID = "";
+    }
+    
     private void btnLoadClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadClientActionPerformed
         // TODO add your handling code here:
         // This handles formatter for the integer to consist of 6 digits
@@ -865,13 +896,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         boolean hasResult = false;
         fetchedClient = false;
         // To empty previous or default values from fields
-        txtClientFirstName.setText("");
-        txtClientLastName.setText("");
-        txtClientDoB.setText("");
-        txtClientGender.setText("");
-        txtClientPhoneNumber.setText("");
-        txtClientEmailAddress.setText("");
-        txtClientHomeAddress.setText("");
+        clearClient();
         try {
             cID = dc.format(Integer.parseInt(txtClientID.getText()));
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
@@ -889,17 +914,19 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     // Split the line by using the delimiter ":" (semicolon) and store into array.
                     matchedID = cEntry.split(":");
                     if (matchedID[0].equals(cspecies + cID)){
-                        hasResult = true;
-                        fetchedClient = true;
-                        matchedID[0] = matchedID[0].replace(cspecies, "");
-                        txtClientID.setText(matchedID[0]);
-                        txtClientFirstName.setText(matchedID[1]);
-                        txtClientLastName.setText(matchedID[2]);
-                        txtClientDoB.setText(matchedID[3]);
-                        txtClientGender.setText(matchedID[4]);
-                        txtClientPhoneNumber.setText(matchedID[5]);
-                        txtClientEmailAddress.setText(matchedID[6]);
-                        txtClientHomeAddress.setText(matchedID[7]);
+                        if ("false".equals(matchedID[8])) {
+                            hasResult = true;
+                            fetchedClient = true;
+                            matchedID[0] = matchedID[0].replace(cspecies, "");
+                            txtClientID.setText(matchedID[0]);
+                            txtClientFirstName.setText(matchedID[1]);
+                            txtClientLastName.setText(matchedID[2]);
+                            txtClientDoB.setText(matchedID[3]);
+                            txtClientGender.setText(matchedID[4]);
+                            txtClientPhoneNumber.setText(matchedID[5]);
+                            txtClientEmailAddress.setText(matchedID[6]);
+                            txtClientHomeAddress.setText(matchedID[7]);
+                        }
                     }
                 }
                 inputFile.close();
@@ -1105,21 +1132,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         fetchedBorrow = false;
         fetchedBook = false;
         // To clean up previous or default values from fields
-        txtBorrowDate.setText("");
-        txtBorrowDue.setText("");
-        txtBookID.setText("");
-        txtBookTitle.setText("");
-        txtBookGenre.setText("");
-        txtBookSummary.setText("");
-        txtBookQuantity.setText("");
-        txtBookPublisher.setText("");
-        txtBookAuthor.setText("");
-        txtPublishDate.setText("");
-        txtArrivalDate.setText("");
-        txtFineAmount.setText("");
-        cID = "";
-        bID = "";
-        brID = "";
+        clearBorrow();
         lblIsReturned.setForeground(fgtxt);
         lblIsRenewed.setForeground(fgtxt);
         lblIsOverdue.setVisible(false);
@@ -1208,16 +1221,18 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     // Split the line by using the delimiter ":" (semicolon) and store into array.
                     String[] matchedIDbk = bEntry.split(":");
                     if (matchedIDbk[0].equals(bpfix + bID)){
-                        hasBook = true;
-                        fetchedBook = true;
-                        // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
-                        txtBookTitle.setText(matchedIDbk[1]);
-                        txtBookGenre.setText(matchedIDbk[2]);
-                        txtBookSummary.setText(matchedIDbk[3]);
-                        txtBookPublisher.setText(matchedIDbk[5]);
-                        txtBookAuthor.setText(matchedIDbk[6]);
-                        txtPublishDate.setText(matchedIDbk[7]);
-                        txtArrivalDate.setText(matchedIDbk[8]);
+                        if ("false".equals(matchedIDbk[9])) {
+                            hasBook = true;
+                            fetchedBook = true;
+                            // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
+                            txtBookTitle.setText(matchedIDbk[1]);
+                            txtBookGenre.setText(matchedIDbk[2]);
+                            txtBookSummary.setText(matchedIDbk[3]);
+                            txtBookPublisher.setText(matchedIDbk[5]);
+                            txtBookAuthor.setText(matchedIDbk[6]);
+                            txtPublishDate.setText(matchedIDbk[7]);
+                            txtArrivalDate.setText(matchedIDbk[8]);
+                        }
                     }
                 }
                 intBook.close();

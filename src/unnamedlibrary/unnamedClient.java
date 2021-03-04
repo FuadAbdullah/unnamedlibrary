@@ -5,17 +5,54 @@
  */
 package unnamedlibrary;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Scanner;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.NumberFormatter;
+import org.joda.time.*;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 /**
  *
  * @author fab07
  */
 public class unnamedClient extends javax.swing.JFrame {
 
+    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
+    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
+    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
+    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
+    final String bpfix = "BOO", brpfix = "BOR";// For book and borrow ID prefixes
+    Color fgtxt = new Color(187,187,187); // Default foreground color for text
+    int newClientID; // To store new book ID
+    int ctype; // Value to represent selected Client combo box
+    DefaultComboBoxModel cList; // ComboBoxModel for Book ID
+    
     /**
-     * Creates new form unnamedStatus
+     * Creates new form unnamedBook
      */
     public unnamedClient() {
         initComponents();
+        initGUI();
     }
 
     /**
@@ -27,22 +64,938 @@ public class unnamedClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        panMain = new javax.swing.JPanel();
+        panTop = new javax.swing.JPanel();
+        btnCancel = new javax.swing.JButton();
+        lblClientDetailsTitle = new javax.swing.JLabel();
+        panCenter = new javax.swing.JPanel();
+        panFormCont = new javax.swing.JPanel();
+        panBar = new javax.swing.JPanel();
+        btnDelete = new javax.swing.JButton();
+        lblActionButton = new javax.swing.JLabel();
+        btnUpdate = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
+        panForm = new javax.swing.JPanel();
+        lblClientFirstName = new javax.swing.JLabel();
+        lblClientLastName = new javax.swing.JLabel();
+        lblClientDoB = new javax.swing.JLabel();
+        lblClientGender = new javax.swing.JLabel();
+        lblClientPhoneNumber = new javax.swing.JLabel();
+        lblClientEmailAddress = new javax.swing.JLabel();
+        txtClientFirstName = new javax.swing.JTextField();
+        txtClientLastName = new javax.swing.JTextField();
+        txtClientDoB = new javax.swing.JFormattedTextField();
+        txtClientPhoneNumber = new javax.swing.JFormattedTextField();
+        txtClientEmailAddress = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtClientHomeAddress = new javax.swing.JTextArea();
+        lblClientHomeAddress = new javax.swing.JLabel();
+        cbxClientID = new javax.swing.JComboBox<>();
+        lblClientID = new javax.swing.JLabel();
+        cbxClientGender = new javax.swing.JComboBox<>();
+        lblClientType = new javax.swing.JLabel();
+        cbxClientType = new javax.swing.JComboBox<>();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Manage books - unnamed Library Management System");
+        setName("unnamedBook"); // NOI18N
+        setResizable(false);
+
+        panMain.setBackground(new java.awt.Color(51, 51, 51));
+        panMain.setMaximumSize(new java.awt.Dimension(600, 680));
+        panMain.setMinimumSize(new java.awt.Dimension(600, 680));
+        panMain.setPreferredSize(new java.awt.Dimension(600, 680));
+        panMain.setLayout(new java.awt.BorderLayout());
+
+        panTop.setBackground(new java.awt.Color(43, 44, 45));
+        panTop.setMaximumSize(new java.awt.Dimension(1218, 160));
+        panTop.setMinimumSize(new java.awt.Dimension(1218, 160));
+
+        btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnCancel.setText("Return");
+        btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        lblClientDetailsTitle.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 24)); // NOI18N
+        lblClientDetailsTitle.setText("Client Management");
+
+        javax.swing.GroupLayout panTopLayout = new javax.swing.GroupLayout(panTop);
+        panTop.setLayout(panTopLayout);
+        panTopLayout.setHorizontalGroup(
+            panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panTopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblClientDetailsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCancel)
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        panTopLayout.setVerticalGroup(
+            panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panTopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel)
+                    .addComponent(lblClientDetailsTitle))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        panMain.add(panTop, java.awt.BorderLayout.PAGE_START);
+
+        panCenter.setBackground(new java.awt.Color(34, 34, 34));
+        panCenter.setLayout(new java.awt.GridLayout(1, 0));
+
+        panFormCont.setBackground(new java.awt.Color(28, 28, 28));
+        panFormCont.setLayout(new java.awt.BorderLayout());
+
+        panBar.setBackground(new java.awt.Color(33, 31, 31));
+        panBar.setMaximumSize(new java.awt.Dimension(609, 80));
+        panBar.setMinimumSize(new java.awt.Dimension(609, 80));
+        panBar.setPreferredSize(new java.awt.Dimension(609, 80));
+
+        btnDelete.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        lblActionButton.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
+        lblActionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblActionButton.setText("Action Button(s):");
+
+        btnUpdate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnUpdate.setText("Update");
+        btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnAdd.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnAdd.setText("Add");
+        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        javax.swing.GroupLayout panBarLayout = new javax.swing.GroupLayout(panBar);
+        panBar.setLayout(panBarLayout);
+        panBarLayout.setHorizontalGroup(
+            panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panBarLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panBarLayout.createSequentialGroup()
+                        .addComponent(lblActionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panBarLayout.createSequentialGroup()
+                        .addComponent(btnAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+                        .addComponent(btnReset)
+                        .addGap(18, 18, 18))))
+        );
+        panBarLayout.setVerticalGroup(
+            panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblActionButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDelete)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnAdd)
+                    .addComponent(btnReset))
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+
+        panFormCont.add(panBar, java.awt.BorderLayout.PAGE_END);
+
+        panForm.setBackground(new java.awt.Color(28, 28, 28));
+
+        lblClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientFirstName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientFirstName.setText("First Name:");
+
+        lblClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientLastName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientLastName.setText("Last Name:");
+
+        lblClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientDoB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientDoB.setText("Date of Birth:");
+
+        lblClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientGender.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientGender.setText("Gender:");
+
+        lblClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientPhoneNumber.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientPhoneNumber.setText("Phone Number:");
+
+        lblClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientEmailAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientEmailAddress.setText("Email Address:");
+
+        txtClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+
+        txtClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+
+        txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+
+        try {
+            txtClientPhoneNumber.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+
+        txtClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+
+        txtClientHomeAddress.setColumns(20);
+        txtClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientHomeAddress.setLineWrap(true);
+        txtClientHomeAddress.setRows(3);
+        jScrollPane2.setViewportView(txtClientHomeAddress);
+
+        lblClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblClientHomeAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientHomeAddress.setText("Home Address:");
+
+        cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Client ID" }));
+        cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxClientID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxClientIDActionPerformed(evt);
+            }
+        });
+
+        lblClientID.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
+        lblClientID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientID.setText("Load Existing Client:");
+
+        cbxClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxClientGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
+        cbxClientGender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxClientGender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxClientGenderActionPerformed(evt);
+            }
+        });
+
+        lblClientType.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
+        lblClientType.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblClientType.setText("Client Type:");
+
+        cbxClientType.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxClientType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
+        cbxClientType.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxClientType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxClientTypeActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panFormLayout = new javax.swing.GroupLayout(panForm);
+        panForm.setLayout(panFormLayout);
+        panFormLayout.setHorizontalGroup(
+            panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator3)
+            .addGroup(panFormLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panFormLayout.createSequentialGroup()
+                        .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lblClientPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblClientEmailAddress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblClientHomeAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblClientGender, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35)
+                        .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtClientEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(cbxClientGender, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtClientPhoneNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panFormLayout.createSequentialGroup()
+                        .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblClientLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblClientFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblClientDoB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35)
+                        .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtClientLastName, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtClientFirstName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtClientDoB, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(51, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panFormLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblClientType, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxClientType, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(53, 53, 53))
+        );
+        panFormLayout.setVerticalGroup(
+            panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panFormLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientType)
+                    .addComponent(cbxClientType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblClientID))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientFirstName)
+                    .addComponent(txtClientFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtClientLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblClientLastName))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientDoB)
+                    .addComponent(txtClientDoB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientGender)
+                    .addComponent(cbxClientGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientPhoneNumber)
+                    .addComponent(txtClientPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClientEmailAddress)
+                    .addComponent(txtClientEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblClientHomeAddress)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(46, Short.MAX_VALUE))
+        );
+
+        panFormCont.add(panForm, java.awt.BorderLayout.CENTER);
+
+        panCenter.add(panFormCont);
+
+        panMain.add(panCenter, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(panMain, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel any client editing, deleting or adding process. Continue?", "Returning to main menu!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (selection == JOptionPane.YES_OPTION) {
+            new unnamedMainMenu().setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    // NOTE TO SELF FOR TOMORROW
+    // IMPLEMENT LOAD FROM EXISTING BOOK ID > DELETE > UPDATE 
+    // FOLLOW THIS ORDER WILL BE MUCH EASIER
+    // This method handles addition of books into the system
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        // Reset the highlighted empty fields to original foreground color
+        deHighlightEmpty();
+        // To add the client
+        addClientInformation();
+        // To refresh new ID 
+        clientIncrementor();
+        // JOptionPane.showMessageDialog(null, newClientID);
+        // To reload the client information
+        // Integrate the reload part with combo box implementation of Client ID
+        setClientOption();
+        // Refresh the currently displayed client with the latest ID
+        cbxClientID.setSelectedIndex(cbxClientID.getItemCount() - 1);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    // This method will fetch the client type
+    // Can be used for both client loading or addition
+    private void getClientType(){
+        ctype = cbxClientType.getSelectedIndex(); // Get client type
+
+        if (ctype <= 0) { // Will disable the list from any user interaction
+            lblClientID.setText("Load Existing Client:");
+            cbxClientID.setEnabled(false);
+            btnAdd.setEnabled(false);
+            btnUpdate.setEnabled(false);
+            btnDelete.setEnabled(false);
+        } else { // Will display fields according to selected user type
+            lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
+            switch (ctype){
+                case 1:
+                cspecies = "STA";
+                break;
+                case 2:
+                cspecies = "STU";
+                break;
+                default:
+                cspecies = "NUL";
+                break;
+            }
+            cbxClientID.setEnabled(true);
+            btnAdd.setEnabled(true);
+        }
+    }
+    
+    // This method handles the insertion of client
+    private void addClientInformation(){
+        // Declaring file extension used
+        ext = ".txt";        
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // Formatting ID into formal 6-digit mask
+        DecimalFormat dc = new DecimalFormat("000000");
+        try {
+            // Fetching IDs from the textfields
+            cID = dc.format(newClientID);
+            // Check if textfields are empty
+            emptyFields();
+            // Storing Borrowing entries into variables
+            // Checking if gender is unselected
+            if (cbxClientGender.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(null, "Gender is unset! Autosetting value to male", "Gender unselected!", JOptionPane.ERROR_MESSAGE);
+                cbxClientGender.setSelectedIndex(1); // Setting the gender to male which is index 1
+            }
+            if (cbxClientType.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(null, "Client type is unset! Autosetting value to Staff", "Client type unselected!", JOptionPane.ERROR_MESSAGE);
+                cbxClientGender.setSelectedIndex(1); // Setting the client type to staff which is index 1
+            }
+            String cFirstName = txtClientFirstName.getText();
+            String cLastName = txtClientLastName.getText();
+            String cDoB = txtClientDoB.getText();
+            String cGender = (String) cbxClientGender.getSelectedItem();
+            String cPhoneNumber = txtClientPhoneNumber.getText();
+            String cEmailAddress = txtClientEmailAddress.getText();
+            String cHomeAddress = txtClientHomeAddress.getText();
+            // FileWriter and PrintWriter to create and write into book.txt
+            try {
+                // FileWriter to write into a new file called client.txt
+                FileWriter cd = new FileWriter(saveDir + "client.txt", true); 
+                // PrintWriter to print into client.txt
+                PrintWriter cdp = new PrintWriter(cd); 
+                // To print the line into Borrowing textfile
+                cdp.println(cspecies + cID + ":" +
+                             cFirstName + ":" +
+                             cLastName + ":" +
+                             cDoB + ":" +
+                             cGender + ":" +
+                             cPhoneNumber + ":" + 
+                             cEmailAddress + ":" +
+                             cHomeAddress + ":" +
+                             "false"); // false to indicate hasn't been deleted status
+                cdp.close();
+                // To display completed borrowing process status
+                JOptionPane.showMessageDialog(null, "Client is successfully added! Press OK to return to client management form.", "Adding client succeeded!", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            highlightEmpty();
+            JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
+            // Continue with displaying which field was affected. ensure it appears before the mnessagebox
+        }      
+    }
+    
+    // This method will reset the color of the highlighted labels to default foreground
+    private void deHighlightEmpty(){
+        lblClientType.setForeground(fgtxt);
+        lblClientFirstName.setForeground(fgtxt);
+        lblClientLastName.setForeground(fgtxt);
+        lblClientDoB.setForeground(fgtxt);
+        lblClientPhoneNumber.setForeground(fgtxt);
+        lblClientEmailAddress.setForeground(fgtxt);
+        lblClientHomeAddress.setForeground(fgtxt);
+    }
+    
+    // This method will highlight empty fields with yellow color upon call
+    private void highlightEmpty() {
+        if (cbxClientType.getSelectedIndex() <= 0) {
+            lblClientType.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientFirstName.getText())) {
+            lblClientFirstName.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientLastName.getText())) {
+            lblClientLastName.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientDoB.getText())) {
+            lblClientDoB.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientPhoneNumber.getText())) {
+            lblClientPhoneNumber.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientEmailAddress.getText())) {
+            lblClientEmailAddress.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientHomeAddress.getText())) {
+            lblClientHomeAddress.setForeground(Color.yellow);
+        }   
+    }
+    
+    // This method is to handle empty book fields
+    // Create a new exception class!
+    private void emptyFields() throws Exception {
+        if ("".equals(txtClientFirstName.getText())) {
+            throw new Exception("Empty client first name");
+        }
+        if ("".equals(txtClientLastName.getText())) {
+            throw new Exception("Empty client last name");
+        }
+        if ("".equals(txtClientPhoneNumber.getText())) {
+            throw new Exception("Empty client phone number");
+        }
+        if ("".equals(txtClientEmailAddress.getText())) {
+            throw new Exception("Empty client email address");
+        }
+        if ("".equals(txtClientHomeAddress.getText())) {
+            throw new Exception("Empty client home address");
+        }  
+    }
+    
+    private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
+        // TODO add your handling code here:
+        // Clear previous fields value
+        clearClient();
+        // Loads index with Book ID only
+        if (cbxClientID.getSelectedIndex() > 0) {
+            loadClientID();
+            btnDelete.setEnabled(true);
+            btnUpdate.setEnabled(true);
+        } else {
+            // Disabling action buttons when no book is loaded. Add button is still available to accept new book
+            btnDelete.setEnabled(false);
+            btnUpdate.setEnabled(false);
+        }
+        
+    }//GEN-LAST:event_cbxClientIDActionPerformed
+
+    // This method deletes the book
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int selection = JOptionPane.showConfirmDialog(null, "Are you sure? This action will delete the client from the system but will still be available inside the database.", "Deleting a client!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (selection == JOptionPane.YES_OPTION) {
+            deleteClient();
+            setClientOption();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    // This method updates the book
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        updateClientInformation();
+        loadClientID();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void cbxClientGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientGenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxClientGenderActionPerformed
+
+    private void cbxClientTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientTypeActionPerformed
+        // TODO add your handling code here:
+        clearClient();
+        // Loads index with Client type only
+        if (cbxClientType.getSelectedIndex() > 0) {
+            getClientType();
+            setClientOption();
+            cbxClientID.setEnabled(true);
+            btnAdd.setEnabled(true);
+        } else {
+            // Disabling action buttons when no client is loaded. Add button is still available to accept new book
+            cbxClientID.setEnabled(false);
+            btnAdd.setEnabled(false);
+            btnUpdate.setEnabled(false);
+            btnDelete.setEnabled(false);
+        }
+    }//GEN-LAST:event_cbxClientTypeActionPerformed
+    
+    // This method updates the selected book with information found in the fields
+    private void updateClientInformation(){
+        // TODO add your handling code here:
+        try {
+            // To get the book ID
+            cID = (String) cbxClientID.getSelectedItem();
+            // To rename original book.txt to book.bak
+            File clientOri = new File(saveDir + "client.txt");
+            File clientBak = new File(saveDir + "clientBak.txt");
+            // To check if clientBak.txt is present or not
+            if (!clientBak.exists()){
+                clientOri.createNewFile();
+            }
+            // This is for debugging only!
+            // JOptionPane.showMessageDialog(null, "renamed");
+            // This is to rename the existing book.txt to clientBak.txt
+            clientOri.renameTo(clientBak);
+            // This is to open, find and replace a specific book record
+            // Requires temporary file to store current state
+            // FileWriter to write into a new file called book.txt
+            FileWriter cd = new FileWriter(saveDir + "client.txt"); 
+            // PrintWriter to print into book.txt
+            PrintWriter cdp = new PrintWriter(cd); 
+            // This is to open and read clientBak.txt 
+            File clienttxt = new File(saveDir + "clientBak.txt");
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(clienttxt);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String bEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                // Check if the read line has current book ID
+                if (matchedID[0].equals(cspecies + cID)) {
+                    // Inserting the new information from the text fields into the book line
+                    matchedID[1] = txtClientFirstName.getText();
+                    matchedID[2] = txtClientLastName.getText();
+                    matchedID[3] = txtClientDoB.getText();
+                    matchedID[4] = (String) cbxClientGender.getSelectedItem();
+                    matchedID[5] = txtClientPhoneNumber.getText();
+                    matchedID[6] = txtClientEmailAddress.getText();
+                    matchedID[7] = txtClientHomeAddress.getText();
+                    matchedID[8] = "false";
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                }
+                // Rewrite the new book.txt with values found in clientBak.txt
+                cdp.println(matchedID[0] + ":" +
+                            matchedID[1] + ":" +
+                            matchedID[2] + ":" +
+                            matchedID[3] + ":" +
+                            matchedID[4] + ":" +
+                            matchedID[5] + ":" +
+                            matchedID[6] + ":" +
+                            matchedID[7] + ":" +
+                            matchedID[8]);
+
+            }
+            // Close the clientBak.txt reader
+            inputFile.close();
+            // This deletes clientBak.txt
+            clientBak.delete();
+            // This closes the book.txt printer 
+            cdp.close();
+            JOptionPane.showMessageDialog(null, "Client record has been updated!", "Client updated!", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+
+        }
+    }
+    
+    // This method will set option list for book ID using ComboBoxModel
+    private void setClientOption(){
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        cList = new DefaultComboBoxModel();
+        String cLabel; // Declared to store title of the selected client type
+        switch (cspecies) {
+            case "STA":
+                cLabel = "Staff";
+                break;
+            case "STU":
+                cLabel = "Student";
+                break;
+            default:
+                cLabel = "Null";
+        }
+        // Adding default text
+        cList.addElement("Select " + cLabel + " ID");
+        cbxClientID.setModel(cList);
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner intClient;
+        try {
+            // This part loads all book information
+            intClient = new Scanner(clienttxt);
+            // This is to increment the discovered client assignment index
+            int i = 0;
+            // Read lines from the file until no more are left.
+            while (intClient.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intClient.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                String temptype = null;
+                if (matchedID[0].contains("STA")) {
+                    temptype = "STA";
+                } else if (matchedID[0].contains("STU")) {
+                    temptype = "STU";
+                }
+                // Get the digits out
+                String preOut = matchedID[0].replace(temptype, "");
+                // JOptionPane.showMessageDialog(null, preOut);
+                // Replace the string part with empty digits, leaving only the prefix
+                String numOut = matchedID[0].replace(preOut, "");
+                // JOptionPane.showMessageDialog(null, numOut);
+                if (i < 200) {
+                    if ("false".equals(matchedID[8]) && cspecies.equals(numOut)) {
+                        matchedID[0] = matchedID[0].replace(cspecies, "");
+                        cList.addElement(matchedID[0]);
+                        i++;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Maximum client entry limit reached! Stopping at 200th record.", "Client list maxed out!", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+            // OptionPane.showMessageDialog(null, i);
+            intClient.close();
+            // Check if there are no clients at all for each type
+            if (cList.getSize() == 1) {
+                cList.removeAllElements();
+                cList.addElement("No client(s) available.");
+            }
+            // Attempt to list all fetched client ID into the list box
+            cbxClientID.setModel(cList);
+            // Select index 0 as default
+            cbxClientID.setSelectedIndex(0);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // This method will set the deleted flag of the book
+    private void deleteClient(){
+        // TODO add your handling code here:
+        try {
+            // To rename original book.txt to book.bak
+            File clientOri = new File(saveDir + "client.txt");
+            File clientBak = new File(saveDir + "clientBak.txt");
+            // To check if clientBak.txt is present or not
+            if (!clientBak.exists()){
+                clientOri.createNewFile();
+            }
+            // This is for debugging only!
+            // JOptionPane.showMessageDialog(null, "renamed");
+            // This is to rename the existing book.txt to clientBak.txt
+            clientOri.renameTo(clientBak);
+            // This is to open, find and replace a specific book record
+            // Requires temporary file to store current state
+            // FileWriter to write into a new file called book.txt
+            FileWriter cd = new FileWriter(saveDir + "client.txt"); 
+            // PrintWriter to print into book.txt
+            PrintWriter cdp = new PrintWriter(cd); 
+            // This is to open and read clientBak.txt 
+            File clienttxt = new File(saveDir + "clientBak.txt");
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(clienttxt);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String cEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = cEntry.split(":");
+                // Check if the read line has current book ID
+                if (matchedID[0].equals(cspecies + cID)) {
+                    // Setting the deleted flag to true
+                    matchedID[8] = "true";
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                }
+                // Rewrite the new book.txt with values found in clientBak.txt
+                cdp.println(matchedID[0] + ":" +
+                            matchedID[1] + ":" +
+                            matchedID[2] + ":" +
+                            matchedID[3] + ":" +
+                            matchedID[4] + ":" +
+                            matchedID[5] + ":" +
+                            matchedID[6] + ":" +
+                            matchedID[7] + ":" +
+                            matchedID[8]);
+
+            }
+            // Close the clientBak.txt reader
+            inputFile.close();
+            // This deletes clientBak.txt
+            clientBak.delete();
+            // This closes the book.txt printer 
+            cdp.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+
+        }
+    }
+    
+    // This method will load the selected book ID
+    private void loadClientID(){
+        // Assigning the cID to the selected index value
+        cID = (String) cbxClientID.getSelectedItem();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        fetchedBook = false;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner intClient;
+        try {
+            // This part loads all book information
+            intClient = new Scanner(clienttxt);
+            // Read lines from the file until no more are left.
+            while (intClient.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intClient.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace(cspecies, "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (cbxClientID.getSelectedItem().equals(matchedID[0])) {
+                    txtClientFirstName.setText(matchedID[1]);
+                    txtClientLastName.setText(matchedID[2]);
+                    txtClientDoB.setText(matchedID[3]);
+                    switch (matchedID[4]) {
+                        case "Male":
+                            cbxClientGender.setSelectedIndex(1);
+                            break;
+                        case "Female":
+                            cbxClientGender.setSelectedIndex(2);
+                            break;
+                        default:
+                            cbxClientGender.setSelectedIndex(1);
+                    }
+                    txtClientPhoneNumber.setText(matchedID[5]);
+                    txtClientEmailAddress.setText(matchedID[6]);
+                    txtClientHomeAddress.setText(matchedID[7]);
+                }
+            }
+            intClient.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // This method clears book related fields
+    private void clearClient(){
+        // To clean up previous or default values from fields
+        txtClientFirstName.setText("");
+        txtClientLastName.setText("");
+        txtClientDoB.setText("");
+        cbxClientGender.setSelectedIndex(0);
+        txtClientPhoneNumber.setText("");
+        txtClientEmailAddress.setText("");
+        txtClientHomeAddress.setText("");
+        cID = "";
+    }
+    
+    // This method will check through borrowing.txt and look for latest ID and increments from there
+    private void clientIncrementor(){
+        // This is to ensure the entire method have access to the matchedID array
+        String[] matchedID = null;
+        // This flag is to check if the while loop is triggered or not. Triggered while loop indicates presence of records but relevance might not
+        boolean hasRecord = false;
+        try {
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // For debugging purpose only
+            // JOptionPane.showMessageDialog(null, bID);
+            File clienttxt = new File(saveDir + "client.txt");
+            Scanner inputFile;
+            try {
+                inputFile = new Scanner(clienttxt);
+                // Read lines from the file until no more are left.
+                while (inputFile.hasNext())
+                {
+                   // Read the next line.
+                   String bEntry = inputFile.nextLine();
+                   // Split the line by using the delimiter ":" (semicolon) and store into array.
+                   matchedID = bEntry.split(":");
+                   if (matchedID[0].contains("STA")) {
+                       cspecies = "STA";
+                   } else if (matchedID[0].contains("STU")) {
+                       cspecies = "STU";
+                   }
+                   matchedID[0] = matchedID[0].replace(cspecies, "");
+                   hasRecord = true;
+                }
+                inputFile.close();
+                if (!hasRecord) {
+                    JOptionPane.showMessageDialog(null, "No client(s) record of any type was found! Restarting database entry.", "Client database is empty!", JOptionPane.ERROR_MESSAGE);
+                    newClientID = 1;
+                } else {
+                    newClientID = Integer.parseInt(matchedID[0]) + 1;
+                }
+                // JOptionPane.showMessageDialog(null, newClientID);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void initGUI(){
+        cbxClientID.setEnabled(false);
+        btnAdd.setEnabled(false);
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
+        // Set the initial value for new book
+        clientIncrementor();
+        // This anon class handles window closing event
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e){
+                int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selection == JOptionPane.YES_OPTION) {
+                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                } else {
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -53,22 +1006,10 @@ public class unnamedClient extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(unnamedClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatDarkLaf");
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -80,5 +1021,38 @@ public class unnamedClient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cbxClientGender;
+    private javax.swing.JComboBox<String> cbxClientID;
+    private javax.swing.JComboBox<String> cbxClientType;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel lblActionButton;
+    private javax.swing.JLabel lblClientDetailsTitle;
+    private javax.swing.JLabel lblClientDoB;
+    private javax.swing.JLabel lblClientEmailAddress;
+    private javax.swing.JLabel lblClientFirstName;
+    private javax.swing.JLabel lblClientGender;
+    private javax.swing.JLabel lblClientHomeAddress;
+    private javax.swing.JLabel lblClientID;
+    private javax.swing.JLabel lblClientLastName;
+    private javax.swing.JLabel lblClientPhoneNumber;
+    private javax.swing.JLabel lblClientType;
+    private javax.swing.JPanel panBar;
+    private javax.swing.JPanel panCenter;
+    private javax.swing.JPanel panForm;
+    private javax.swing.JPanel panFormCont;
+    private javax.swing.JPanel panMain;
+    private javax.swing.JPanel panTop;
+    private javax.swing.JFormattedTextField txtClientDoB;
+    private javax.swing.JTextField txtClientEmailAddress;
+    private javax.swing.JTextField txtClientFirstName;
+    private javax.swing.JTextArea txtClientHomeAddress;
+    private javax.swing.JTextField txtClientLastName;
+    private javax.swing.JFormattedTextField txtClientPhoneNumber;
     // End of variables declaration//GEN-END:variables
 }

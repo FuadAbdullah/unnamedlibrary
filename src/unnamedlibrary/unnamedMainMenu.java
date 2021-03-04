@@ -190,6 +190,11 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         btnManageClient.setText("    Manage Client");
         btnManageClient.setToolTipText("Opens client management page.");
         btnManageClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnManageClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageClientActionPerformed(evt);
+            }
+        });
         panButtons.add(btnManageClient);
 
         btnManageBook.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
@@ -285,6 +290,12 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         new unnamedBook().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnManageBookActionPerformed
+
+    private void btnManageClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageClientActionPerformed
+        // TODO add your handling code here:
+        new unnamedClient().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnManageClientActionPerformed
 
     private void initGUI(){
         
