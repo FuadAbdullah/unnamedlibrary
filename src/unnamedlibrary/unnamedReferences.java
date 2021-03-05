@@ -37,7 +37,7 @@ public class unnamedReferences {
     //  https://stackoverflow.com/questions/14446539/an-elegant-way-of-initialising-an-empty-string-array-in-java
     //  https://www.handcoded.co.uk/php/app-1/
     //  https://www.tutorialspoint.com/when-does-a-java-array-throws-a-nullpointerexception
-    
+    //  https://beginnersbook.com/2014/06/how-to-convert-a-char-array-to-a-string-in-java/
     
     
     

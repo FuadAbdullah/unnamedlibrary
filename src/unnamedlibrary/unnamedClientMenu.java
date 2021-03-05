@@ -651,6 +651,8 @@ public class unnamedClientMenu extends javax.swing.JFrame {
     private void updateClientInformation(){
         // TODO add your handling code here:
         try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
             // To get the book ID
             cID = (String) cbxClientID.getSelectedItem();
             // To rename original book.txt to book.bak
