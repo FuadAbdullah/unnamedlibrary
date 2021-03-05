@@ -238,6 +238,8 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         txtBorrowDue.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
         txtBorrowDue.setFocusable(false);
         txtBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBorrowDue.setMaximumSize(new java.awt.Dimension(126, 31));
+        txtBorrowDue.setMinimumSize(new java.awt.Dimension(126, 31));
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnCancel.setText("Cancel Borrow");
@@ -283,17 +285,17 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
                             .addComponent(btnLoadBook)
                             .addGroup(panTopLayout.createSequentialGroup()
                                 .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                .addGap(17, 17, 17)
                                 .addComponent(btnLoadClient))))
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblBorrowDue)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 388, Short.MAX_VALUE)
                 .addComponent(btnCancel)
                 .addContainerGap())
         );
@@ -832,7 +834,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
             String ddate = txtBorrowDue.getText();
             String bqty = txtAmountBorrowed.getText();
             // Checking if book quantity to be borrowed is 0
-            if (Integer.parseInt(bqty) == 0) {
+            if ("".equals(txtAmountBorrowed.getText())) {
                 JOptionPane.showMessageDialog(null, "Book quantity to be borrowed cannot be 0! Autosetting value to 1.", "Invalid book quantity!", JOptionPane.ERROR_MESSAGE);
                 bqty = "1";
             }

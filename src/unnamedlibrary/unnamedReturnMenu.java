@@ -40,7 +40,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
     String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
     boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
+    boolean isOverdue, hasRenewed, hasFine, hasReturned, isDeleted; 
     final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
     Color fgtxt = new Color(187,187,187); // Default foreground color for text
     
@@ -212,6 +212,8 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         txtBorrowDue.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
         txtBorrowDue.setFocusable(false);
         txtBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBorrowDue.setMaximumSize(new java.awt.Dimension(126, 31));
+        txtBorrowDue.setMinimumSize(new java.awt.Dimension(126, 31));
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnCancel.setText("Cancel Return");
@@ -263,7 +265,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                     .addComponent(lblClientID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBorrowID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -285,13 +287,13 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                                 .addGroup(panTopLayout.createSequentialGroup()
                                     .addComponent(lblBorrowDue)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(lblIsOverdue))
                                 .addComponent(btnLoadBorrow)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 343, Short.MAX_VALUE)
                 .addComponent(btnCancel)
                 .addContainerGap())
         );
@@ -927,6 +929,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         boolean hasBorrow = false, hasBook = false;
         fetchedBorrow = false;
         fetchedBook = false;
+        isDeleted = false;
         // To clean up previous or default values from fields
         clearBorrow();
         lblIsReturned.setForeground(fgtxt);
@@ -1016,9 +1019,9 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                     // Split the line by using the delimiter ":" (semicolon) and store into array.
                     String[] matchedIDbk = bEntry.split(":");
                     if (matchedIDbk[0].equals(bpfix + bID)){
-                        if ("false".equals(matchedIDbk[8])) {
-                            hasBook = true;
-                            fetchedBook = true;
+                        hasBook = true;
+                        fetchedBook = true;
+                        if ("false".equals(matchedIDbk[9])) {
                             // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
                             txtBookTitle.setText(matchedIDbk[1]);
                             txtBookGenre.setText(matchedIDbk[2]);
@@ -1027,6 +1030,9 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                             txtBookAuthor.setText(matchedIDbk[6]);
                             txtPublishDate.setText(matchedIDbk[7]);
                             txtArrivalDate.setText(matchedIDbk[8]);
+                        } else if ("true".equals(matchedIDbk[9])) {
+                            isDeleted = true;
+                            JOptionPane.showMessageDialog(null, "Book has been deleted and is not accessible at the moment! However, returning is still possible.", "Book record has been deleted!", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
@@ -1247,7 +1253,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                     refreshBookAmount();
                     btnPayFine.setVisible(false);
                     JOptionPane.showMessageDialog(null, "Returned successfully! Press OK to return to returning form.", "Borrowed book(s) has been returned!", JOptionPane.INFORMATION_MESSAGE);
-
+                    btnCancel.setText("Return");
                 }
             }
         } catch (Exception ex) {
@@ -1521,6 +1527,10 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                 // itWorked = true;
                 // Reassign the quantity by adding the current value with books available in the quantity field
                 matchedID[4] = String.valueOf(Integer.parseInt(matchedID[4]) + Integer.parseInt(txtBookQuantity.getText()));
+                // Check if deleted flag is true to persist
+                if ("true".equals(matchedID[9])) {
+                    matchedID[9] = "true";
+                }
             }
             // Rewrite the new book.txt with values found in bookBak.txt
             bdp.println(matchedID[0] + ":" +
@@ -1532,7 +1542,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                         matchedID[6] + ":" +
                         matchedID[7] + ":" +
                         matchedID[8] + ":" +
-                        "false");
+                        matchedID[9]);
 
         }
         // Close the bookBak.txt reader

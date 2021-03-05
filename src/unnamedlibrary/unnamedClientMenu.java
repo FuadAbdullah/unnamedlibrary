@@ -35,7 +35,7 @@ import org.joda.time.format.DateTimeFormatter;
  *
  * @author fab07
  */
-public class unnamedClient extends javax.swing.JFrame {
+public class unnamedClientMenu extends javax.swing.JFrame {
 
     String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
@@ -50,7 +50,7 @@ public class unnamedClient extends javax.swing.JFrame {
     /**
      * Creates new form unnamedBook
      */
-    public unnamedClient() {
+    public unnamedClientMenu() {
         initComponents();
         initGUI();
     }
@@ -283,7 +283,7 @@ public class unnamedClient extends javax.swing.JFrame {
         lblClientHomeAddress.setText("Home Address:");
 
         cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Client ID" }));
+        cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Existing Client" }));
         cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxClientID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -437,14 +437,6 @@ public class unnamedClient extends javax.swing.JFrame {
         deHighlightEmpty();
         // To add the client
         addClientInformation();
-        // To refresh new ID 
-        clientIncrementor();
-        // JOptionPane.showMessageDialog(null, newClientID);
-        // To reload the client information
-        // Integrate the reload part with combo box implementation of Client ID
-        setClientOption();
-        // Refresh the currently displayed client with the latest ID
-        cbxClientID.setSelectedIndex(cbxClientID.getItemCount() - 1);
     }//GEN-LAST:event_btnAddActionPerformed
 
     // This method will fetch the client type
@@ -454,25 +446,22 @@ public class unnamedClient extends javax.swing.JFrame {
 
         if (ctype <= 0) { // Will disable the list from any user interaction
             lblClientID.setText("Load Existing Client:");
-            cbxClientID.setEnabled(false);
-            btnAdd.setEnabled(false);
-            btnUpdate.setEnabled(false);
-            btnDelete.setEnabled(false);
+            cspecies = "NUL";
         } else { // Will display fields according to selected user type
             lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
             switch (ctype){
                 case 1:
                 cspecies = "STA";
                 break;
-                case 2:
+            case 2:
                 cspecies = "STU";
                 break;
-                default:
+            default:
                 cspecies = "NUL";
                 break;
             }
-            cbxClientID.setEnabled(true);
-            btnAdd.setEnabled(true);
+            // cbxClientID.setEnabled(true);
+            // btnAdd.setEnabled(true);
         }
     }
     
@@ -524,6 +513,14 @@ public class unnamedClient extends javax.swing.JFrame {
                 cdp.close();
                 // To display completed borrowing process status
                 JOptionPane.showMessageDialog(null, "Client is successfully added! Press OK to return to client management form.", "Adding client succeeded!", JOptionPane.INFORMATION_MESSAGE);
+                // To refresh new ID 
+                clientIncrementor();
+                // JOptionPane.showMessageDialog(null, newClientID);
+                // To reload the client information
+                // Integrate the reload part with combo box implementation of Client ID
+                setClientOption();
+                // Refresh the currently displayed client with the latest ID
+                cbxClientID.setSelectedIndex(cbxClientID.getItemCount() - 1);
             } catch (IOException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -595,6 +592,7 @@ public class unnamedClient extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Clear previous fields value
         clearClient();
+        deHighlightEmpty();
         // Loads index with Book ID only
         if (cbxClientID.getSelectedIndex() > 0) {
             loadClientID();
@@ -630,6 +628,7 @@ public class unnamedClient extends javax.swing.JFrame {
 
     private void cbxClientTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientTypeActionPerformed
         // TODO add your handling code here:
+        deHighlightEmpty();
         clearClient();
         // Loads index with Client type only
         if (cbxClientType.getSelectedIndex() > 0) {
@@ -639,6 +638,8 @@ public class unnamedClient extends javax.swing.JFrame {
             btnAdd.setEnabled(true);
         } else {
             // Disabling action buttons when no client is loaded. Add button is still available to accept new book
+            getClientType();
+            setClientOption();
             cbxClientID.setEnabled(false);
             btnAdd.setEnabled(false);
             btnUpdate.setEnabled(false);
@@ -738,7 +739,7 @@ public class unnamedClient extends javax.swing.JFrame {
                 cLabel = "Student";
                 break;
             default:
-                cLabel = "Null";
+                cLabel = "Existing";
         }
         // Adding default text
         cList.addElement("Select " + cLabel + " ID");
@@ -950,12 +951,13 @@ public class unnamedClient extends javax.swing.JFrame {
                    String bEntry = inputFile.nextLine();
                    // Split the line by using the delimiter ":" (semicolon) and store into array.
                    matchedID = bEntry.split(":");
+                   String temptype = null;
                    if (matchedID[0].contains("STA")) {
-                       cspecies = "STA";
+                       temptype = "STA";
                    } else if (matchedID[0].contains("STU")) {
-                       cspecies = "STU";
+                       temptype = "STU";
                    }
-                   matchedID[0] = matchedID[0].replace(cspecies, "");
+                   matchedID[0] = matchedID[0].replace(temptype, "");
                    hasRecord = true;
                 }
                 inputFile.close();
@@ -1015,7 +1017,7 @@ public class unnamedClient extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new unnamedClient().setVisible(true);
+                new unnamedClientMenu().setVisible(true);
             }
         });
     }

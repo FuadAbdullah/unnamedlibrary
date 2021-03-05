@@ -35,7 +35,7 @@ import org.joda.time.format.DateTimeFormatter;
  *
  * @author fab07
  */
-public class unnamedBook extends javax.swing.JFrame {
+public class unnamedBookMenu extends javax.swing.JFrame {
 
     String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
@@ -49,7 +49,7 @@ public class unnamedBook extends javax.swing.JFrame {
     /**
      * Creates new form unnamedBook
      */
-    public unnamedBook() {
+    public unnamedBookMenu() {
         initComponents();
         initGUI();
     }
@@ -437,14 +437,6 @@ public class unnamedBook extends javax.swing.JFrame {
         deHighlightEmpty();
         // To add the book
         addBookInformation();
-        // To refresh new ID 
-        bookIncrementor();
-        // JOptionPane.showMessageDialog(null, newBookID);
-        // To reload the book information
-        // Integrate the reload part with combo box implementation of Book ID
-        setBookOption();
-        // Refresh the currently displayed book with the latest ID
-        cbxBookID.setSelectedIndex(cbxBookID.getItemCount() - 1);
     }//GEN-LAST:event_btnAddActionPerformed
 
     // This method handles the insertion of book
@@ -502,6 +494,15 @@ public class unnamedBook extends javax.swing.JFrame {
                 bdp.close();
                 // To display completed borrowing process status
                 JOptionPane.showMessageDialog(null, "Book is successfully added! Press OK to return to book management form.", "Adding book succeeded!", JOptionPane.INFORMATION_MESSAGE);
+                // To refresh new ID 
+                bookIncrementor();
+                // JOptionPane.showMessageDialog(null, newBookID);
+                // To reload the book information
+                // Integrate the reload part with combo box implementation of Book ID
+                setBookOption();
+                // Refresh the currently displayed book with the latest ID
+                cbxBookID.setSelectedIndex(cbxBookID.getItemCount() - 1);
+                
             } catch (IOException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -565,6 +566,7 @@ public class unnamedBook extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Clear previous fields value
         clearBook();
+        deHighlightEmpty();
         // Loads index with Book ID only
         if (cbxBookID.getSelectedIndex() != 0 && cbxBookID.getSelectedIndex() != -1) {
             loadBookID();
@@ -926,7 +928,7 @@ public class unnamedBook extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new unnamedBook().setVisible(true);
+                new unnamedBookMenu().setVisible(true);
             }
         });
     }

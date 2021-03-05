@@ -23,14 +23,14 @@ import java.net.URISyntaxException;
  *
  * @author fab07
  */
-public class unnamedLogin extends javax.swing.JFrame {
+public class unnamedLoginMenu extends javax.swing.JFrame {
     
     boolean filledUsername = false, filledPassword = false; // Boolean to hide or show Login button depending on rules fulfillment
     
     /**
      * Creates new form unnamedLogin
      */
-    public unnamedLogin() {
+    public unnamedLoginMenu() {
         initComponents();
         initGUI();
     }
@@ -449,7 +449,7 @@ public class unnamedLogin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new unnamedLogin().setVisible(true);
+                new unnamedLoginMenu().setVisible(true);
             }
         });
         

@@ -1,4 +1,4 @@
-STA000123:Bobby:Doe:23/07/2001:Female:017650392:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America:false
+STA000123:Bobby:Doe:23/07/2001:Female:017650392:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America:true
 STU000123:John:Doe:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America:false
 STA000124:John:Bruh:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America:false
 STA000125:John:Moe:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America:false
@@ -6,3 +6,4 @@ STA000126:John:Steve:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, 
 STA000127:John:Bond:23/07/2001:Male:0176503929:johndoe@gmail.com:Grove Street, Davis Av., Los Santos, United States of America:false
 STU000128:Scarlett:Johansson:01/01/1988:Female:0191827364:scar_jo@gmail.com:701 Marlborough Dr. Medford, MA 02155:false
 STU000129:Tony:Hawk:09/05/1975:Male:0165547162:t.hawk@gmail.com:67 Saxton Road Eden Prairie, MN 55347:false
+STA000130:Sasha:Grey:23/07/2001:Female:0176503929:sasha_g@gmail.com:America:true
