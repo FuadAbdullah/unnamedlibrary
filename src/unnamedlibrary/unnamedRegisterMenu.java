@@ -37,13 +37,13 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class unnamedRegisterMenu extends javax.swing.JFrame {
 
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
+    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, lID, saveDir;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
     boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
     boolean isOverdue, hasRenewed, hasFine, hasReturned; 
-    final String bpfix = "BOO", brpfix = "BOR";// For book and borrow ID prefixes
+    final String bpfix = "BOO", brpfix = "BOR", lpfix = "LIB";// For book and borrow ID prefixes
     Color fgtxt = new Color(187,187,187); // Default foreground color for text
-    int newClientID; // To store new book ID
+    int newLibrarianID; // To store new book ID
     int ctype; // Value to represent selected Client combo box
     DefaultComboBoxModel cList; // ComboBoxModel for Book ID
     
@@ -67,36 +67,34 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         panMain = new javax.swing.JPanel();
         panTop = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
-        lblClientDetailsTitle = new javax.swing.JLabel();
+        lblLibrarianDetailsTitle = new javax.swing.JLabel();
         panCenter = new javax.swing.JPanel();
         panFormCont = new javax.swing.JPanel();
         panBar = new javax.swing.JPanel();
-        btnDelete = new javax.swing.JButton();
-        lblActionButton = new javax.swing.JLabel();
-        btnUpdate = new javax.swing.JButton();
-        btnAdd = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         panForm = new javax.swing.JPanel();
-        lblClientFirstName = new javax.swing.JLabel();
-        lblClientLastName = new javax.swing.JLabel();
-        lblClientDoB = new javax.swing.JLabel();
-        lblClientGender = new javax.swing.JLabel();
-        lblClientPhoneNumber = new javax.swing.JLabel();
-        lblClientEmailAddress = new javax.swing.JLabel();
-        txtClientFirstName = new javax.swing.JTextField();
-        txtClientLastName = new javax.swing.JTextField();
-        txtClientDoB = new javax.swing.JFormattedTextField();
-        txtClientPhoneNumber = new javax.swing.JFormattedTextField();
-        txtClientEmailAddress = new javax.swing.JTextField();
-        jSeparator3 = new javax.swing.JSeparator();
+        lblLibrarianFirstName = new javax.swing.JLabel();
+        lblLibrarianLastName = new javax.swing.JLabel();
+        lblLibrarianDoB = new javax.swing.JLabel();
+        lblLibrarianGender = new javax.swing.JLabel();
+        lblLibrarianPhoneNumber = new javax.swing.JLabel();
+        lblLibrarianEmailAddress = new javax.swing.JLabel();
+        txtLibrarianFirstName = new javax.swing.JTextField();
+        txtLibrarianLastName = new javax.swing.JTextField();
+        txtLibrarianDoB = new javax.swing.JFormattedTextField();
+        txtLibrarianPhoneNumber = new javax.swing.JFormattedTextField();
+        txtLibrarianEmailAddress = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtClientHomeAddress = new javax.swing.JTextArea();
-        lblClientHomeAddress = new javax.swing.JLabel();
-        cbxClientID = new javax.swing.JComboBox<>();
-        lblClientID = new javax.swing.JLabel();
-        cbxClientGender = new javax.swing.JComboBox<>();
-        lblClientType = new javax.swing.JLabel();
-        cbxClientType = new javax.swing.JComboBox<>();
+        txtLibrarianHomeAddress = new javax.swing.JTextArea();
+        lblLibrarianHomeAddress = new javax.swing.JLabel();
+        cbxLibrarianGender = new javax.swing.JComboBox<>();
+        lblLibrarianUsername = new javax.swing.JLabel();
+        lblLibrarianRepeatPass = new javax.swing.JLabel();
+        lblLibrarianPassword = new javax.swing.JLabel();
+        txtLibrarianUsername = new javax.swing.JTextField();
+        txtLibrarianPassword = new javax.swing.JPasswordField();
+        txtLibrarianRepeatPass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manage books - unnamed Library Management System");
@@ -122,8 +120,8 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
             }
         });
 
-        lblClientDetailsTitle.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 24)); // NOI18N
-        lblClientDetailsTitle.setText("Librarian Registration Form");
+        lblLibrarianDetailsTitle.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 24)); // NOI18N
+        lblLibrarianDetailsTitle.setText("Librarian Registration Form");
 
         javax.swing.GroupLayout panTopLayout = new javax.swing.GroupLayout(panTop);
         panTop.setLayout(panTopLayout);
@@ -131,7 +129,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panTopLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblClientDetailsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+                .addComponent(lblLibrarianDetailsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel)
                 .addContainerGap())
@@ -142,7 +140,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
-                    .addComponent(lblClientDetailsTitle))
+                    .addComponent(lblLibrarianDetailsTitle))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -155,38 +153,16 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         panFormCont.setLayout(new java.awt.BorderLayout());
 
         panBar.setBackground(new java.awt.Color(33, 31, 31));
-        panBar.setMaximumSize(new java.awt.Dimension(609, 80));
-        panBar.setMinimumSize(new java.awt.Dimension(609, 80));
-        panBar.setPreferredSize(new java.awt.Dimension(609, 80));
+        panBar.setMaximumSize(new java.awt.Dimension(609, 70));
+        panBar.setMinimumSize(new java.awt.Dimension(609, 70));
+        panBar.setPreferredSize(new java.awt.Dimension(609, 70));
 
-        btnDelete.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        btnDelete.setText("Delete");
-        btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+        btnRegister.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnRegister.setText("Register");
+        btnRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-
-        lblActionButton.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        lblActionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblActionButton.setText("Action Button(s):");
-
-        btnUpdate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        btnUpdate.setText("Update");
-        btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateActionPerformed(evt);
-            }
-        });
-
-        btnAdd.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        btnAdd.setText("Add");
-        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnRegisterActionPerformed(evt);
             }
         });
 
@@ -198,212 +174,197 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         panBar.setLayout(panBarLayout);
         panBarLayout.setHorizontalGroup(
             panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panBarLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panBarLayout.createSequentialGroup()
-                        .addComponent(lblActionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panBarLayout.createSequentialGroup()
-                        .addComponent(btnAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpdate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
-                        .addComponent(btnReset)
-                        .addGap(18, 18, 18))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panBarLayout.createSequentialGroup()
+                .addContainerGap(408, Short.MAX_VALUE)
+                .addComponent(btnReset)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRegister)
+                .addGap(19, 19, 19))
         );
         panBarLayout.setVerticalGroup(
             panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblActionButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addGroup(panBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDelete)
-                    .addComponent(btnUpdate)
-                    .addComponent(btnAdd)
+                    .addComponent(btnRegister)
                     .addComponent(btnReset))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
 
         panFormCont.add(panBar, java.awt.BorderLayout.PAGE_END);
 
         panForm.setBackground(new java.awt.Color(28, 28, 28));
 
-        lblClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblClientFirstName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientFirstName.setText("First Name:");
+        lblLibrarianFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianFirstName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianFirstName.setText("First Name:");
 
-        lblClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblClientLastName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientLastName.setText("Last Name:");
+        lblLibrarianLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianLastName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianLastName.setText("Last Name:");
 
-        lblClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblClientDoB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientDoB.setText("Date of Birth:");
+        lblLibrarianDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianDoB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianDoB.setText("Date of Birth:");
 
-        lblClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblClientGender.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientGender.setText("Gender:");
+        lblLibrarianGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianGender.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianGender.setText("Gender:");
 
-        lblClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblClientPhoneNumber.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientPhoneNumber.setText("Phone Number:");
+        lblLibrarianPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianPhoneNumber.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianPhoneNumber.setText("Phone Number:");
 
-        lblClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblClientEmailAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientEmailAddress.setText("Email Address:");
+        lblLibrarianEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianEmailAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianEmailAddress.setText("Email Address:");
 
-        txtClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        txtClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        txtClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtLibrarianDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         try {
-            txtClientPhoneNumber.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##########")));
+            txtLibrarianPhoneNumber.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##########")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        txtClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        txtClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        txtClientHomeAddress.setColumns(20);
-        txtClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        txtClientHomeAddress.setLineWrap(true);
-        txtClientHomeAddress.setRows(3);
-        jScrollPane2.setViewportView(txtClientHomeAddress);
+        txtLibrarianHomeAddress.setColumns(20);
+        txtLibrarianHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianHomeAddress.setLineWrap(true);
+        txtLibrarianHomeAddress.setRows(3);
+        jScrollPane2.setViewportView(txtLibrarianHomeAddress);
 
-        lblClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        lblClientHomeAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientHomeAddress.setText("Home Address:");
+        lblLibrarianHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianHomeAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianHomeAddress.setText("Home Address:");
 
-        cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Existing Client" }));
-        cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cbxClientID.addActionListener(new java.awt.event.ActionListener() {
+        cbxLibrarianGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxLibrarianGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
+        cbxLibrarianGender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxLibrarianGender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxClientIDActionPerformed(evt);
+                cbxLibrarianGenderActionPerformed(evt);
             }
         });
 
-        lblClientID.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
-        lblClientID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientID.setText("Load Existing Client:");
+        lblLibrarianUsername.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianUsername.setText("Username:");
 
-        cbxClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        cbxClientGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
-        cbxClientGender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cbxClientGender.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxClientGenderActionPerformed(evt);
-            }
-        });
+        lblLibrarianRepeatPass.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianRepeatPass.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianRepeatPass.setText("Repeat Password:");
 
-        lblClientType.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
-        lblClientType.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblClientType.setText("Client Type:");
+        lblLibrarianPassword.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        lblLibrarianPassword.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLibrarianPassword.setText("Password:");
 
-        cbxClientType.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        cbxClientType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
-        cbxClientType.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cbxClientType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxClientTypeActionPerformed(evt);
-            }
-        });
+        txtLibrarianUsername.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+
+        txtLibrarianPassword.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianPassword.setToolTipText("Insert your password");
+
+        txtLibrarianRepeatPass.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianRepeatPass.setToolTipText("Insert your password");
 
         javax.swing.GroupLayout panFormLayout = new javax.swing.GroupLayout(panForm);
         panForm.setLayout(panFormLayout);
         panFormLayout.setHorizontalGroup(
             panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator3)
             .addGroup(panFormLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panFormLayout.createSequentialGroup()
-                        .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(lblClientPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblClientEmailAddress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblClientHomeAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblClientGender, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(35, 35, 35)
                         .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtClientEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cbxClientGender, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtClientPhoneNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(panFormLayout.createSequentialGroup()
+                                .addComponent(lblLibrarianPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(txtLibrarianPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panFormLayout.createSequentialGroup()
+                                .addComponent(lblLibrarianEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(txtLibrarianEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panFormLayout.createSequentialGroup()
+                                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblLibrarianHomeAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblLibrarianGender, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(35, 35, 35)
+                                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbxLibrarianGender, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panFormLayout.createSequentialGroup()
+                                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblLibrarianFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblLibrarianDoB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblLibrarianUsername, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblLibrarianRepeatPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblLibrarianPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(35, 35, 35)
+                                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtLibrarianFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtLibrarianDoB, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtLibrarianLastName)
+                                    .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtLibrarianRepeatPass, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtLibrarianPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtLibrarianUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE))))))
                     .addGroup(panFormLayout.createSequentialGroup()
-                        .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblClientLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblClientFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblClientDoB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtClientLastName, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtClientFirstName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtClientDoB, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(51, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panFormLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblClientType, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxClientType, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53))
+                        .addContainerGap()
+                        .addComponent(lblLibrarianLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(354, 354, 354)))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         panFormLayout.setVerticalGroup(
             panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panFormLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panFormLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClientType)
-                    .addComponent(cbxClientType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblClientID))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLibrarianUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLibrarianUsername))
                 .addGap(18, 18, 18)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClientFirstName)
-                    .addComponent(txtClientFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLibrarianPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLibrarianPassword))
                 .addGap(18, 18, 18)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtClientLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblClientLastName))
+                    .addComponent(txtLibrarianRepeatPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLibrarianRepeatPass))
                 .addGap(18, 18, 18)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClientDoB)
-                    .addComponent(txtClientDoB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblLibrarianFirstName)
+                    .addComponent(txtLibrarianFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClientGender)
-                    .addComponent(cbxClientGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLibrarianLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLibrarianLastName))
                 .addGap(18, 18, 18)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClientPhoneNumber)
-                    .addComponent(txtClientPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblLibrarianDoB)
+                    .addComponent(txtLibrarianDoB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClientEmailAddress)
-                    .addComponent(txtClientEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblLibrarianGender)
+                    .addComponent(cbxLibrarianGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLibrarianPhoneNumber)
+                    .addComponent(txtLibrarianPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLibrarianEmailAddress)
+                    .addComponent(txtLibrarianEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblClientHomeAddress)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLibrarianHomeAddress))
+                .addGap(19, 19, 19))
         );
 
         panFormCont.add(panForm, java.awt.BorderLayout.CENTER);
@@ -420,9 +381,9 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
-        int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel any client editing, deleting or adding process. Continue?", "Returning to main menu!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel the ongoing registration. Continue?", "Returning to login screen!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (selection == JOptionPane.YES_OPTION) {
-            new unnamedMainMenu().setVisible(true);
+            new unnamedLoginMenu().setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_btnCancelActionPerformed
@@ -431,42 +392,16 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
     // IMPLEMENT LOAD FROM EXISTING BOOK ID > DELETE > UPDATE 
     // FOLLOW THIS ORDER WILL BE MUCH EASIER
     // This method handles addition of books into the system
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         // TODO add your handling code here:
         // Reset the highlighted empty fields to original foreground color
         deHighlightEmpty();
         // To add the client
-        addClientInformation();
-    }//GEN-LAST:event_btnAddActionPerformed
+        addLibrarianInformation();
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
-    // This method will fetch the client type
-    // Can be used for both client loading or addition
-    private void getClientType(){
-        ctype = cbxClientType.getSelectedIndex(); // Get client type
-
-        if (ctype <= 0) { // Will disable the list from any user interaction
-            lblClientID.setText("Load Existing Client:");
-            cspecies = "NUL";
-        } else { // Will display fields according to selected user type
-            lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
-            switch (ctype){
-                case 1:
-                cspecies = "STA";
-                break;
-            case 2:
-                cspecies = "STU";
-                break;
-            default:
-                cspecies = "NUL";
-                break;
-            }
-            // cbxClientID.setEnabled(true);
-            // btnAdd.setEnabled(true);
-        }
-    }
-    
     // This method handles the insertion of client
-    private void addClientInformation(){
+    private void addLibrarianInformation(){
         // Declaring file extension used
         ext = ".txt";        
         saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
@@ -474,464 +409,226 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         DecimalFormat dc = new DecimalFormat("000000");
         try {
             // Fetching IDs from the textfields
-            cID = dc.format(newClientID);
+            lID = dc.format(newLibrarianID);
             // Check if textfields are empty
             emptyFields();
+            // To check username availability
+            if (usernameValidator()) {
+                throw new Exception("Username taken.");
+            }
+            // To check password similarity
+            if (!similarPassword()) {
+                throw new Exception("Password mismatch");
+            }
             // Storing Borrowing entries into variables
             // Checking if gender is unselected
-            if (cbxClientGender.getSelectedIndex() <= 0) {
+            if (cbxLibrarianGender.getSelectedIndex() <= 0) {
                 JOptionPane.showMessageDialog(null, "Gender is unset! Autosetting value to male", "Gender unselected!", JOptionPane.ERROR_MESSAGE);
-                cbxClientGender.setSelectedIndex(1); // Setting the gender to male which is index 1
+                cbxLibrarianGender.setSelectedIndex(1); // Setting the gender to male which is index 1
             }
-            if (cbxClientType.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(null, "Client type is unset! Autosetting value to Staff", "Client type unselected!", JOptionPane.ERROR_MESSAGE);
-                cbxClientGender.setSelectedIndex(1); // Setting the client type to staff which is index 1
-            }
-            String cFirstName = txtClientFirstName.getText();
-            String cLastName = txtClientLastName.getText();
-            String cDoB = txtClientDoB.getText();
-            String cGender = (String) cbxClientGender.getSelectedItem();
-            String cPhoneNumber = txtClientPhoneNumber.getText();
-            String cEmailAddress = txtClientEmailAddress.getText();
-            String cHomeAddress = txtClientHomeAddress.getText();
+            String lUsername = txtLibrarianUsername.getText();
+            String lPassword = String.valueOf(txtLibrarianPassword.getPassword());
+            String lRPassword = String.valueOf(txtLibrarianRepeatPass.getPassword());
+            String lFirstName = txtLibrarianFirstName.getText();
+            String lLastName = txtLibrarianLastName.getText();
+            String lDoB = txtLibrarianDoB.getText();
+            String lGender = (String) cbxLibrarianGender.getSelectedItem();
+            String lPhoneNumber = txtLibrarianPhoneNumber.getText();
+            String lEmailAddress = txtLibrarianEmailAddress.getText();
+            String lHomeAddress  = txtLibrarianHomeAddress.getText();
             // FileWriter and PrintWriter to create and write into book.txt
             try {
                 // FileWriter to write into a new file called client.txt
-                FileWriter cd = new FileWriter(saveDir + "client.txt", true); 
+                FileWriter ld = new FileWriter(saveDir + "librarian.txt", true); 
                 // PrintWriter to print into client.txt
-                PrintWriter cdp = new PrintWriter(cd); 
+                PrintWriter ldp = new PrintWriter(ld); 
                 // To print the line into Borrowing textfile
-                cdp.println(cspecies + cID + ":" +
-                             cFirstName + ":" +
-                             cLastName + ":" +
-                             cDoB + ":" +
-                             cGender + ":" +
-                             cPhoneNumber + ":" + 
-                             cEmailAddress + ":" +
-                             cHomeAddress + ":" +
+                ldp.println(lpfix + lID + ":" +
+                             lUsername + ":" +
+                             lPassword + ":" +
+                             lFirstName + ":" +
+                             lLastName + ":" +
+                             lDoB + ":" +
+                             lGender + ":" +
+                             lPhoneNumber + ":" + 
+                             lEmailAddress + ":" +
+                             lHomeAddress + ":" +
                              "false"); // false to indicate hasn't been deleted status
-                cdp.close();
+                ldp.close();
                 // To display completed borrowing process status
-                JOptionPane.showMessageDialog(null, "Client is successfully added! Press OK to return to client management form.", "Adding client succeeded!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You have been successfully registered as a librarian! Press OK to return to librarian registration form.", "Account creation succeeded!", JOptionPane.INFORMATION_MESSAGE);
                 // To refresh new ID 
-                clientIncrementor();
-                // JOptionPane.showMessageDialog(null, newClientID);
-                // To reload the client information
-                // Integrate the reload part with combo box implementation of Client ID
-                setClientOption();
-                // Refresh the currently displayed client with the latest ID
-                cbxClientID.setSelectedIndex(cbxClientID.getItemCount() - 1);
+                librarianIncrementor();
+                // JOptionPane.showMessageDialog(null, newLibrarianID);
             } catch (IOException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         catch (Exception ex) {
             highlightEmpty();
+            if (usernameValidator()) {
+                JOptionPane.showMessageDialog(null, "Username is already taken by another librarian! Use a different username to proceed.", "Username is in use!", JOptionPane.ERROR_MESSAGE);
+            }
+            if (!similarPassword()) {
+                JOptionPane.showMessageDialog(null, "Password is not matching!", "Username is in use!", JOptionPane.ERROR_MESSAGE);
+            } 
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
+            
             // Continue with displaying which field was affected. ensure it appears before the mnessagebox
         }      
     }
     
     // This method will reset the color of the highlighted labels to default foreground
     private void deHighlightEmpty(){
-        lblClientType.setForeground(fgtxt);
-        lblClientFirstName.setForeground(fgtxt);
-        lblClientLastName.setForeground(fgtxt);
-        lblClientDoB.setForeground(fgtxt);
-        lblClientPhoneNumber.setForeground(fgtxt);
-        lblClientEmailAddress.setForeground(fgtxt);
-        lblClientHomeAddress.setForeground(fgtxt);
+        lblLibrarianUsername.setForeground(fgtxt);
+        lblLibrarianPassword.setForeground(fgtxt);
+        lblLibrarianRepeatPass.setForeground(fgtxt);
+        lblLibrarianFirstName.setForeground(fgtxt);
+        lblLibrarianLastName.setForeground(fgtxt);
+        lblLibrarianDoB.setForeground(fgtxt);
+        lblLibrarianPhoneNumber.setForeground(fgtxt);
+        lblLibrarianEmailAddress.setForeground(fgtxt);
+        lblLibrarianHomeAddress.setForeground(fgtxt);
+    }
+    
+    // This method handles username validation to check if 
+    // the username has already been taken by comparing
+    // records in the librarian text file
+    private boolean usernameValidator(){
+        // Assigning the lID to the selected index value
+        String userTemp = txtLibrarianUsername.getText();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        fetchedBook = false;
+        boolean notAvailable = false;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File librariantxt = new File(saveDir + "librarian.txt");
+        Scanner intLibrarian;
+        try {
+            if (!librariantxt.exists()) {
+                librariantxt.createNewFile();
+            }   
+            // This part loads all book information
+            intLibrarian = new Scanner(librariantxt);
+            // Read lines from the file until no more are left.
+            while (intLibrarian.hasNext())
+            {
+                // Read the next line.
+                String lEntry = intLibrarian.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = lEntry.split(":");
+                // matchedID[0] = matchedID[0].replace("LIB", "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (userTemp.equals(matchedID[1])) {
+                     notAvailable = true;
+                }
+            }
+            intLibrarian.close();
+        } catch (Exception ex) {
+            
+        }
+        return notAvailable;
+    }
+    
+    // This method handles password comparison 
+    private boolean similarPassword(){
+        boolean isSimilar = false;
+        String currPass = String.valueOf(txtLibrarianPassword.getPassword());
+        String comparePass = String.valueOf(txtLibrarianRepeatPass.getPassword());
+        if ("".equals(currPass) || "".equals(comparePass)) {
+            isSimilar = false;
+        } else if (currPass.equals(comparePass)) {
+            isSimilar = true;
+        }
+        return isSimilar;
     }
     
     // This method will highlight empty fields with yellow color upon call
     private void highlightEmpty() {
-        if (cbxClientType.getSelectedIndex() <= 0) {
-            lblClientType.setForeground(Color.yellow);
+        if ("".equals(txtLibrarianUsername.getText())) {
+            lblLibrarianUsername.setForeground(Color.yellow);
         }
-        if ("".equals(txtClientFirstName.getText())) {
-            lblClientFirstName.setForeground(Color.yellow);
+        if ("".equals(String.valueOf(txtLibrarianPassword.getPassword()))) {
+            lblLibrarianPassword.setForeground(Color.yellow);
         }
-        if ("".equals(txtClientLastName.getText())) {
-            lblClientLastName.setForeground(Color.yellow);
+        if ("".equals(String.valueOf(txtLibrarianRepeatPass.getPassword()))) {
+            lblLibrarianRepeatPass.setForeground(Color.yellow);
         }
-        if ("".equals(txtClientDoB.getText())) {
-            lblClientDoB.setForeground(Color.yellow);
+        if ("".equals(txtLibrarianFirstName.getText())) {
+            lblLibrarianFirstName.setForeground(Color.yellow);
         }
-        if ("".equals(txtClientPhoneNumber.getText())) {
-            lblClientPhoneNumber.setForeground(Color.yellow);
+        if ("".equals(txtLibrarianLastName.getText())) {
+            lblLibrarianLastName.setForeground(Color.yellow);
         }
-        if ("".equals(txtClientEmailAddress.getText())) {
-            lblClientEmailAddress.setForeground(Color.yellow);
+        if ("".equals(txtLibrarianDoB.getText())) {
+            lblLibrarianDoB.setForeground(Color.yellow);
         }
-        if ("".equals(txtClientHomeAddress.getText())) {
-            lblClientHomeAddress.setForeground(Color.yellow);
+        if ("".equals(txtLibrarianPhoneNumber.getText())) {
+            lblLibrarianPhoneNumber.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianEmailAddress.getText())) {
+            lblLibrarianEmailAddress.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianHomeAddress.getText())) {
+            lblLibrarianHomeAddress.setForeground(Color.yellow);
         }   
     }
     
     // This method is to handle empty book fields
     // Create a new exception class!
     private void emptyFields() throws Exception {
-        if ("".equals(txtClientFirstName.getText())) {
-            throw new Exception("Empty client first name");
+        if ("".equals(txtLibrarianUsername.getText())) {
+            throw new Exception("Empty username");
         }
-        if ("".equals(txtClientLastName.getText())) {
-            throw new Exception("Empty client last name");
+        if ("".equals(String.valueOf(txtLibrarianPassword.getPassword()))) {
+            throw new Exception("Empty password");
         }
-        if ("".equals(txtClientPhoneNumber.getText())) {
-            throw new Exception("Empty client phone number");
+        if ("".equals(String.valueOf(txtLibrarianRepeatPass.getPassword()))) {
+            throw new Exception("Empty repeat password");
         }
-        if ("".equals(txtClientEmailAddress.getText())) {
-            throw new Exception("Empty client email address");
+        if ("".equals(txtLibrarianFirstName.getText())) {
+            throw new Exception("Empty first name");
         }
-        if ("".equals(txtClientHomeAddress.getText())) {
-            throw new Exception("Empty client home address");
+        if ("".equals(txtLibrarianLastName.getText())) {
+            throw new Exception("Empty last name");
+        }
+        if ("".equals(txtLibrarianPhoneNumber.getText())) {
+            throw new Exception("Empty phone number");
+        }
+        if ("".equals(txtLibrarianEmailAddress.getText())) {
+            throw new Exception("Empty email address");
+        }
+        if ("".equals(txtLibrarianHomeAddress.getText())) {
+            throw new Exception("Empty home address");
         }  
     }
     
-    private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
-        // TODO add your handling code here:
-        // Clear previous fields value
-        clearClient();
-        deHighlightEmpty();
-        // Loads index with Book ID only
-        if (cbxClientID.getSelectedIndex() > 0) {
-            loadClientID();
-            btnDelete.setEnabled(true);
-            btnUpdate.setEnabled(true);
-        } else {
-            // Disabling action buttons when no book is loaded. Add button is still available to accept new book
-            btnDelete.setEnabled(false);
-            btnUpdate.setEnabled(false);
-        }
-        
-    }//GEN-LAST:event_cbxClientIDActionPerformed
-
-    // This method deletes the book
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int selection = JOptionPane.showConfirmDialog(null, "Are you sure? This action will delete the client from the system but will still be available inside the database.", "Deleting a client!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (selection == JOptionPane.YES_OPTION) {
-            deleteClient();
-            setClientOption();
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    // This method updates the book
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
-        updateClientInformation();
-        loadClientID();
-    }//GEN-LAST:event_btnUpdateActionPerformed
-
-    private void cbxClientGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientGenderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxClientGenderActionPerformed
-
-    private void cbxClientTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientTypeActionPerformed
-        // TODO add your handling code here:
-        deHighlightEmpty();
-        clearClient();
-        // Loads index with Client type only
-        if (cbxClientType.getSelectedIndex() > 0) {
-            getClientType();
-            setClientOption();
-            cbxClientID.setEnabled(true);
-            btnAdd.setEnabled(true);
-        } else {
-            // Disabling action buttons when no client is loaded. Add button is still available to accept new book
-            getClientType();
-            setClientOption();
-            cbxClientID.setEnabled(false);
-            btnAdd.setEnabled(false);
-            btnUpdate.setEnabled(false);
-            btnDelete.setEnabled(false);
-        }
-    }//GEN-LAST:event_cbxClientTypeActionPerformed
     
-    // This method updates the selected book with information found in the fields
-    private void updateClientInformation(){
+    
+    private void cbxLibrarianGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLibrarianGenderActionPerformed
         // TODO add your handling code here:
-        try {
-            // To get the book ID
-            cID = (String) cbxClientID.getSelectedItem();
-            // To rename original book.txt to book.bak
-            File clientOri = new File(saveDir + "client.txt");
-            File clientBak = new File(saveDir + "clientBak.txt");
-            // To check if clientBak.txt is present or not
-            if (!clientBak.exists()){
-                clientOri.createNewFile();
-            }
-            // This is for debugging only!
-            // JOptionPane.showMessageDialog(null, "renamed");
-            // This is to rename the existing book.txt to clientBak.txt
-            clientOri.renameTo(clientBak);
-            // This is to open, find and replace a specific book record
-            // Requires temporary file to store current state
-            // FileWriter to write into a new file called book.txt
-            FileWriter cd = new FileWriter(saveDir + "client.txt"); 
-            // PrintWriter to print into book.txt
-            PrintWriter cdp = new PrintWriter(cd); 
-            // This is to open and read clientBak.txt 
-            File clienttxt = new File(saveDir + "clientBak.txt");
-            // This is to instantiate the file opened earlier
-            Scanner inputFile = new Scanner(clienttxt);
-            // This array is to contain all lines
-            String[] matchedID;
-            // This is only for debugging!
-            // boolean itWorked = false;
-            // Read lines from the file until no more are left.
-            while (inputFile.hasNext())
-            {
-                // This is for debugging only!
-                // JOptionPane.showMessageDialog(null, "In loop");
-                // Read the next line.
-                String bEntry = inputFile.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                // Check if the read line has current book ID
-                if (matchedID[0].equals(cspecies + cID)) {
-                    // Inserting the new information from the text fields into the book line
-                    matchedID[1] = txtClientFirstName.getText();
-                    matchedID[2] = txtClientLastName.getText();
-                    matchedID[3] = txtClientDoB.getText();
-                    matchedID[4] = (String) cbxClientGender.getSelectedItem();
-                    matchedID[5] = txtClientPhoneNumber.getText();
-                    matchedID[6] = txtClientEmailAddress.getText();
-                    matchedID[7] = txtClientHomeAddress.getText();
-                    matchedID[8] = "false";
-                    // JOptionPane.showMessageDialog(null, "Yes it worked");
-                }
-                // Rewrite the new book.txt with values found in clientBak.txt
-                cdp.println(matchedID[0] + ":" +
-                            matchedID[1] + ":" +
-                            matchedID[2] + ":" +
-                            matchedID[3] + ":" +
-                            matchedID[4] + ":" +
-                            matchedID[5] + ":" +
-                            matchedID[6] + ":" +
-                            matchedID[7] + ":" +
-                            matchedID[8]);
-
-            }
-            // Close the clientBak.txt reader
-            inputFile.close();
-            // This deletes clientBak.txt
-            clientBak.delete();
-            // This closes the book.txt printer 
-            cdp.close();
-            JOptionPane.showMessageDialog(null, "Client record has been updated!", "Client updated!", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
-
-        }
-    }
-    
-    // This method will set option list for book ID using ComboBoxModel
-    private void setClientOption(){
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        cList = new DefaultComboBoxModel();
-        String cLabel; // Declared to store title of the selected client type
-        switch (cspecies) {
-            case "STA":
-                cLabel = "Staff";
-                break;
-            case "STU":
-                cLabel = "Student";
-                break;
-            default:
-                cLabel = "Existing";
-        }
-        // Adding default text
-        cList.addElement("Select " + cLabel + " ID");
-        cbxClientID.setModel(cList);
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File clienttxt = new File(saveDir + "client.txt");
-        Scanner intClient;
-        try {
-            // This part loads all book information
-            intClient = new Scanner(clienttxt);
-            // This is to increment the discovered client assignment index
-            int i = 0;
-            // Read lines from the file until no more are left.
-            while (intClient.hasNext())
-            {
-                // Read the next line.
-                String bEntry = intClient.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                String temptype = null;
-                if (matchedID[0].contains("STA")) {
-                    temptype = "STA";
-                } else if (matchedID[0].contains("STU")) {
-                    temptype = "STU";
-                }
-                // Get the digits out
-                String preOut = matchedID[0].replace(temptype, "");
-                // JOptionPane.showMessageDialog(null, preOut);
-                // Replace the string part with empty digits, leaving only the prefix
-                String numOut = matchedID[0].replace(preOut, "");
-                // JOptionPane.showMessageDialog(null, numOut);
-                if (i < 200) {
-                    if ("false".equals(matchedID[8]) && cspecies.equals(numOut)) {
-                        matchedID[0] = matchedID[0].replace(cspecies, "");
-                        cList.addElement(matchedID[0]);
-                        i++;
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Maximum client entry limit reached! Stopping at 200th record.", "Client list maxed out!", JOptionPane.ERROR_MESSAGE);
-                    break;
-                }
-            }
-            // OptionPane.showMessageDialog(null, i);
-            intClient.close();
-            // Check if there are no clients at all for each type
-            if (cList.getSize() == 1) {
-                cList.removeAllElements();
-                cList.addElement("No client(s) available.");
-            }
-            // Attempt to list all fetched client ID into the list box
-            cbxClientID.setModel(cList);
-            // Select index 0 as default
-            cbxClientID.setSelectedIndex(0);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    // This method will set the deleted flag of the book
-    private void deleteClient(){
-        // TODO add your handling code here:
-        try {
-            // To rename original book.txt to book.bak
-            File clientOri = new File(saveDir + "client.txt");
-            File clientBak = new File(saveDir + "clientBak.txt");
-            // To check if clientBak.txt is present or not
-            if (!clientBak.exists()){
-                clientOri.createNewFile();
-            }
-            // This is for debugging only!
-            // JOptionPane.showMessageDialog(null, "renamed");
-            // This is to rename the existing book.txt to clientBak.txt
-            clientOri.renameTo(clientBak);
-            // This is to open, find and replace a specific book record
-            // Requires temporary file to store current state
-            // FileWriter to write into a new file called book.txt
-            FileWriter cd = new FileWriter(saveDir + "client.txt"); 
-            // PrintWriter to print into book.txt
-            PrintWriter cdp = new PrintWriter(cd); 
-            // This is to open and read clientBak.txt 
-            File clienttxt = new File(saveDir + "clientBak.txt");
-            // This is to instantiate the file opened earlier
-            Scanner inputFile = new Scanner(clienttxt);
-            // This array is to contain all lines
-            String[] matchedID;
-            // This is only for debugging!
-            // boolean itWorked = false;
-            // Read lines from the file until no more are left.
-            while (inputFile.hasNext())
-            {
-                // This is for debugging only!
-                // JOptionPane.showMessageDialog(null, "In loop");
-                // Read the next line.
-                String cEntry = inputFile.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = cEntry.split(":");
-                // Check if the read line has current book ID
-                if (matchedID[0].equals(cspecies + cID)) {
-                    // Setting the deleted flag to true
-                    matchedID[8] = "true";
-                    // JOptionPane.showMessageDialog(null, "Yes it worked");
-                }
-                // Rewrite the new book.txt with values found in clientBak.txt
-                cdp.println(matchedID[0] + ":" +
-                            matchedID[1] + ":" +
-                            matchedID[2] + ":" +
-                            matchedID[3] + ":" +
-                            matchedID[4] + ":" +
-                            matchedID[5] + ":" +
-                            matchedID[6] + ":" +
-                            matchedID[7] + ":" +
-                            matchedID[8]);
-
-            }
-            // Close the clientBak.txt reader
-            inputFile.close();
-            // This deletes clientBak.txt
-            clientBak.delete();
-            // This closes the book.txt printer 
-            cdp.close();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
-
-        }
-    }
-    
-    // This method will load the selected book ID
-    private void loadClientID(){
-        // Assigning the cID to the selected index value
-        cID = (String) cbxClientID.getSelectedItem();
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        fetchedBook = false;
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File clienttxt = new File(saveDir + "client.txt");
-        Scanner intClient;
-        try {
-            // This part loads all book information
-            intClient = new Scanner(clienttxt);
-            // Read lines from the file until no more are left.
-            while (intClient.hasNext())
-            {
-                // Read the next line.
-                String bEntry = intClient.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                matchedID[0] = matchedID[0].replace(cspecies, "");
-                // JOptionPane.showMessageDialog(null, i);
-                if (cbxClientID.getSelectedItem().equals(matchedID[0])) {
-                    txtClientFirstName.setText(matchedID[1]);
-                    txtClientLastName.setText(matchedID[2]);
-                    txtClientDoB.setText(matchedID[3]);
-                    switch (matchedID[4]) {
-                        case "Male":
-                            cbxClientGender.setSelectedIndex(1);
-                            break;
-                        case "Female":
-                            cbxClientGender.setSelectedIndex(2);
-                            break;
-                        default:
-                            cbxClientGender.setSelectedIndex(1);
-                    }
-                    txtClientPhoneNumber.setText(matchedID[5]);
-                    txtClientEmailAddress.setText(matchedID[6]);
-                    txtClientHomeAddress.setText(matchedID[7]);
-                }
-            }
-            intClient.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    }//GEN-LAST:event_cbxLibrarianGenderActionPerformed
     
     // This method clears book related fields
-    private void clearClient(){
+    private void clearLibrarian(){
         // To clean up previous or default values from fields
-        txtClientFirstName.setText("");
-        txtClientLastName.setText("");
-        txtClientDoB.setText("");
-        cbxClientGender.setSelectedIndex(0);
-        txtClientPhoneNumber.setText("");
-        txtClientEmailAddress.setText("");
-        txtClientHomeAddress.setText("");
-        cID = "";
+        txtLibrarianUsername.setText("");
+        txtLibrarianPassword.setText("");
+        txtLibrarianRepeatPass.setText("");
+        txtLibrarianFirstName.setText("");
+        txtLibrarianLastName.setText("");
+        txtLibrarianDoB.setText("");
+        cbxLibrarianGender.setSelectedIndex(0);
+        txtLibrarianPhoneNumber.setText("");
+        txtLibrarianEmailAddress.setText("");
+        txtLibrarianHomeAddress.setText("");
+        lID = "";
     }
     
     // This method will check through borrowing.txt and look for latest ID and increments from there
-    private void clientIncrementor(){
+    private void librarianIncrementor(){
         // This is to ensure the entire method have access to the matchedID array
         String[] matchedID = null;
         // This flag is to check if the while loop is triggered or not. Triggered while loop indicates presence of records but relevance might not
@@ -940,51 +637,44 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
             // For debugging purpose only
             // JOptionPane.showMessageDialog(null, bID);
-            File clienttxt = new File(saveDir + "client.txt");
+            File librariantxt = new File(saveDir + "librarian.txt");
+            if (!librariantxt.exists()) {
+                librariantxt.createNewFile();
+            }
             Scanner inputFile;
             try {
-                inputFile = new Scanner(clienttxt);
+                inputFile = new Scanner(librariantxt);
                 // Read lines from the file until no more are left.
                 while (inputFile.hasNext())
                 {
                    // Read the next line.
-                   String bEntry = inputFile.nextLine();
+                   String lEntry = inputFile.nextLine();
                    // Split the line by using the delimiter ":" (semicolon) and store into array.
-                   matchedID = bEntry.split(":");
-                   String temptype = null;
-                   if (matchedID[0].contains("STA")) {
-                       temptype = "STA";
-                   } else if (matchedID[0].contains("STU")) {
-                       temptype = "STU";
-                   }
-                   matchedID[0] = matchedID[0].replace(temptype, "");
+                   matchedID = lEntry.split(":");
+                   matchedID[0] = matchedID[0].replace("LIB", "");
                    hasRecord = true;
                 }
                 inputFile.close();
                 if (!hasRecord) {
-                    JOptionPane.showMessageDialog(null, "No client(s) record of any type was found! Restarting database entry.", "Client database is empty!", JOptionPane.ERROR_MESSAGE);
-                    newClientID = 1;
+                    JOptionPane.showMessageDialog(null, "No librarian(s) record was found! Restarting database entry.", "Librarian database is empty!", JOptionPane.ERROR_MESSAGE);
+                    newLibrarianID = 1;
                 } else {
-                    newClientID = Integer.parseInt(matchedID[0]) + 1;
+                    newLibrarianID = Integer.parseInt(matchedID[0]) + 1;
                 }
-                // JOptionPane.showMessageDialog(null, newClientID);
+                // JOptionPane.showMessageDialog(null, newLibrarianID);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
-            JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid input! Librarian ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     private void initGUI(){
-        cbxClientID.setEnabled(false);
-        btnAdd.setEnabled(false);
-        btnUpdate.setEnabled(false);
-        btnDelete.setEnabled(false);
         // Set the initial value for new book
-        clientIncrementor();
+        librarianIncrementor();
         // This anon class handles window closing event
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e){
@@ -1023,38 +713,36 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnRegister;
     private javax.swing.JButton btnReset;
-    private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<String> cbxClientGender;
-    private javax.swing.JComboBox<String> cbxClientID;
-    private javax.swing.JComboBox<String> cbxClientType;
+    private javax.swing.JComboBox<String> cbxLibrarianGender;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JLabel lblActionButton;
-    private javax.swing.JLabel lblClientDetailsTitle;
-    private javax.swing.JLabel lblClientDoB;
-    private javax.swing.JLabel lblClientEmailAddress;
-    private javax.swing.JLabel lblClientFirstName;
-    private javax.swing.JLabel lblClientGender;
-    private javax.swing.JLabel lblClientHomeAddress;
-    private javax.swing.JLabel lblClientID;
-    private javax.swing.JLabel lblClientLastName;
-    private javax.swing.JLabel lblClientPhoneNumber;
-    private javax.swing.JLabel lblClientType;
+    private javax.swing.JLabel lblLibrarianDetailsTitle;
+    private javax.swing.JLabel lblLibrarianDoB;
+    private javax.swing.JLabel lblLibrarianEmailAddress;
+    private javax.swing.JLabel lblLibrarianFirstName;
+    private javax.swing.JLabel lblLibrarianGender;
+    private javax.swing.JLabel lblLibrarianHomeAddress;
+    private javax.swing.JLabel lblLibrarianLastName;
+    private javax.swing.JLabel lblLibrarianPassword;
+    private javax.swing.JLabel lblLibrarianPhoneNumber;
+    private javax.swing.JLabel lblLibrarianRepeatPass;
+    private javax.swing.JLabel lblLibrarianUsername;
     private javax.swing.JPanel panBar;
     private javax.swing.JPanel panCenter;
     private javax.swing.JPanel panForm;
     private javax.swing.JPanel panFormCont;
     private javax.swing.JPanel panMain;
     private javax.swing.JPanel panTop;
-    private javax.swing.JFormattedTextField txtClientDoB;
-    private javax.swing.JTextField txtClientEmailAddress;
-    private javax.swing.JTextField txtClientFirstName;
-    private javax.swing.JTextArea txtClientHomeAddress;
-    private javax.swing.JTextField txtClientLastName;
-    private javax.swing.JFormattedTextField txtClientPhoneNumber;
+    private javax.swing.JFormattedTextField txtLibrarianDoB;
+    private javax.swing.JTextField txtLibrarianEmailAddress;
+    private javax.swing.JTextField txtLibrarianFirstName;
+    private javax.swing.JTextArea txtLibrarianHomeAddress;
+    private javax.swing.JTextField txtLibrarianLastName;
+    private javax.swing.JPasswordField txtLibrarianPassword;
+    private javax.swing.JFormattedTextField txtLibrarianPhoneNumber;
+    private javax.swing.JPasswordField txtLibrarianRepeatPass;
+    private javax.swing.JTextField txtLibrarianUsername;
     // End of variables declaration//GEN-END:variables
 }

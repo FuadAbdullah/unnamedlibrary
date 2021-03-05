@@ -15,9 +15,13 @@ import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Scanner;
 
 /**
  *
@@ -25,6 +29,16 @@ import java.net.URISyntaxException;
  */
 public class unnamedLoginMenu extends javax.swing.JFrame {
     
+    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, lID, saveDir;
+    String username; // Store current user's username
+    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
+    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
+    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
+    final String bpfix = "BOO", brpfix = "BOR";// For book and borrow ID prefixes
+    Color fgtxt = new Color(187,187,187); // Default foreground color for text
+    int newClientID; // To store new book ID
+    int ctype; // Value to represent selected Client combo box
+    DefaultComboBoxModel cList; // ComboBoxModel for Book ID
     boolean filledUsername = false, filledPassword = false; // Boolean to hide or show Login button depending on rules fulfillment
     
     /**
@@ -179,6 +193,11 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         btnRegister.setToolTipText("Opens registration form");
         btnRegister.setActionCommand("");
         btnRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
 
         txtPassword.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtPassword.setToolTipText("Insert your password");
@@ -201,7 +220,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         panCredentialsLayout.setHorizontalGroup(
             panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panCredentialsLayout.createSequentialGroup()
-                .addGap(181, 181, 181)
+                .addGap(188, 188, 188)
                 .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(panCredentialsLayout.createSequentialGroup()
                         .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,12 +237,12 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
                     .addGroup(panCredentialsLayout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addComponent(spCredentials)))
-                .addContainerGap(221, Short.MAX_VALUE))
+                .addContainerGap(214, Short.MAX_VALUE))
         );
         panCredentialsLayout.setVerticalGroup(
             panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panCredentialsLayout.createSequentialGroup()
-                .addGap(116, 116, 116)
+                .addGap(117, 117, 117)
                 .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsername)
                     .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -237,7 +256,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
                 .addGroup(panCredentialsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegister)
                     .addComponent(btnLogin))
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         lblDesigner.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 8)); // NOI18N
@@ -286,9 +305,9 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         panCenterLayout.setVerticalGroup(
             panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panCenterLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addComponent(panCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGap(7, 7, 7)
                 .addGroup(panCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDesigner, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panCenterLayout.createSequentialGroup()
@@ -315,15 +334,81 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
     // TO COMMENT
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        if (txtUsername.getText().equals("admin") && txtPassword.getText().equals("admin")) {
+        if (accountValidator()) {
+            startSession();
             new unnamedMainMenu().setVisible(true);
             this.dispose();
         } else {
-        
+            JOptionPane.showMessageDialog(null, "Authentication failed! Your username or password may be wrong.", "Account Authentication Failed!", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    // This method handles username and password
+    private boolean accountValidator() {
+        // TODO add your handling code here:
+        boolean isAuthenticated = false;
+        try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // To get the username nad password
+            String tempUser = txtUsername.getText();
+            String tempPass = String.valueOf(txtPassword.getPassword());
+            // To rename original book.txt to book.bak
+            File librariantext = new File(saveDir + "librarian.txt");
+            // To check if clientBak.txt is present or not
+            if (!librariantext.exists()){
+                librariantext.createNewFile();
+            }
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(librariantext);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String lEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = lEntry.split(":");
+                // Check if the read line has current book ID
+                if (tempUser.equals(matchedID[1]) && tempPass.equals(matchedID[2])) {
+                    isAuthenticated = true;
+                    lID = matchedID[0].replace("LIB", "");
+                    username = matchedID[1];
+                }
+            }
+            // Close the clientBak.txt reader
+            inputFile.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+
+        }
+        return isAuthenticated;
+    }
+    
+    // This method is to create a temporary session that stores relevant user detail
+    private void startSession(){
+        try {
+        // To get directory  
+       saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        File cache = new File(saveDir + "cache.txt");
+        if (!cache.exists()) {
+            cache.createNewFile();
+        }
+        FileWriter ld = new FileWriter(saveDir + "cache.txt", true); 
+        PrintWriter ldp = new PrintWriter(ld);
+        ldp.println(lID + ":" + username);
+        ldp.close();
+        } catch (Exception ex) {
+            
+        }
+    }
+    
     // TO COMMENT
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
@@ -358,6 +443,12 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Something went wrong while trying to access the website", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_lblLinkedinMouseClicked
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        // TODO add your handling code here:
+        new unnamedRegisterMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
     // This method determines if btnLogin should be displayed or not depending on the rules fulfillment
     private void showLoginButton(){

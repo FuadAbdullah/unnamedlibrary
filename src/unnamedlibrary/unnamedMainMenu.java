@@ -7,6 +7,9 @@ package unnamedlibrary;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -17,6 +20,8 @@ import javax.swing.event.DocumentListener;
  */
 public class unnamedMainMenu extends javax.swing.JFrame {
 
+    String saveDir, username, lID;
+    
     /**
      * Creates new form unnamedMainMenu
      */
@@ -36,10 +41,10 @@ public class unnamedMainMenu extends javax.swing.JFrame {
 
         panMain = new javax.swing.JPanel();
         panTop = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        lblTitle = new javax.swing.JLabel();
+        lblWelcome = new javax.swing.JLabel();
+        sptTop = new javax.swing.JSeparator();
+        btnLogOut = new javax.swing.JButton();
         panCenter = new javax.swing.JPanel();
         panControl = new javax.swing.JPanel();
         panButtons = new javax.swing.JPanel();
@@ -68,21 +73,21 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         panTop.setMaximumSize(new java.awt.Dimension(804, 116));
         panTop.setMinimumSize(new java.awt.Dimension(804, 116));
 
-        jLabel1.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 24)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("unnamed Library Management System");
+        lblTitle.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 24)); // NOI18N
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitle.setText("unnamed Library Management System");
 
-        jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Logged in as Librarian <Librarian ID>, hello <username>!");
+        lblWelcome.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
+        lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblWelcome.setText("Logged in as Librarian <Librarian ID>, hello <username>!");
 
-        jButton1.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jButton1.setText("Log Out");
-        jButton1.setToolTipText("Logs out current user");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogOut.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
+        btnLogOut.setText("Log Out");
+        btnLogOut.setToolTipText("Logs out current user");
+        btnLogOut.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLogOutActionPerformed(evt);
             }
         });
 
@@ -91,18 +96,15 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         panTopLayout.setHorizontalGroup(
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panTopLayout.createSequentialGroup()
-                .addGap(208, 208, 208)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panTopLayout.createSequentialGroup()
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
+                    .addComponent(sptTop)
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addGap(202, 202, 202)
-                        .addComponent(jLabel1)
+                        .addComponent(lblTitle)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panTopLayout.setVerticalGroup(
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,14 +112,14 @@ public class unnamedMainMenu extends javax.swing.JFrame {
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jLabel1))
+                        .addComponent(lblTitle))
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1)))
+                        .addComponent(btnLogOut)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sptTop, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(lblWelcome)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -249,17 +251,32 @@ public class unnamedMainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // TO COMMENT
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Logging out!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (result == JOptionPane.YES_OPTION) {
+            cacheClear();
             new unnamedLoginMenu().setVisible(true);
             this.dispose();
         } else {
             // Do nothing
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnLogOutActionPerformed
 
+    // This method is to delete the session cache upon logout
+    private void cacheClear(){
+        try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            File cache = new File(saveDir + "cache.txt");
+            if (cache.exists()) {
+                cache.delete();
+            }
+        } catch (Exception ex) {
+            
+        }
+    }
+    
     // This method closes main menu and opens borrowing form
     private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
         // TODO add your handling code here:
@@ -297,8 +314,56 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnManageClientActionPerformed
 
+    // This method will change the welcome text to display currently logged in user information
+    private void welcomeText(){
+        if (lID != null && username != null) {
+            lblWelcome.setText("Logged in as Librarian " + lID + ", hello " + username + "!");
+        } else {
+            lblWelcome.setForeground(Color.red);
+            lblWelcome.setText("UNAUTHORIZED LOGIN! RE-LOGIN TO CONTINUE USING THE SYSTEM!");
+        }
+    }
+    
+    // This method will get the information from cache.txt for currently logged in user
+    private void getCache(){
+        try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // To rename original book.txt to book.bak
+            File cache = new File(saveDir + "cache.txt");
+            // To check if clientBak.txt is present or not
+            if (!cache.exists()){
+                throw new Exception("Illegal session!"); // Illegal session as no cache file can be found. one is created upon login
+            }
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(cache);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String lEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = lEntry.split(":");
+                lID = matchedID[0];
+                username = matchedID[1];
+            }
+            // Close the clientBak.txt reader
+            inputFile.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+
+        }
+    }
+    
     private void initGUI(){
-        
+        getCache();
+        welcomeText();
         // This anon class handles window closing event
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e){
@@ -340,18 +405,18 @@ public class unnamedMainMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrow;
     private javax.swing.JButton btnHistory;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnManageBook;
     private javax.swing.JButton btnManageClient;
     private javax.swing.JButton btnRenew;
     private javax.swing.JButton btnReturn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel panButtons;
     private javax.swing.JPanel panCenter;
     private javax.swing.JPanel panControl;
     private javax.swing.JPanel panMain;
     private javax.swing.JPanel panTop;
+    private javax.swing.JSeparator sptTop;
     // End of variables declaration//GEN-END:variables
 }
