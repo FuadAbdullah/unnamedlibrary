@@ -253,7 +253,7 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Logging out!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (result == JOptionPane.YES_OPTION) {
-            new unnamedLogin().setVisible(true);
+            new unnamedLoginMenu().setVisible(true);
             this.dispose();
         } else {
             // Do nothing
@@ -281,19 +281,19 @@ public class unnamedMainMenu extends javax.swing.JFrame {
 
     private void btnHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistoryActionPerformed
         // TODO add your handling code here:
-        new unnamedHistory().setVisible(true);
+        new unnamedHistoryMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnHistoryActionPerformed
 
     private void btnManageBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageBookActionPerformed
         // TODO add your handling code here:
-        new unnamedBook().setVisible(true);
+        new unnamedBookMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnManageBookActionPerformed
 
     private void btnManageClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageClientActionPerformed
         // TODO add your handling code here:
-        new unnamedClient().setVisible(true);
+        new unnamedClientMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnManageClientActionPerformed
 

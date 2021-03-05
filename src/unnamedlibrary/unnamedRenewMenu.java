@@ -41,7 +41,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
     String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
     boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
+    boolean isOverdue, hasRenewed, hasFine, hasReturned, isDeleted; 
     final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
     Color fgtxt = new Color(187,187,187); // Default foreground color for text
     
@@ -212,6 +212,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         txtBorrowDue.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
         txtBorrowDue.setFocusable(false);
         txtBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBorrowDue.setMaximumSize(new java.awt.Dimension(126, 31));
+        txtBorrowDue.setMinimumSize(new java.awt.Dimension(126, 31));
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnCancel.setText("Cancel Renew");
@@ -285,7 +287,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                                 .addGroup(panTopLayout.createSequentialGroup()
                                     .addComponent(lblBorrowDue)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGap(18, 18, 18)
                                     .addComponent(lblIsOverdue))
                                 .addComponent(btnLoadBorrow)))))
@@ -1131,6 +1133,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         boolean hasBorrow = false, hasBook = false;
         fetchedBorrow = false;
         fetchedBook = false;
+        // To tell the system not to display deleted book
+        isDeleted = false;
         // To clean up previous or default values from fields
         clearBorrow();
         lblIsReturned.setForeground(fgtxt);
@@ -1221,9 +1225,9 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     // Split the line by using the delimiter ":" (semicolon) and store into array.
                     String[] matchedIDbk = bEntry.split(":");
                     if (matchedIDbk[0].equals(bpfix + bID)){
+                        hasBook = true;
+                        fetchedBook = true;
                         if ("false".equals(matchedIDbk[9])) {
-                            hasBook = true;
-                            fetchedBook = true;
                             // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
                             txtBookTitle.setText(matchedIDbk[1]);
                             txtBookGenre.setText(matchedIDbk[2]);
@@ -1232,6 +1236,9 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                             txtBookAuthor.setText(matchedIDbk[6]);
                             txtPublishDate.setText(matchedIDbk[7]);
                             txtArrivalDate.setText(matchedIDbk[8]);
+                        } else if ("true".equals(matchedIDbk[9])) {
+                            isDeleted = true;
+                            JOptionPane.showMessageDialog(null, "Book has been deleted and is not accessible at the moment! Renewing process is not possible.", "Book record has been deleted!", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
@@ -1261,7 +1268,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Cannot load borrowing information without Client ID!", "Empty Client ID entry!", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid input! Borrow ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-                // JOptionPane.showMessageDialog(null, ex);
+                JOptionPane.showMessageDialog(null, ex);
             }
         }   
             
@@ -1612,7 +1619,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
             // To get a day before due date
             int earlydate = datediff - 1;
             // To enable the Renew button if and only if it is the day before or on the day of overdue itself
-            if (!hasFine && !isOverdue & !hasRenewed && !hasReturned) {
+            if (!hasFine && !isOverdue & !hasRenewed && !hasReturned && !isDeleted) {
                 if (datediff >= 0 && datediff <= 1) {
                     // Debugging only!
                     // JOptionPane.showMessageDialog(null, "Date comparison worked.");
@@ -1639,7 +1646,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     lblMessage.setVisible(true);
                     lblMessage.setText("Can renew in " + earlydate + " day(s).");
                 }
-            } else if (hasRenewed || hasReturned) {
+            } else if (hasRenewed || hasReturned || isDeleted) {
                 // Displaying client inability to renew
                 lblMessage.setVisible(true);
                 lblMessage.setText("Client is not eligible for renewal.");

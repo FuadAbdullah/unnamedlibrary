@@ -35,12 +35,12 @@ import org.joda.time.format.DateTimeFormatter;
  *
  * @author fab07
  */
-public class unnamedHistory extends javax.swing.JFrame {
+public class unnamedHistoryMenu extends javax.swing.JFrame {
     
     String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
     boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
+    boolean isOverdue, hasRenewed, hasFine, hasReturned, isDeleted; 
     final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
     Color fgtxt = new Color(187,187,187); // Default foreground color for text
     int ctype; // Value to represent selected Client combo box
@@ -49,7 +49,7 @@ public class unnamedHistory extends javax.swing.JFrame {
     /**
      * Creates new form unnamedHistory
      */
-    public unnamedHistory() {
+    public unnamedHistoryMenu() {
         initComponents();
         initGUI();
     }
@@ -887,8 +887,10 @@ public class unnamedHistory extends javax.swing.JFrame {
                             matchedID[0] = matchedID[0].replace(cspecies, "");
                             // JOptionPane.showMessageDialog(null, i);
                             if (i < 200) {
-                                cList.addElement(matchedID[0]);
-                                i++;
+                                if ("false".equals(matchedID[8])) {
+                                    cList.addElement(matchedID[0]);
+                                    i++;
+                                }
                             } else {
                                 JOptionPane.showMessageDialog(null, "Maximum client entry limit reached! Stopping at 200th record.", "Client list maxed out!", JOptionPane.ERROR_MESSAGE);
                                 break;
@@ -1193,14 +1195,19 @@ public class unnamedHistory extends javax.swing.JFrame {
                         if (matchedIDbk[0].equals(bpfix + bID)){
                             hasBook = true;
                             fetchedBook = true;
-                            // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
-                            txtBookTitle.setText(matchedIDbk[1]);
-                            txtBookGenre.setText(matchedIDbk[2]);
-                            txtBookSummary.setText(matchedIDbk[3]);
-                            txtBookPublisher.setText(matchedIDbk[5]);
-                            txtBookAuthor.setText(matchedIDbk[6]);
-                            txtPublishDate.setText(matchedIDbk[7]);
-                            txtArrivalDate.setText(matchedIDbk[8]);
+                            if ("false".equals(matchedIDbk[9])) {
+                                // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
+                                txtBookTitle.setText(matchedIDbk[1]);
+                                txtBookGenre.setText(matchedIDbk[2]);
+                                txtBookSummary.setText(matchedIDbk[3]);
+                                txtBookPublisher.setText(matchedIDbk[5]);
+                                txtBookAuthor.setText(matchedIDbk[6]);
+                                txtPublishDate.setText(matchedIDbk[7]);
+                                txtArrivalDate.setText(matchedIDbk[8]);
+                            } else if ("true".equals(matchedIDbk[9])) {
+                                isDeleted = true;
+                                JOptionPane.showMessageDialog(null, "Book has been deleted and is not accessible at the moment!", "Book record has been deleted!", JOptionPane.ERROR_MESSAGE);
+                        }
                         }
                     }
                     intBook.close();
@@ -1498,7 +1505,7 @@ public class unnamedHistory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new unnamedHistory().setVisible(true);
+                new unnamedHistoryMenu().setVisible(true);
             }
         });
     }
