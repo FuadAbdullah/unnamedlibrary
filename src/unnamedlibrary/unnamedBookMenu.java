@@ -268,12 +268,18 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         txtBookPublisher.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtBookPublisher.setText("Publisher of the book");
 
-        txtPublishDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        txtPublishDate.setText("01/01/2001");
+        try {
+            txtPublishDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         txtPublishDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        txtArrivalDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        txtArrivalDate.setText("01/01/2001");
+        try {
+            txtArrivalDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         txtArrivalDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtBookQuantity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
@@ -453,11 +459,11 @@ public class unnamedBookMenu extends javax.swing.JFrame {
             emptyFields();
             // Storing Borrowing entries into variables
             // Check if the date is unset or left empty
-            if ("".equals(txtPublishDate.getText()) || "01/01/2001".equals(txtPublishDate.getText())) {
+            if ("  /  /    ".equals(txtPublishDate.getText()) || "01/01/2001".equals(txtPublishDate.getText())) {
                 JOptionPane.showMessageDialog(null, "Publish date is empty or unset! Autosetting value to today's date", "Invalid publish date!", JOptionPane.ERROR_MESSAGE);
                 getTodayDate(txtPublishDate); // Setting publish textfield to today's date
             }
-            if ("".equals(txtArrivalDate.getText()) || "01/01/2001".equals(txtArrivalDate.getText())) {
+            if ("  /  /    ".equals(txtArrivalDate.getText()) || "01/01/2001".equals(txtArrivalDate.getText())) {
                 JOptionPane.showMessageDialog(null, "Arrival date is empty or unset! Autosetting value to today's date", "Invalid arrival date!", JOptionPane.ERROR_MESSAGE);
                 getTodayDate(txtArrivalDate); // Setting publish textfield to today's date
             }
@@ -570,10 +576,12 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         // Loads index with Book ID only
         if (cbxBookID.getSelectedIndex() != 0 && cbxBookID.getSelectedIndex() != -1) {
             loadBookID();
+            btnAdd.setEnabled(false);
             btnDelete.setEnabled(true);
             btnUpdate.setEnabled(true);
         } else {
             // Disabling action buttons when no book is loaded. Add button is still available to accept new book
+            btnAdd.setEnabled(true);
             btnDelete.setEnabled(false);
             btnUpdate.setEnabled(false);
         }
@@ -669,6 +677,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
             bookBak.delete();
             // This closes the book.txt printer 
             bdp.close();
+            JOptionPane.showMessageDialog(null, "Book record has been updated!", "Book updated!", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
 

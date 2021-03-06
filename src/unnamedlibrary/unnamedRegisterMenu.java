@@ -12,6 +12,9 @@ import java.io.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -46,6 +49,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
     int newLibrarianID; // To store new book ID
     int ctype; // Value to represent selected Client combo box
     DefaultComboBoxModel cList; // ComboBoxModel for Book ID
+    
     
     /**
      * Creates new form unnamedBook
@@ -637,6 +641,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
             // For debugging purpose only
             // JOptionPane.showMessageDialog(null, bID);
+            // JOptionPane.showMessageDialog(null, saveDir);
             File librariantxt = new File(saveDir + "librarian.txt");
             if (!librariantxt.exists()) {
                 librariantxt.createNewFile();

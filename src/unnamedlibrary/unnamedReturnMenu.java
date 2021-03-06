@@ -1672,7 +1672,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
             }
         });
         // This anon class handles textfield changes for client ID entry
-        txtClientID.getDocument().addDocumentListener(new unnamedDocumentListener(){
+        txtClientID.getDocument().addDocumentListener(new unnamedClass(){
 
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -1695,7 +1695,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
             }
         });
         // This anon class handles textfield changes for book ID entry
-        txtBorrowID.getDocument().addDocumentListener(new unnamedDocumentListener(){
+        txtBorrowID.getDocument().addDocumentListener(new unnamedClass(){
 
             @Override
             public void insertUpdate(DocumentEvent e) {

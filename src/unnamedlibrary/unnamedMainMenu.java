@@ -362,6 +362,7 @@ public class unnamedMainMenu extends javax.swing.JFrame {
     }
     
     private void initGUI(){
+        
         getCache();
         welcomeText();
         // This anon class handles window closing event
