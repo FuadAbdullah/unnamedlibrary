@@ -38,6 +38,8 @@ public class unnamedReferences {
     //  https://www.handcoded.co.uk/php/app-1/
     //  https://www.tutorialspoint.com/when-does-a-java-array-throws-a-nullpointerexception
     //  https://beginnersbook.com/2014/06/how-to-convert-a-char-array-to-a-string-in-java/
+    //  https://stackoverflow.com/questions/9681876/how-to-create-a-jar-file-in-netbeans
+    //  https://mkyong.com/java/how-to-create-directory-in-java/
     
     
     

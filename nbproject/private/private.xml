@@ -3,12 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedBook.java</file>
+            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedMainMenu.java</file>
+            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedBookMenu.java</file>
+            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedRegisterMenu.java</file>
             <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedReferences.java</file>
-            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedRenewMenu.java</file>
-            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedReturnMenu.java</file>
-            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedHistory.java</file>
-            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedClient.java</file>
+            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedClientMenu.java</file>
+            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedHistoryMenu.java</file>
+            <file>file:/D:/Fuad%20Abdullah/Documents/NetBeansProjects/unnamedlibrary/src/unnamedlibrary/unnamedLoginMenu.java</file>
         </group>
     </open-files>
 </project-private>

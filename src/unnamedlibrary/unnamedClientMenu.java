@@ -260,7 +260,11 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         txtClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        try {
+            txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         txtClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         try {
@@ -596,10 +600,12 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         // Loads index with Book ID only
         if (cbxClientID.getSelectedIndex() > 0) {
             loadClientID();
+            btnAdd.setEnabled(false);
             btnDelete.setEnabled(true);
             btnUpdate.setEnabled(true);
         } else {
             // Disabling action buttons when no book is loaded. Add button is still available to accept new book
+            btnAdd.setEnabled(true);
             btnDelete.setEnabled(false);
             btnUpdate.setEnabled(false);
         }
@@ -720,7 +726,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
             clientBak.delete();
             // This closes the book.txt printer 
             cdp.close();
-            JOptionPane.showMessageDialog(null, "Client record has been updated!", "Client updated!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Client record has been updated!", "Client updated!", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
 

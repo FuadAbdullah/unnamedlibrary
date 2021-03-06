@@ -1,5 +1,5 @@
-BOO000456:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:0:Dummies:Nusantara:01/01/2001:01/01/2001:false
-BOO000457:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:11:Dummies:Nusantara:01/01/2001:01/01/2001:false
-BOO000461:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:5:Dummies:Nusantara:03/03/2021:03/03/2021:true
-BOO000462:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:1:Dummies:Nusantara:03/03/2021:03/03/2021:true
-BOO000463:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:11:Dummies:Nusantara:05/03/2021:05/03/2021:true
+BOO000456:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease! Cum:0:Dummies:Nusantara:01/01/2001:01/01/2001:false
+BOO000457:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:10:Dummies:Nusantara:01/01/2001:01/01/2001:false
+BOO000461:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:5:Dummies:Nusantara:03/03/2021:03/03/2021:false
+BOO000462:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:1:Dummies:Nusantara:03/03/2021:03/03/2021:false
+BOO000463:Java for Dummy:Educational:Learn Java Object Oriented Programming Language with ease!:11:Dummies:Nusantara:05/03/2021:05/03/2021:false

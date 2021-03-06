@@ -12,7 +12,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author fab07
  */
-public class unnamedDocumentListener implements DocumentListener {
+class unnamedClass implements DocumentListener {
     
     @Override
     public void insertUpdate(DocumentEvent e) {

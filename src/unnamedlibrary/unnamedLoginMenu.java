@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
@@ -335,6 +338,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         if (accountValidator()) {
+            JOptionPane.showMessageDialog(null, "Login successfully! Redirecting you to the main menu.", "Account Authenticated Successfully!", JOptionPane.INFORMATION_MESSAGE);
             startSession();
             new unnamedMainMenu().setVisible(true);
             this.dispose();
@@ -462,9 +466,13 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
     }
     
     private void initGUI(){
+        // Create the required directory for first time boot
+        createDir();
+        // Create the required database textfiles for first time boot
+        createDB();
         btnLogin.setVisible(false); // This will prevent the login button from being pressed right after startup
         // This anon class handles textfield changes for username entry
-        txtUsername.getDocument().addDocumentListener(new unnamedDocumentListener(){
+        txtUsername.getDocument().addDocumentListener(new unnamedClass(){
 
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -486,7 +494,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         });
         
         // This anon class handles textfield changes for password entry
-        txtPassword.getDocument().addDocumentListener(new unnamedDocumentListener(){
+        txtPassword.getDocument().addDocumentListener(new unnamedClass(){
 
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -518,6 +526,42 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
                 }
             }
         });
+    }
+    
+    // This method will check and create the directory if it is not available. Usually for first run
+    private void createDir(){
+        try {
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            Path dir = Paths.get(saveDir);
+            Files.createDirectories(dir);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
+    // This method will check and create all the necessary files if it is not available. Usually for first run
+    private void createDB(){
+        try {
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            File librariantxt = new File(saveDir + "librarian.txt");
+            File booktxt = new File(saveDir + "book.txt");
+            File borrowtxt = new File(saveDir + "borrowing.txt");
+            File clienttxt = new File(saveDir + "client.txt");
+            if (!librariantxt.exists()) {
+                librariantxt.createNewFile();
+            }
+            if (!booktxt.exists()) {
+                booktxt.createNewFile();
+            }
+            if (!borrowtxt.exists()) {
+                borrowtxt.createNewFile();
+            }
+            if (!clienttxt.exists()) {
+                clienttxt.createNewFile();
+            }
+        } catch(IOException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }
     
     /**
