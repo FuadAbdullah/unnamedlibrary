@@ -193,6 +193,11 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnReset.setText("Reset");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panBarLayout = new javax.swing.GroupLayout(panBar);
         panBar.setLayout(panBarLayout);
@@ -652,6 +657,13 @@ public class unnamedClientMenu extends javax.swing.JFrame {
             btnDelete.setEnabled(false);
         }
     }//GEN-LAST:event_cbxClientTypeActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        deHighlightEmpty();
+        clearClient();
+        cbxClientID.setSelectedIndex(0);
+    }//GEN-LAST:event_btnResetActionPerformed
     
     // This method updates the selected book with information found in the fields
     private void updateClientInformation(){

@@ -12,6 +12,9 @@ import javax.swing.event.DocumentListener;
  *
  * @author fab07
  */
+
+// This document listener is made concrete due to limitation
+// with JFrame form
 class unnamedClass implements DocumentListener {
     
     @Override
@@ -22,7 +25,6 @@ class unnamedClass implements DocumentListener {
     @Override
     public void removeUpdate(DocumentEvent e) {
         // TO BE OVERRIDDEN
-        
     }
 
     @Override
@@ -30,4 +32,12 @@ class unnamedClass implements DocumentListener {
         // TO BE OVERRIDDEN
        
     }
+}
+
+class unnamedException extends Exception {
+    
+}
+
+class unnamedBookMenuException extends unnamedException {
+    
 }

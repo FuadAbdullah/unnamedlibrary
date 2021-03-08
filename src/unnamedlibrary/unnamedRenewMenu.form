@@ -703,7 +703,7 @@
                                       <EmptySpace pref="120" max="32767" attributes="0"/>
                                       <Component id="btnPayFine" min="-2" pref="103" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton5" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnReset" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnRenew" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -748,7 +748,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="btnRenew" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jButton5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btnReset" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="btnPayFine" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -840,7 +840,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRenewActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton5">
+                    <Component class="javax.swing.JButton" name="btnReset">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
@@ -850,6 +850,9 @@
                           <Color id="Hand Cursor"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

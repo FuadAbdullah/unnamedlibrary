@@ -192,6 +192,11 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnReset.setText("Reset");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panBarLayout = new javax.swing.GroupLayout(panBar);
         panBar.setLayout(panBarLayout);
@@ -508,15 +513,13 @@ public class unnamedBookMenu extends javax.swing.JFrame {
                 setBookOption();
                 // Refresh the currently displayed book with the latest ID
                 cbxBookID.setSelectedIndex(cbxBookID.getItemCount() - 1);
-                
             } catch (IOException ex) {
-                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
             }
         }
         catch (Exception ex) {
             highlightEmpty();
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
-            // Continue with displaying which field was affected. ensure it appears before the mnessagebox
         }      
     }
     
@@ -603,6 +606,13 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         updateBookInformation();
         loadBookID();
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        clearBook();
+        deHighlightEmpty();
+        cbxBookID.setSelectedIndex(0);
+    }//GEN-LAST:event_btnResetActionPerformed
     
     // This method updates the selected book with information found in the fields
     private void updateBookInformation(){
