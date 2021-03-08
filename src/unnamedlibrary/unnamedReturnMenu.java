@@ -108,7 +108,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         lblBorrowStatus = new javax.swing.JLabel();
         btnReturn = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         btnPayFine = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblBookDetailsTitle = new javax.swing.JLabel();
@@ -535,9 +535,14 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        jButton5.setText("Reset");
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         btnPayFine.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnPayFine.setText("Pay Fine");
@@ -568,7 +573,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnPayFine, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)
+                        .addComponent(btnReset)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReturn)
                         .addContainerGap())
@@ -588,7 +593,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton5)
+                                .addComponent(btnReset)
                                 .addComponent(btnPayFine))
                             .addComponent(btnReturn))
                         .addContainerGap())
@@ -1266,6 +1271,16 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnPayFineActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        fetchedBorrow = false;
+        fetchedClient = false;
+        lblMessage.setText("");
+        lblMessage.setVisible(false);
+        clearClient();
+        clearBorrow();
+    }//GEN-LAST:event_btnResetActionPerformed
     
     // This method clears book related fields
     private void clearClient(){
@@ -1750,9 +1765,9 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadBorrow;
     private javax.swing.JButton btnLoadClient;
     private javax.swing.JButton btnPayFine;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnReturn;
     private javax.swing.JComboBox<String> cbxClientID;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

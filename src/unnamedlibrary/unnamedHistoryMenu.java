@@ -765,6 +765,11 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         jButton5.setText("Reset");
         jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -1023,7 +1028,9 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         bID = "";
         brID = "";
         lblIsReturned.setForeground(fgtxt);
+        lblIsReturned.setText("Has not been returned.");
         lblIsRenewed.setForeground(fgtxt);
+        lblIsRenewed.setText("Has not been renewed.");
         lblIsOverdue.setVisible(false);
         lblMessage.setVisible(false);
         lblMessage.setText("");
@@ -1242,6 +1249,11 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_lstBorrowValueChanged
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        cbxClientID.setSelectedIndex(0);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     // This method handles clearance of borrow list
     private void clearBorrowList(){

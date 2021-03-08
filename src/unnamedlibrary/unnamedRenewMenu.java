@@ -110,7 +110,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         lblBorrowStatus = new javax.swing.JLabel();
         btnPayFine = new javax.swing.JButton();
         btnRenew = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblBookDetailsTitle = new javax.swing.JLabel();
         lblBookTitle = new javax.swing.JLabel();
@@ -545,9 +545,14 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        jButton5.setText("Reset");
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -564,7 +569,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                         .addComponent(btnPayFine, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)
+                        .addComponent(btnReset)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRenew)
                         .addContainerGap())
@@ -599,7 +604,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnRenew)
-                            .addComponent(jButton5)
+                            .addComponent(btnReset)
                             .addComponent(btnPayFine))))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
@@ -941,6 +946,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
             }
         }
         catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
             JOptionPane.showMessageDialog(null, "Invalid input! Client ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnLoadClientActionPerformed
@@ -1523,6 +1529,14 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnPayFineActionPerformed
 
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        fetchedClient = false;
+        fetchedBorrow = false;
+        clearClient();
+        clearBorrow();
+    }//GEN-LAST:event_btnResetActionPerformed
+
     // This methods amend the current amount of books available by adding 
     // borrowed books amount that was returned by the client.
     private void refreshBookAmount() throws IOException {
@@ -1786,8 +1800,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadClient;
     private javax.swing.JButton btnPayFine;
     private javax.swing.JButton btnRenew;
+    private javax.swing.JButton btnReset;
     private javax.swing.JComboBox<String> cbxClientID;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

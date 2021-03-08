@@ -173,6 +173,11 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnReset.setText("Reset");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panBarLayout = new javax.swing.GroupLayout(panBar);
         panBar.setLayout(panBarLayout);
@@ -227,7 +232,11 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
         txtLibrarianLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        txtLibrarianDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        try {
+            txtLibrarianDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         txtLibrarianDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         try {
@@ -566,7 +575,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         if ("".equals(txtLibrarianLastName.getText())) {
             lblLibrarianLastName.setForeground(Color.yellow);
         }
-        if ("".equals(txtLibrarianDoB.getText())) {
+        if ("  /  /    ".equals(txtLibrarianDoB.getText())) {
             lblLibrarianDoB.setForeground(Color.yellow);
         }
         if ("".equals(txtLibrarianPhoneNumber.getText())) {
@@ -598,6 +607,9 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         if ("".equals(txtLibrarianLastName.getText())) {
             throw new Exception("Empty last name");
         }
+        if ("  /  /    ".equals(txtLibrarianDoB.getText())) {
+            throw new Exception("Empty date of birth");
+        }
         if ("".equals(txtLibrarianPhoneNumber.getText())) {
             throw new Exception("Empty phone number");
         }
@@ -614,6 +626,11 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
     private void cbxLibrarianGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLibrarianGenderActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxLibrarianGenderActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        clearLibrarian();
+    }//GEN-LAST:event_btnResetActionPerformed
     
     // This method clears book related fields
     private void clearLibrarian(){
