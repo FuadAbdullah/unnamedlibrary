@@ -44,6 +44,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
     boolean isOverdue, hasRenewed, hasFine, hasReturned, isDeleted; 
     final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
     Color fgtxt = new Color(187,187,187); // Default foreground color for text
+    int ctype; // Value to represent selected Client combo box
+    DefaultComboBoxModel cList, brList; // ComboBoxModel for Book ID
     
     /**
      * Creates new form unnamedRenewMenu
@@ -64,23 +66,21 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         panMain = new javax.swing.JPanel();
         panTop = new javax.swing.JPanel();
-        cbxClientID = new javax.swing.JComboBox<>();
+        cbxClientType = new javax.swing.JComboBox<>();
         lblClientID = new javax.swing.JLabel();
-        txtClientID = new javax.swing.JFormattedTextField();
         lblBookID = new javax.swing.JLabel();
         txtBorrowDate = new javax.swing.JFormattedTextField();
         lblBorrowDate = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblBorrowID = new javax.swing.JLabel();
         lblBorrowDue = new javax.swing.JLabel();
-        txtBorrowID = new javax.swing.JFormattedTextField();
         txtBorrowDue = new javax.swing.JFormattedTextField();
         btnCancel = new javax.swing.JButton();
-        btnLoadClient = new javax.swing.JButton();
-        btnLoadBorrow = new javax.swing.JButton();
         txtBookID = new javax.swing.JFormattedTextField();
         lblIsOverdue = new javax.swing.JLabel();
         lblMessage = new javax.swing.JLabel();
+        cbxClientID = new javax.swing.JComboBox<>();
+        cbxBorrowID = new javax.swing.JComboBox<>();
         panCenter = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblClientTitle = new javax.swing.JLabel();
@@ -148,30 +148,18 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         panTop.setMaximumSize(new java.awt.Dimension(1218, 160));
         panTop.setMinimumSize(new java.awt.Dimension(1218, 160));
 
-        cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
-        cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cbxClientID.addActionListener(new java.awt.event.ActionListener() {
+        cbxClientType.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxClientType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
+        cbxClientType.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxClientType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxClientIDActionPerformed(evt);
+                cbxClientTypeActionPerformed(evt);
             }
         });
 
         lblClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         lblClientID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblClientID.setText("Staff/Student ID:");
-
-        txtClientID.setEditable(false);
-        txtClientID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
-        txtClientID.setText("Staff/Student ID");
-        txtClientID.setFocusable(false);
-        txtClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        txtClientID.setRequestFocusEnabled(false);
-        txtClientID.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtClientIDFocusGained(evt);
-            }
-        });
 
         lblBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         lblBookID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -197,15 +185,6 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         lblBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         lblBorrowDue.setText("Borrow Due On:");
 
-        txtBorrowID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
-        txtBorrowID.setText("Borrow ID");
-        txtBorrowID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        txtBorrowID.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtBorrowIDFocusGained(evt);
-            }
-        });
-
         txtBorrowDue.setEditable(false);
         txtBorrowDue.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
         txtBorrowDue.setText("DD/MM/YYYY");
@@ -224,22 +203,6 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
             }
         });
 
-        btnLoadClient.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        btnLoadClient.setText("Load Client Information");
-        btnLoadClient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadClientActionPerformed(evt);
-            }
-        });
-
-        btnLoadBorrow.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        btnLoadBorrow.setText("Load Borrowing Information");
-        btnLoadBorrow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadBorrowActionPerformed(evt);
-            }
-        });
-
         txtBookID.setEditable(false);
         txtBookID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
         txtBookID.setText("000000");
@@ -254,6 +217,24 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         lblMessage.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         lblMessage.setText("No Message.");
 
+        cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Client ID" }));
+        cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxClientID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxClientIDActionPerformed(evt);
+            }
+        });
+
+        cbxBorrowID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        cbxBorrowID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrow ID" }));
+        cbxBorrowID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cbxBorrowID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxBorrowIDActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panTopLayout = new javax.swing.GroupLayout(panTop);
         panTop.setLayout(panTopLayout);
         panTopLayout.setHorizontalGroup(
@@ -265,35 +246,30 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     .addComponent(lblClientID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBorrowID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBookID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 19, Short.MAX_VALUE)
+                .addGap(18, 24, Short.MAX_VALUE)
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panTopLayout.createSequentialGroup()
-                        .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLoadClient))
                     .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panTopLayout.createSequentialGroup()
                             .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panTopLayout.createSequentialGroup()
-                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtBorrowID)
-                                .addComponent(txtBorrowDate, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
+                            .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panTopLayout.createSequentialGroup()
-                                    .addComponent(lblBorrowDue)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(lblIsOverdue))
-                                .addComponent(btnLoadBorrow)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                            .addComponent(lblBorrowDue)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtBorrowDue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(18, 18, 18)
+                            .addComponent(lblIsOverdue)))
+                    .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cbxBorrowID, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panTopLayout.createSequentialGroup()
+                            .addComponent(cbxClientType, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
+                .addGap(18, 356, Short.MAX_VALUE)
                 .addComponent(btnCancel)
                 .addContainerGap())
         );
@@ -306,14 +282,12 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     .addGroup(panTopLayout.createSequentialGroup()
                         .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblClientID)
-                            .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLoadClient))
+                            .addComponent(cbxClientType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnLoadBorrow)
-                            .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblBorrowID))
+                            .addComponent(lblBorrowID)
+                            .addComponent(cbxBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -490,7 +464,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblClientHomeAddress)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
 
         panCenter.add(jPanel2);
@@ -801,59 +775,133 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
+    private void cbxClientTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientTypeActionPerformed
         // TODO add your handling code here:
         clearClient();
         clearBorrow();
-        int ctype = cbxClientID.getSelectedIndex(); // Get client type
+        int ctype = cbxClientType.getSelectedIndex(); // Get client type
 
         if (ctype == 0) { // Will reset fields to default appearance
             lblClientID.setText("Staff/Student ID:");
-            txtClientID.setText("Staff/Student ID");
             lblClientTitle.setText("Staff/Student Personal Information:");
-            txtClientID.setEditable(false);
-            txtClientID.setRequestFocusEnabled(false);
-            txtClientID.setFocusable(false);
+            cbxClientID.setEnabled(false);
+            getClientType();
+            setClientOption();
         } else { // Will display fields according to selected user type
             try {
-                lblClientID.setText(cbxClientID.getSelectedItem().toString() + " ID:");
-                txtClientID.setText(cbxClientID.getSelectedItem().toString() + " ID");
-                lblClientTitle.setText(cbxClientID.getSelectedItem().toString() + " Personal Information:");
-                txtClientID.setEditable(true);
-                txtClientID.setRequestFocusEnabled(true);
-                txtClientID.setFocusable(true);
-
-                switch (ctype){
-                    case 1:
-                    cspecies = "STA";
-                    break;
-                    case 2:
-                    cspecies = "STU";
-                    break;
-                    default:
-                    cspecies = "NUL";
-                    break;
-                }
-
+                cbxClientID.setEnabled(true);
+                getClientType();
+                setClientOption();
+                lblClientID.setText(cbxClientType.getSelectedItem().toString() + " ID:");
+                lblClientTitle.setText(cbxClientType.getSelectedItem().toString() + " Personal Information:");
             } catch (Exception e) {
                 // Popup messagebox to inform user of unexpected error
             }
         }
+        fetchedBookClientInfo();
+    }//GEN-LAST:event_cbxClientTypeActionPerformed
 
-    }//GEN-LAST:event_cbxClientIDActionPerformed
-
-    private void txtClientIDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtClientIDFocusGained
-        // TODO add your handling code here:
-
-        String[] ctype = new String[]{"Staff/Student ID", "Staff ID", "Student ID"};
-        String temp = txtClientID.getText();
-
-        if (Arrays.asList(ctype).contains(temp)) {
-            txtClientID.setText("");
+    // This method will fetch the client type
+    // Can be used for both client loading or addition
+    private void getClientType(){
+        ctype = cbxClientType.getSelectedIndex(); // Get client type
+        if (ctype <= 0) { // Will disable the list from any user interaction
+            lblClientID.setText("Load Existing Client:");
+            cspecies = "NUL";
+        } else { // Will display fields according to selected user type
+            lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
+            switch (ctype){
+                case 1:
+                cspecies = "STA";
+                break;
+            case 2:
+                cspecies = "STU";
+                break;
+            default:
+                cspecies = "NUL";
+                break;
+            }
+            // cbxClientID.setEnabled(true);
+            // btnAdd.setEnabled(true);
         }
+    }
 
-    }//GEN-LAST:event_txtClientIDFocusGained
-
+    // This method will set option list for book ID using ComboBoxModel
+    private void setClientOption(){
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        cList = new DefaultComboBoxModel();
+        String cLabel; // Declared to store title of the selected client type
+        switch (cspecies) {
+            case "STA":
+                cLabel = "Staff";
+                break;
+            case "STU":
+                cLabel = "Student";
+                break;
+            default:
+                cLabel = "Existing";
+        }
+        // Adding default text
+        cList.addElement("Select " + cLabel + " ID");
+        cbxClientID.setModel(cList);
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner intClient;
+        try {
+            // This part loads all book information
+            intClient = new Scanner(clienttxt);
+            // This is to increment the discovered client assignment index
+            int i = 0;
+            // Read lines from the file until no more are left.
+            while (intClient.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intClient.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                String temptype = null;
+                if (matchedID[0].contains("STA")) {
+                    temptype = "STA";
+                } else if (matchedID[0].contains("STU")) {
+                    temptype = "STU";
+                }
+                // Get the digits out
+                String preOut = matchedID[0].replace(temptype, "");
+                // JOptionPane.showMessageDialog(null, preOut);
+                // Replace the string part with empty digits, leaving only the prefix
+                String numOut = matchedID[0].replace(preOut, "");
+                // JOptionPane.showMessageDialog(null, numOut);
+                if (i < 200) {
+                    if ("false".equals(matchedID[8]) && cspecies.equals(numOut)) {
+                        matchedID[0] = matchedID[0].replace(cspecies, "");
+                        cList.addElement(matchedID[0]);
+                        i++;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Maximum client entry limit reached! Stopping at 200th record.", "Client list maxed out!", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+            // OptionPane.showMessageDialog(null, i);
+            intClient.close();
+            // Check if there are no clients at all for each type
+            if (cList.getSize() == 1) {
+                cList.removeAllElements();
+                cList.addElement("No client(s) available.");
+            }
+            // Attempt to list all fetched client ID into the list box
+            cbxClientID.setModel(cList);
+            // Select index 0 as default
+            cbxClientID.setSelectedIndex(0);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel the ongoing renewal process. Continue?", "Cancelling Renewal Process", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -866,6 +914,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
     // This method clears book related fields
     private void clearClient(){
         // To clean up previous or default values from fields
+        fetchedClient = false;
         txtClientFirstName.setText("");
         txtClientLastName.setText("");
         txtClientDoB.setText("");
@@ -877,6 +926,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
     }
     
     private void clearBorrow(){
+        fetchedBook = false;
+        fetchedBorrow = false;
         txtBorrowDate.setText("");
         txtBorrowDue.setText("");
         txtBookID.setText("");
@@ -891,66 +942,15 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         txtFineAmount.setText("");
         bID = "";
         brID = "";
+        lblIsReturned.setForeground(fgtxt);
+        lblIsReturned.setText("Has not been returned.");
+        lblIsRenewed.setForeground(fgtxt);
+        lblIsRenewed.setText("Has not been renewed.");
+        lblIsOverdue.setVisible(false);
+        lblMessage.setVisible(false);
+        lblMessage.setText("");
     }
     
-    private void btnLoadClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadClientActionPerformed
-        // TODO add your handling code here:
-        // This handles formatter for the integer to consist of 6 digits
-        DecimalFormat dc = new DecimalFormat("000000");
-        // This is to ensure the entire method have access to the matchedID array
-        String[] matchedID;
-        // This is a flag to tell the method that there is result
-        boolean hasResult = false;
-        fetchedClient = false;
-        // To empty previous or default values from fields
-        clearClient();
-        try {
-            cID = dc.format(Integer.parseInt(txtClientID.getText()));
-            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-            // For debugging purpose only
-            // JOptionPane.showMessageDialog(null, bID);
-            File clienttxt = new File(saveDir + "client.txt");
-            Scanner inputFile;
-            try {
-                inputFile = new Scanner(clienttxt);
-                // Read lines from the file until no more are left.
-                while (inputFile.hasNext())
-                {
-                    // Read the next line.
-                    String cEntry = inputFile.nextLine();
-                    // Split the line by using the delimiter ":" (semicolon) and store into array.
-                    matchedID = cEntry.split(":");
-                    if (matchedID[0].equals(cspecies + cID)){
-                        if ("false".equals(matchedID[8])) {
-                            hasResult = true;
-                            fetchedClient = true;
-                            matchedID[0] = matchedID[0].replace(cspecies, "");
-                            txtClientID.setText(matchedID[0]);
-                            txtClientFirstName.setText(matchedID[1]);
-                            txtClientLastName.setText(matchedID[2]);
-                            txtClientDoB.setText(matchedID[3]);
-                            txtClientGender.setText(matchedID[4]);
-                            txtClientPhoneNumber.setText(matchedID[5]);
-                            txtClientEmailAddress.setText(matchedID[6]);
-                            txtClientHomeAddress.setText(matchedID[7]);
-                        }
-                    }
-                }
-                inputFile.close();
-                if (!hasResult) {
-                    JOptionPane.showMessageDialog(null, "No client of the inserted ID found!", "Client not found!", JOptionPane.ERROR_MESSAGE);
-                }
-                fetchedBookClientInfo();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
-            JOptionPane.showMessageDialog(null, "Invalid input! Client ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnLoadClientActionPerformed
-
     // TO DO
     private void btnRenewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRenewActionPerformed
         // TODO add your handling code here:
@@ -959,8 +959,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         DecimalFormat dc = new DecimalFormat("000000");
         try {
             // Fetching IDs from the textfields
-            brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
-            cID = dc.format(Integer.parseInt(txtClientID.getText()));
+            brID = dc.format(Integer.parseInt((String) cbxBorrowID.getSelectedItem()));
+            cID = dc.format(Integer.parseInt((String) cbxClientID.getSelectedItem()));
             bID = dc.format(Integer.parseInt(txtBookID.getText())); 
             // Storing Borrowing entries into variables
             // Storing date values
@@ -1074,7 +1074,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                                 matchedID[6] + ":" +
                                 matchedID[7] + ":" +
                                 matchedID[8] + ":" +
-                                matchedID[9]);
+                                matchedID[9] + ":" +
+                                matchedID[10]);
 
                 }
                 // Close the bookBak.txt reader
@@ -1090,45 +1091,336 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                 /* if (itWorked) {
                     JOptionPane.showMessageDialog(null, "Yes it worked");
                 }*/
-                // Revert the error flags from previous exception
-                if (cerr) {
-                    cerr = false;
-                }
-                if (brerr) {
-                    brerr = false;
-                }
                 // To display completed borrowing process status
                 JOptionPane.showMessageDialog(null, "Successfully renewed! Please be aware a client can only renew once. Press OK to return to the renewing form.", "Renewing succeeded!", JOptionPane.INFORMATION_MESSAGE);
                 btnCancel.setText("Return");
                 // To reload the book information
-                btnLoadBorrow.doClick();
+                cbxBorrowID.setSelectedIndex(cbxBorrowID.getSelectedIndex());
             } catch (IOException ex) {
                 Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         catch (Exception ex) {
-            if (cbxClientID.getSelectedIndex() == 0) {
-                cerr = true;
-                lblClientID.setForeground(Color.yellow);
-            }
-            if ("".equals(lblBorrowID.getText()) | "Borrow ID".equals(lblBorrowID.getText())) {
-                brerr = true;
-                lblBorrowID.setForeground(Color.yellow);
-            }
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
             // Continue with displaying which field was affected. ensure it appears before the mnessagebox
         }
     }//GEN-LAST:event_btnRenewActionPerformed
 
-    private void txtBorrowIDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBorrowIDFocusGained
-        // TODO add your handling code here:
-        if ("Borrow ID".equals(txtBorrowID.getText())) {
-            txtBorrowID.setText("");
-        }
-    }//GEN-LAST:event_txtBorrowIDFocusGained
+    private void setOverdue() {
+        
+        try {
+            DateTimeFormatter datef = DateTimeFormat.forPattern("dd/MM/yyyy");
+            // To get current date
+            LocalDate tdate = LocalDate.now();
+            // To get current overdue date and parse into Date object
+            LocalDate oddate = LocalDate.parse(txtBorrowDue.getText(), datef);
+            // To save the differences between today's date and the overdue date
+            int datediff = Days.daysBetween(tdate, oddate).getDays();
+            // To enable the Renew button if and only if it is the day before or on the day of overdue itself
+            if (datediff < 0 && !isOverdue) {
+                // Debugging only!
+                // JOptionPane.showMessageDialog(null, "Date comparison worked.");
+                // Formatting ID into formal 6-digit mask
+                try {
+                    DecimalFormat dc = new DecimalFormat("000000");
+                    // Setting the working directory
+                    saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+                    // Fetching IDs from the textfields
+                    brID = dc.format(Integer.parseInt((String) cbxBorrowID.getSelectedItem()));
+                    cID = dc.format(Integer.parseInt((String) cbxClientID.getSelectedItem()));
+                    // To rename original book.txt to book.bak
+                    File borrowOri = new File(saveDir + "borrowing.txt");
+                    File borrowBak = new File(saveDir + "borrowingBak.txt");
+                    // To check if bookBak.txt is present or not
+                    if (!borrowBak.exists()){
+                        borrowOri.createNewFile();
+                    }
+                    // This is for debugging only!
+                    // JOptionPane.showMessageDialog(null, "renamed");
+                    // This is to rename the existing book.txt to bookBak.txt
+                    borrowOri.renameTo(borrowBak);
+                    // This is to open, find and replace a specific book record
+                    // Requires temporary file to store current state
+                    // FileWriter to write into a new file called book.txt
+                    FileWriter brd = new FileWriter(saveDir + "borrowing.txt"); 
+                    // PrintWriter to print into book.txt
+                    PrintWriter brdp = new PrintWriter(brd); 
+                    // This is to open and read bookBak.txt 
+                    File borrowingtxt = new File(saveDir + "borrowingBak.txt");
+                    // This is to instantiate the file opened earlier
+                    Scanner inputFile = new Scanner(borrowingtxt);
+                    // This array is to contain all lines
+                    String[] matchedID;
+                    // This is only for debugging!
+                    // boolean itWorked = false;
+                    // Read lines from the file until no more are left.
+                    while (inputFile.hasNext())
+                    {
+                        // This is for debugging only!
+                        // JOptionPane.showMessageDialog(null, "In loop");
+                        // Read the next line.
+                        String brEntry = inputFile.nextLine();
+                        // Split the line by using the delimiter ":" (semicolon) and store into array.
+                        matchedID = brEntry.split(":");
+                        // Check if the read line has current book ID
+                        if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                            // Resetting the fine amount to 0
+                            matchedID[7] = "true";
+                            // JOptionPane.showMessageDialog(null, "Yes it worked");
+                        }
+                        // Rewrite the new book.txt with values found in bookBak.txt
+                        brdp.println(matchedID[0] + ":" +
+                                    matchedID[1] + ":" +
+                                    matchedID[2] + ":" +
+                                    matchedID[3] + ":" +
+                                    matchedID[4] + ":" +
+                                    matchedID[5] + ":" +
+                                    matchedID[6] + ":" +
+                                    matchedID[7] + ":" +
+                                    matchedID[8] + ":" +
+                                    matchedID[9] + ":" +
+                                    matchedID[10]);
 
-    private void btnLoadBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadBorrowActionPerformed
+                    }
+                    // Close the bookBak.txt reader
+                    inputFile.close();
+                    // This deletes bookBak.txt
+                    borrowBak.delete();
+                    // This closes the book.txt printer 
+                    brdp.close();
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                    // Set the current file as 
+                    // isOverdue = true;
+                    // Refresh the form with new data
+                    cbxBorrowID.setSelectedIndex(cbxBorrowID.getSelectedIndex());
+                } catch (Exception ex) {
+                    
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Empty borrow due date!", "Empty input!", JOptionPane.ERROR_MESSAGE);
+
+        }
+        
+        
+    }
+    
+    // This method fetches today's date
+    private String getTodayDate(){
+         // To get current date
+        Calendar bdate = Calendar.getInstance();
+        SimpleDateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
+        
+        // To return the date string
+        return datef.format(bdate.getTime());
+    }
+    
+    private void btnPayFineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayFineActionPerformed
         // TODO add your handling code here:
+        // This method will rewrite borrowing.txt by clearing the fine amount 
+        // WILL NOT RESET hasReturned flag as that is changed during return sequence
+        // WILL NOT RESET hasRenewed flag as that is managed by renewing sequence
+        // WILL NOT RESET isOverdue flag as that is set permanently
+        // Creating a local JFormattedTextField to accept input
+        JTextField paytxt = new JTextField();
+        // Input popup to allow librarian to key in paid amount
+        String payin = JOptionPane.showInputDialog(paytxt, "Insert total amount paid:" , "Paying fine.", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            DecimalFormat dc = new DecimalFormat("0.00"); // Prepare 2 decimal digit format
+            double payInConv = Double.parseDouble(payin); // Attempt conversion to double
+            // JOptionPane.showMessageDialog(null, dc.format(payInConv)); // For debugging only
+            // Converting the current fine amount to double for arithmetic logic
+            double currFine = Double.parseDouble(txtFineAmount.getText());
+            if (payInConv <= 0) { // Check if payment done is 0 or less which is not acceptable
+                JOptionPane.showMessageDialog(null, "Payment amount made is not possible! Please check your input and try again!", "Illogical payment amount made!", JOptionPane.ERROR_MESSAGE); 
+            } else { // Proceed with checking the amount paid against total fine to be paid // Proceed with handling flags and rewriting into borrowing.txt
+                if (payInConv < currFine) {
+                    // Payment made is less than the total amount required!
+                    JOptionPane.showMessageDialog(null, "Payment made is not enough! Please check your input and try again!", "Insufficient payment amount made!", JOptionPane.ERROR_MESSAGE); 
+                } else { // Payment made is either exact or exceeded the amount of fine
+                    if (payInConv > currFine) { // Has no change
+                        JOptionPane.showMessageDialog(null, "Payment successful! Change amount is RM" + dc.format(payInConv - currFine), "Paid fine successfully!", JOptionPane.INFORMATION_MESSAGE); 
+                    }
+                    // Tell the librarian to tell the client to return the book
+                    JOptionPane.showMessageDialog(null, "Due to our lending policy, the customer is required to return the book(s) as the borrowing period has ended. Please retrieve the book from the customer and the system will proceed with returning sequence.", "Borrowing term has ended!", JOptionPane.INFORMATION_MESSAGE); 
+                    // Formatting ID into formal 6-digit mask
+                    dc = new DecimalFormat("000000");
+                    // Setting the working directory
+                    saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+                    // Fetching IDs from the textfields
+                    brID = dc.format(Integer.parseInt((String) cbxBorrowID.getSelectedItem()));
+                    cID = dc.format(Integer.parseInt((String) cbxClientID.getSelectedItem()));
+                    // To rename original book.txt to book.bak
+                    File borrowOri = new File(saveDir + "borrowing.txt");
+                    File borrowBak = new File(saveDir + "borrowingBak.txt");
+                    // To check if bookBak.txt is present or not
+                    if (!borrowBak.exists()){
+                        borrowOri.createNewFile();
+                    }
+                    // This is for debugging only!
+                    // JOptionPane.showMessageDialog(null, "renamed");
+                    // This is to rename the existing book.txt to bookBak.txt
+                    borrowOri.renameTo(borrowBak);
+                    // This is to open, find and replace a specific book record
+                    // Requires temporary file to store current state
+                    // FileWriter to write into a new file called book.txt
+                    FileWriter brd = new FileWriter(saveDir + "borrowing.txt"); 
+                    // PrintWriter to print into book.txt
+                    PrintWriter brdp = new PrintWriter(brd); 
+                    // This is to open and read bookBak.txt 
+                    File borrowingtxt = new File(saveDir + "borrowingBak.txt");
+                    // This is to instantiate the file opened earlier
+                    Scanner inputFile = new Scanner(borrowingtxt);
+                    // This array is to contain all lines
+                    String[] matchedID;
+                    // This is only for debugging!
+                    // boolean itWorked = false;
+                    if (isOverdue){
+                        // Read lines from the file until no more are left.
+                        while (inputFile.hasNext())
+                        {
+                            // This is for debugging only!
+                            // JOptionPane.showMessageDialog(null, "In loop");
+                            // Read the next line.
+                            String brEntry = inputFile.nextLine();
+                            // Split the line by using the delimiter ":" (semicolon) and store into array.
+                            matchedID = brEntry.split(":");
+                            // Check if the read line has current book ID
+                            if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                                // flagging the record as hasReturned
+                                matchedID[6] = "true";
+                                // Resetting the fine amount to 0
+                                matchedID[9] = txtFineAmount.getText();
+                                // setting the return date to today's date
+                                matchedID[10] = getTodayDate();
+                                // JOptionPane.showMessageDialog(null, "Yes it worked");
+                                // Flipping hasReturned status to true
+                                hasReturned = true;
+                            }
+                            // Rewrite the new book.txt with values found in bookBak.txt
+                            brdp.println(matchedID[0] + ":" +
+                                        matchedID[1] + ":" +
+                                        matchedID[2] + ":" +
+                                        matchedID[3] + ":" +
+                                        matchedID[4] + ":" +
+                                        matchedID[5] + ":" +
+                                        matchedID[6] + ":" +
+                                        matchedID[7] + ":" +
+                                        matchedID[8] + ":" +
+                                        matchedID[9] + ":" +
+                                        matchedID[10]);
+                        }
+                    } else {
+                        // Read lines from the file until no more are left.
+                        while (inputFile.hasNext())
+                        {
+                            // This is for debugging only!
+                            // JOptionPane.showMessageDialog(null, "In loop");
+                            // Read the next line.
+                            String brEntry = inputFile.nextLine();
+                            // Split the line by using the delimiter ":" (semicolon) and store into array.
+                            matchedID = brEntry.split(":");
+                            // Check if the read line has current book ID
+                            if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
+                                // Resetting the fine amount to 0
+                                matchedID[9] = "0.00";
+                                // setting the return date to today's date
+                                matchedID[10] = getTodayDate();
+                                // JOptionPane.showMessageDialog(null, "Yes it worked");
+                            }
+                            // Rewrite the new book.txt with values found in bookBak.txt
+                            brdp.println(matchedID[0] + ":" +
+                                        matchedID[1] + ":" +
+                                        matchedID[2] + ":" +
+                                        matchedID[3] + ":" +
+                                        matchedID[4] + ":" +
+                                        matchedID[5] + ":" +
+                                        matchedID[6] + ":" +
+                                        matchedID[7] + ":" +
+                                        matchedID[8] + ":" +
+                                        matchedID[9] + ":" +
+                                        matchedID[10]);
+
+                        }
+                    }
+                    
+                    // Close the bookBak.txt reader
+                    inputFile.close();
+                    // This deletes bookBak.txt
+                    borrowBak.delete();
+                    // This closes the book.txt printer 
+                    brdp.close();
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                    // Refresh the form with new data
+                    cbxBorrowID.setSelectedIndex(cbxBorrowID.getSelectedIndex());
+                    // Return borrowed books into book inventory
+                    refreshBookAmount();
+                    btnPayFine.setVisible(false);
+                    JOptionPane.showMessageDialog(null, "Returned successfully! Press OK to return to renewing form.", "Borrowed book(s) has been returned!", JOptionPane.INFORMATION_MESSAGE); 
+
+                }
+            }
+        } catch (Exception ex) {
+            if ("".equals(payin)) { // Check if input is null
+                JOptionPane.showMessageDialog(null, "Input cannot be empty!", "Empty string!", JOptionPane.ERROR_MESSAGE); 
+            } else { // Check if input is not numerical
+                JOptionPane.showMessageDialog(null, "Only numbers are accepted!", "Illegal input detected!", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+        
+    }//GEN-LAST:event_btnPayFineActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        cbxClientID.setSelectedIndex(0);
+        cbxBorrowID.setSelectedIndex(0);
+        cbxClientType.setSelectedIndex(0);
+        clearClient();
+        clearBorrow();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    // 
+    private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
+        // TODO add your handling code here:
+        // Continue with client loading code from client menu
+        // Clear previous fields value
+        clearClient();
+        // Loads index with Book ID only
+        if (cbxClientID.getSelectedIndex() > 0) {
+            // Enable the list for selection
+            cbxBorrowID.setEnabled(true);
+            loadClientID();
+        } else {
+            clearBorrowList();
+        }
+        fetchedBookClientInfo();
+    }//GEN-LAST:event_cbxClientIDActionPerformed
+
+       
+    // This method handles clearance of client list
+    private void clearClientList(){
+        cList.addElement("Select a client type to display available IDs");
+        cbxClientID.setModel(cList);
+    }
+    
+    
+    private void cbxBorrowIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBorrowIDActionPerformed
+        // TODO add your handling code here:
+        // Clear previous fields value
+        // This method called here also clears
+        // selectedDate flag. Unintentional feature but a welcome one
+        clearBorrow();
+        // Loads index with Book ID only
+        if (cbxBorrowID.getSelectedIndex() != 0 && cbxBorrowID.getSelectedIndex() != -1) {
+            loadBorrowID();
+        }
+        fetchedBookClientInfo();
+    }//GEN-LAST:event_cbxBorrowIDActionPerformed
+
+    
+    // This method will load the selected borrow ID
+    private void loadBorrowID(){
         // This handles formatter for the integer to consist of 6 digits
         DecimalFormat dc = new DecimalFormat("000000");
         // This is to ensure the entire method have access to borrow matchedID array
@@ -1150,8 +1442,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         lblMessage.setText("");
         // Declaring variables to store borrowing and book information
         try {
-            cID = dc.format(Integer.parseInt(txtClientID.getText()));
-            brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
+            cID = dc.format(Integer.parseInt((String) cbxClientID.getSelectedItem()));
+            brID = dc.format(Integer.parseInt((String) cbxBorrowID.getSelectedItem()));
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
             // For debugging purpose only
             // JOptionPane.showMessageDialog(null, bID);
@@ -1172,7 +1464,6 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                         fetchedBorrow = true;
                         matchedIDbr[0] = matchedIDbr[0].replace("BOR", ""); // Remove prefix
                         matchedIDbr[2] = matchedIDbr[2].replace("BOO", ""); // Remove prefix
-                        txtBorrowID.setText(matchedIDbr[0]);
                         txtBookID.setText(matchedIDbr[2]);
                         txtBorrowDate.setText(matchedIDbr[3]);
                         txtBorrowDue.setText(matchedIDbr[4]);
@@ -1270,273 +1561,146 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
             }
         }
         catch (Exception ex) {
-            if (!txtClientID.isEnabled() | "".equals(txtClientID.getText()) | "Staff/Student ID".equals(txtClientID.getText())) {
-                JOptionPane.showMessageDialog(null, "Cannot load borrowing information without Client ID!", "Empty Client ID entry!", JOptionPane.ERROR_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Invalid input! Borrow ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-                JOptionPane.showMessageDialog(null, ex);
-            }
+            JOptionPane.showMessageDialog(null, "Invalid input! Borrow ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex);
+            
         }   
             
-
-    }//GEN-LAST:event_btnLoadBorrowActionPerformed
-
-    private void setOverdue() {
-        
-        try {
-            DateTimeFormatter datef = DateTimeFormat.forPattern("dd/MM/yyyy");
-            // To get current date
-            LocalDate tdate = LocalDate.now();
-            // To get current overdue date and parse into Date object
-            LocalDate oddate = LocalDate.parse(txtBorrowDue.getText(), datef);
-            // To save the differences between today's date and the overdue date
-            int datediff = Days.daysBetween(tdate, oddate).getDays();
-            // To enable the Renew button if and only if it is the day before or on the day of overdue itself
-            if (datediff < 0 && !isOverdue) {
-                // Debugging only!
-                // JOptionPane.showMessageDialog(null, "Date comparison worked.");
-                // Formatting ID into formal 6-digit mask
+    }
+    
+    // THis method will set available borrowing ID of the selected client
+    private void setBorrowingOption(){
+        if (ctype > 0) {
+            // This is to ensure the entire method have access to the matchedID array
+            String[] matchedID;
+            // This is to increment the discovered client assignment index
+            int i = 0;
+            // This is a flag to tell the method that there is result
+            boolean hasResult = false;
+            fetchedClient = false;
+            brList = new DefaultComboBoxModel();
+            brList.addElement("Select Borrowing ID");
+            cbxBorrowID.setModel(brList);
+            try {
+                saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+                // For debugging purpose only
+                // JOptionPane.showMessageDialog(null, bID);
+                File borrowtxt = new File(saveDir + "borrowing.txt");
+                Scanner inputFile;
                 try {
-                    DecimalFormat dc = new DecimalFormat("000000");
-                    // Setting the working directory
-                    saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-                    // Fetching IDs from the textfields
-                    brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
-                    cID = dc.format(Integer.parseInt(txtClientID.getText()));
-                    // To rename original book.txt to book.bak
-                    File borrowOri = new File(saveDir + "borrowing.txt");
-                    File borrowBak = new File(saveDir + "borrowingBak.txt");
-                    // To check if bookBak.txt is present or not
-                    if (!borrowBak.exists()){
-                        borrowOri.createNewFile();
-                    }
-                    // This is for debugging only!
-                    // JOptionPane.showMessageDialog(null, "renamed");
-                    // This is to rename the existing book.txt to bookBak.txt
-                    borrowOri.renameTo(borrowBak);
-                    // This is to open, find and replace a specific book record
-                    // Requires temporary file to store current state
-                    // FileWriter to write into a new file called book.txt
-                    FileWriter brd = new FileWriter(saveDir + "borrowing.txt"); 
-                    // PrintWriter to print into book.txt
-                    PrintWriter brdp = new PrintWriter(brd); 
-                    // This is to open and read bookBak.txt 
-                    File borrowingtxt = new File(saveDir + "borrowingBak.txt");
-                    // This is to instantiate the file opened earlier
-                    Scanner inputFile = new Scanner(borrowingtxt);
-                    // This array is to contain all lines
-                    String[] matchedID;
-                    // This is only for debugging!
-                    // boolean itWorked = false;
+                    inputFile = new Scanner(borrowtxt);
                     // Read lines from the file until no more are left.
                     while (inputFile.hasNext())
                     {
-                        // This is for debugging only!
-                        // JOptionPane.showMessageDialog(null, "In loop");
                         // Read the next line.
                         String brEntry = inputFile.nextLine();
                         // Split the line by using the delimiter ":" (semicolon) and store into array.
                         matchedID = brEntry.split(":");
-                        // Check if the read line has current book ID
-                        if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
-                            // Resetting the fine amount to 0
-                            matchedID[7] = "true";
-                            // JOptionPane.showMessageDialog(null, "Yes it worked");
-                        }
-                        // Rewrite the new book.txt with values found in bookBak.txt
-                        brdp.println(matchedID[0] + ":" +
-                                    matchedID[1] + ":" +
-                                    matchedID[2] + ":" +
-                                    matchedID[3] + ":" +
-                                    matchedID[4] + ":" +
-                                    matchedID[5] + ":" +
-                                    matchedID[6] + ":" +
-                                    matchedID[7] + ":" +
-                                    matchedID[8] + ":" +
-                                    matchedID[9]);
+                        // JOptionPane.showMessageDialog(null, numOut);
+                        // Check if the current Client ID matches one in the borrowing record
+                        if (matchedID[1].equals(cspecies + cbxClientID.getSelectedItem())){
+                            
+            
+                            hasResult = true;
+                            fetchedClient = true;
+                            matchedID[0] = matchedID[0].replace("BOR", "");
+                            // JOptionPane.showMessageDialog(null, i);
+                            if (i < 200) {
+                                brList.addElement(matchedID[0]);
+                                i++;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Maximum borrowing entry limit reached! Stopping at 200th record.", "Borrowing list maxed out!", JOptionPane.ERROR_MESSAGE);
+                                break;
+                            }
 
+                        }
                     }
-                    // Close the bookBak.txt reader
+                    // OptionPane.showMessageDialog(null, i);
                     inputFile.close();
-                    // This deletes bookBak.txt
-                    borrowBak.delete();
-                    // This closes the book.txt printer 
-                    brdp.close();
-                    // JOptionPane.showMessageDialog(null, "Yes it worked");
-                    // Set the current file as 
-                    // isOverdue = true;
-                    // Refresh the form with new data
-                    btnLoadBorrow.doClick();
-                } catch (Exception ex) {
-                    
+                    // Check if no records were fetched
+                    // Disable the list as well
+                    if (brList.getSize() == 1) {
+                    brList.removeAllElements();
+                    brList.addElement("No borrowing record(s) available.");
+                    }
+                    // Attempt to list all fetched client ID into the list box
+                    cbxBorrowID.setModel(brList);
+                    // This code is copied from the generated codes for list box initialization
+                    /*
+                    lstClient.setModel(new AbstractListModel<String>() {
+                        @Override
+                        public int getSize() { return clientStore.length; }
+                        @Override
+                        public String getElementAt(int i) { return clientStore[i]; }
+                    });*/
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Empty borrow due date!", "Empty input!", JOptionPane.ERROR_MESSAGE);
+            catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
 
+                JOptionPane.showMessageDialog(null, "Invalid input! Client ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            clearBorrowList();
         }
-        
-        
     }
     
-    private void btnPayFineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayFineActionPerformed
-        // TODO add your handling code here:
-        // This method will rewrite borrowing.txt by clearing the fine amount 
-        // WILL NOT RESET hasReturned flag as that is changed during return sequence
-        // WILL NOT RESET hasRenewed flag as that is managed by renewing sequence
-        // WILL NOT RESET isOverdue flag as that is set permanently
-        // Creating a local JFormattedTextField to accept input
-        JTextField paytxt = new JTextField();
-        // Input popup to allow librarian to key in paid amount
-        String payin = JOptionPane.showInputDialog(paytxt, "Insert total amount paid:" , "Paying fine.", JOptionPane.INFORMATION_MESSAGE);
+    // This method handles clearance of borrow list
+    private void clearBorrowList(){
+        // Disable the list
+        cbxBorrowID.setEnabled(false);
+        // Initialize DefaultListModel cList
+        brList = new DefaultComboBoxModel();
+        brList.addElement("Select a client ID to display available borrowing records");
+        cbxBorrowID.setModel(brList);
+    }
+    
+    // This method will load the selected book ID
+    private void loadClientID(){
+        // Assigning the cID to the selected index value
+        cID = (String) cbxClientID.getSelectedItem();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        fetchedClient = false;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner intClient;
         try {
-            DecimalFormat dc = new DecimalFormat("0.00"); // Prepare 2 decimal digit format
-            double payInConv = Double.parseDouble(payin); // Attempt conversion to double
-            // JOptionPane.showMessageDialog(null, dc.format(payInConv)); // For debugging only
-            // Converting the current fine amount to double for arithmetic logic
-            double currFine = Double.parseDouble(txtFineAmount.getText());
-            if (payInConv <= 0) { // Check if payment done is 0 or less which is not acceptable
-                JOptionPane.showMessageDialog(null, "Payment amount made is not possible! Please check your input and try again!", "Illogical payment amount made!", JOptionPane.ERROR_MESSAGE); 
-            } else { // Proceed with checking the amount paid against total fine to be paid // Proceed with handling flags and rewriting into borrowing.txt
-                if (payInConv < currFine) {
-                    // Payment made is less than the total amount required!
-                    JOptionPane.showMessageDialog(null, "Payment made is not enough! Please check your input and try again!", "Insufficient payment amount made!", JOptionPane.ERROR_MESSAGE); 
-                } else { // Payment made is either exact or exceeded the amount of fine
-                    if (payInConv > currFine) { // Has no change
-                        JOptionPane.showMessageDialog(null, "Payment successful! Change amount is RM" + dc.format(payInConv - currFine), "Paid fine successfully!", JOptionPane.INFORMATION_MESSAGE); 
-                    }
-                    // Tell the librarian to tell the client to return the book
-                    JOptionPane.showMessageDialog(null, "Due to our lending policy, the customer is required to return the book(s) as the borrowing period has ended. Please retrieve the book from the customer and the system will proceed with returning sequence.", "Borrowing term has ended!", JOptionPane.INFORMATION_MESSAGE); 
-                    // Formatting ID into formal 6-digit mask
-                    dc = new DecimalFormat("000000");
-                    // Setting the working directory
-                    saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-                    // Fetching IDs from the textfields
-                    brID = dc.format(Integer.parseInt(txtBorrowID.getText()));
-                    cID = dc.format(Integer.parseInt(txtClientID.getText()));
-                    // To rename original book.txt to book.bak
-                    File borrowOri = new File(saveDir + "borrowing.txt");
-                    File borrowBak = new File(saveDir + "borrowingBak.txt");
-                    // To check if bookBak.txt is present or not
-                    if (!borrowBak.exists()){
-                        borrowOri.createNewFile();
-                    }
-                    // This is for debugging only!
-                    // JOptionPane.showMessageDialog(null, "renamed");
-                    // This is to rename the existing book.txt to bookBak.txt
-                    borrowOri.renameTo(borrowBak);
-                    // This is to open, find and replace a specific book record
-                    // Requires temporary file to store current state
-                    // FileWriter to write into a new file called book.txt
-                    FileWriter brd = new FileWriter(saveDir + "borrowing.txt"); 
-                    // PrintWriter to print into book.txt
-                    PrintWriter brdp = new PrintWriter(brd); 
-                    // This is to open and read bookBak.txt 
-                    File borrowingtxt = new File(saveDir + "borrowingBak.txt");
-                    // This is to instantiate the file opened earlier
-                    Scanner inputFile = new Scanner(borrowingtxt);
-                    // This array is to contain all lines
-                    String[] matchedID;
-                    // This is only for debugging!
-                    // boolean itWorked = false;
-                    if (isOverdue){
-                        // Read lines from the file until no more are left.
-                        while (inputFile.hasNext())
-                        {
-                            // This is for debugging only!
-                            // JOptionPane.showMessageDialog(null, "In loop");
-                            // Read the next line.
-                            String brEntry = inputFile.nextLine();
-                            // Split the line by using the delimiter ":" (semicolon) and store into array.
-                            matchedID = brEntry.split(":");
-                            // Check if the read line has current book ID
-                            if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
-                                // flagging the record as hasReturned
-                                matchedID[6] = "true";
-                                // Resetting the fine amount to 0
-                                matchedID[9] = "0.00";
-                                // JOptionPane.showMessageDialog(null, "Yes it worked");
-                                // Flipping hasReturned status to true
-                                hasReturned = true;
-                            }
-                            // Rewrite the new book.txt with values found in bookBak.txt
-                            brdp.println(matchedID[0] + ":" +
-                                        matchedID[1] + ":" +
-                                        matchedID[2] + ":" +
-                                        matchedID[3] + ":" +
-                                        matchedID[4] + ":" +
-                                        matchedID[5] + ":" +
-                                        matchedID[6] + ":" +
-                                        matchedID[7] + ":" +
-                                        matchedID[8] + ":" +
-                                        matchedID[9]);
-                        }
-                    } else {
-                        // Read lines from the file until no more are left.
-                        while (inputFile.hasNext())
-                        {
-                            // This is for debugging only!
-                            // JOptionPane.showMessageDialog(null, "In loop");
-                            // Read the next line.
-                            String brEntry = inputFile.nextLine();
-                            // Split the line by using the delimiter ":" (semicolon) and store into array.
-                            matchedID = brEntry.split(":");
-                            // Check if the read line has current book ID
-                            if (matchedID[0].equals(brpfix + brID) && matchedID[1].equals(cspecies + cID)) {
-                                // Resetting the fine amount to 0
-                                matchedID[9] = "0.00";
-                                // JOptionPane.showMessageDialog(null, "Yes it worked");
-                            }
-                            // Rewrite the new book.txt with values found in bookBak.txt
-                            brdp.println(matchedID[0] + ":" +
-                                        matchedID[1] + ":" +
-                                        matchedID[2] + ":" +
-                                        matchedID[3] + ":" +
-                                        matchedID[4] + ":" +
-                                        matchedID[5] + ":" +
-                                        matchedID[6] + ":" +
-                                        matchedID[7] + ":" +
-                                        matchedID[8] + ":" +
-                                        matchedID[9]);
-
-                        }
-                    }
-                    
-                    // Close the bookBak.txt reader
-                    inputFile.close();
-                    // This deletes bookBak.txt
-                    borrowBak.delete();
-                    // This closes the book.txt printer 
-                    brdp.close();
-                    // JOptionPane.showMessageDialog(null, "Yes it worked");
-                    // Refresh the form with new data
-                    btnLoadBorrow.doClick();
-                    // Return borrowed books into book inventory
-                    refreshBookAmount();
-                    btnPayFine.setVisible(false);
-                    JOptionPane.showMessageDialog(null, "Returned successfully! Press OK to return to renewing form.", "Borrowed book(s) has been returned!", JOptionPane.INFORMATION_MESSAGE); 
-
+            // This part loads all book information
+            intClient = new Scanner(clienttxt);
+            // Read lines from the file until no more are left.
+            while (intClient.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intClient.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace(cspecies, "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (cbxClientID.getSelectedItem().equals(matchedID[0])) {
+                    fetchedClient = true;
+                    txtClientFirstName.setText(matchedID[1]);
+                    txtClientLastName.setText(matchedID[2]);
+                    txtClientDoB.setText(matchedID[3]);
+                    txtClientGender.setText(matchedID[4]);
+                    txtClientPhoneNumber.setText(matchedID[5]);
+                    txtClientEmailAddress.setText(matchedID[6]);
+                    txtClientHomeAddress.setText(matchedID[7]);
                 }
             }
-        } catch (Exception ex) {
-            if ("".equals(payin)) { // Check if input is null
-                JOptionPane.showMessageDialog(null, "Input cannot be empty!", "Empty string!", JOptionPane.ERROR_MESSAGE); 
-            } else { // Check if input is not numerical
-                JOptionPane.showMessageDialog(null, "Only numbers are accepted!", "Illegal input detected!", JOptionPane.ERROR_MESSAGE);
-            }
-            
+            intClient.close();
+            fetchedBookClientInfo();
+            setBorrowingOption();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }//GEN-LAST:event_btnPayFineActionPerformed
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
-        fetchedClient = false;
-        fetchedBorrow = false;
-        clearClient();
-        clearBorrow();
-    }//GEN-LAST:event_btnResetActionPerformed
-
+    }
+    
+    
     // This methods amend the current amount of books available by adding 
     // borrowed books amount that was returned by the client.
     private void refreshBookAmount() throws IOException {
@@ -1704,6 +1868,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
     }
     
     private void initGUI(){
+        cbxClientID.setEnabled(false);
+        cbxBorrowID.setEnabled(false);
         lblIsOverdue.setVisible(false);
         btnPayFine.setVisible(false);
         lblMessage.setVisible(false);
@@ -1715,53 +1881,6 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 } else {
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                }
-            }
-        });
-        // This anon class handles textfield changes for client ID entry
-        txtClientID.getDocument().addDocumentListener(new unnamedClass(){
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                if (txtClientID.getText().equals("")){
-                    cerr = true;
-                    lblClientID.setForeground(Color.yellow);
-                }
-                else {
-                    cerr = false;
-                    lblClientID.setForeground(fgtxt);
-                }
-                
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if (txtClientID.getText().equals("")){
-                    cerr = true;
-                    lblClientID.setForeground(Color.yellow);
-                }
-            }
-        });
-        // This anon class handles textfield changes for book ID entry
-        txtBorrowID.getDocument().addDocumentListener(new unnamedClass(){
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                if (txtBorrowID.getText().equals("")){
-                    brerr = true;
-                    lblBorrowID.setForeground(Color.yellow);
-                }
-                else {
-                    brerr = false;
-                    lblBorrowID.setForeground(fgtxt);
-                }
-                
-                
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if (txtBorrowID.getText().equals("")){
-                    brerr = true;
-                    lblBorrowID.setForeground(Color.yellow);
                 }
             }
         });
@@ -1796,12 +1915,12 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnLoadBorrow;
-    private javax.swing.JButton btnLoadClient;
     private javax.swing.JButton btnPayFine;
     private javax.swing.JButton btnRenew;
     private javax.swing.JButton btnReset;
+    private javax.swing.JComboBox<String> cbxBorrowID;
     private javax.swing.JComboBox<String> cbxClientID;
+    private javax.swing.JComboBox<String> cbxClientType;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1853,13 +1972,11 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
     private javax.swing.JTextField txtBookTitle;
     private javax.swing.JFormattedTextField txtBorrowDate;
     private javax.swing.JFormattedTextField txtBorrowDue;
-    private javax.swing.JFormattedTextField txtBorrowID;
     private javax.swing.JFormattedTextField txtClientDoB;
     private javax.swing.JTextField txtClientEmailAddress;
     private javax.swing.JTextField txtClientFirstName;
     private javax.swing.JTextField txtClientGender;
     private javax.swing.JTextArea txtClientHomeAddress;
-    private javax.swing.JFormattedTextField txtClientID;
     private javax.swing.JTextField txtClientLastName;
     private javax.swing.JFormattedTextField txtClientPhoneNumber;
     private javax.swing.JFormattedTextField txtFineAmount;
