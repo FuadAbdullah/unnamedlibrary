@@ -37,7 +37,7 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class unnamedHistoryMenu extends javax.swing.JFrame {
     
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
+    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir, returnDate;
     boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
     boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
     boolean isOverdue, hasRenewed, hasFine, hasReturned, isDeleted; 
@@ -136,7 +136,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         lblIsRenewed = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         lblBorrowStatus = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Borrowing history - unnamed Library Management System");
@@ -218,43 +218,46 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panTopLayout.createSequentialGroup()
-                        .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panTopLayout.createSequentialGroup()
                         .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblBorrowDue)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblIsOverdue, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addComponent(lblIsOverdue, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panTopLayout.createSequentialGroup()
+                        .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 968, Short.MAX_VALUE)
+                .addGap(986, 986, 986)
                 .addComponent(btnCancel)
-                .addContainerGap())
+                .addGap(24, 24, 24))
         );
         panTopLayout.setVerticalGroup(
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
             .addGroup(panTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panTopLayout.createSequentialGroup()
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblBorrowID)
-                            .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblMessage))
-                        .addGap(17, 17, 17)
-                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblBorrowDate)
-                            .addComponent(lblBorrowDue)
-                            .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblIsOverdue)))
-                    .addComponent(btnCancel))
-                .addContainerGap(11, Short.MAX_VALUE))
+                        .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panTopLayout.createSequentialGroup()
+                                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblBorrowID)
+                                    .addComponent(txtBorrowID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblMessage))
+                                .addGap(17, 17, 17)
+                                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtBorrowDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblBorrowDate)
+                                    .addComponent(lblBorrowDue)
+                                    .addComponent(txtBorrowDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIsOverdue)))
+                            .addComponent(btnCancel))
+                        .addGap(0, 9, Short.MAX_VALUE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
 
         panMain.add(panTop, java.awt.BorderLayout.PAGE_START);
@@ -531,7 +534,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblClientHomeAddress))
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
 
         panCenter.add(jPanel2);
@@ -762,12 +765,12 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         lblBorrowStatus.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblBorrowStatus.setText("Borrowing Status:");
 
-        jButton5.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        jButton5.setText("Reset");
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnResetActionPerformed(evt);
             }
         });
 
@@ -790,7 +793,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                         .addGap(5, 5, 5))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton5)
+                            .addComponent(btnReset)
                             .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9))))
         );
@@ -806,7 +809,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)
+                        .addComponent(btnReset)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addComponent(lblBorrowStatus)
@@ -1027,6 +1030,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         cID = "";
         bID = "";
         brID = "";
+        returnDate = "";
         lblIsReturned.setForeground(fgtxt);
         lblIsReturned.setText("Has not been returned.");
         lblIsRenewed.setForeground(fgtxt);
@@ -1181,6 +1185,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                             } else {
                                 hasFine = false;
                             }
+                            returnDate = matchedIDbr[10];
 
                         }
                     }
@@ -1250,10 +1255,10 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_lstBorrowValueChanged
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
         cbxClientID.setSelectedIndex(0);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnResetActionPerformed
 
     // This method handles clearance of borrow list
     private void clearBorrowList(){
@@ -1373,7 +1378,8 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                                     matchedID[6] + ":" +
                                     matchedID[7] + ":" +
                                     matchedID[8] + ":" +
-                                    matchedID[9]);
+                                    matchedID[9] + ":" +
+                                    matchedID[10]);
 
                     }
                     // Close the bookBak.txt reader
@@ -1418,7 +1424,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
             int datediff = Days.daysBetween(tdate, oddate).getDays();
             // To enable the Renew button if and only if it is the day before or on the day of overdue itself
             if (!hasFine && !isOverdue & !hasRenewed && !hasReturned) {
-                if (datediff >= 0 && datediff <= 1) {
+                if (datediff >= 0 && datediff <= 7) {
                     // Debugging only!
                     // JOptionPane.showMessageDialog(null, "Date comparison worked.");
                     // fetchedBorrow = false;
@@ -1431,17 +1437,23 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                         lblBorrowDue.setForeground(Color.red);
                     } else {
                         lblMessage.setVisible(true);
-                        lblMessage.setText("Can return in " + datediff + " day(s).");
+                        lblMessage.setText("Client may return the book(s) today.");
                     }
+//                    } else {
+//                        lblMessage.setVisible(true);
+//                        lblMessage.setText("Can return in " + datediff + " day(s).");
+//                    }
                 } else{
+                    // Subtracting 7 days from the due date for the early submission
+                    int earlydate = datediff - 7;
                     // Displaying days to due date
                     lblMessage.setVisible(true);
-                    lblMessage.setText("Can return in " + datediff + " day(s).");
+                    lblMessage.setText("Can return in " + earlydate + " day(s).");
                 }
             } else if (hasReturned) {
                 // Displaying client has returned the book(s)
                 lblMessage.setVisible(true);
-                lblMessage.setText("Client has returned the book(s).");
+                lblMessage.setText("Client has returned the book(s) on " + returnDate + ".");
             } else if (hasRenewed && !isOverdue) {
                 // Displaying client is in renew term
                 if (datediff == 0) {
@@ -1524,8 +1536,8 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnReset;
     private javax.swing.JComboBox<String> cbxClientID;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

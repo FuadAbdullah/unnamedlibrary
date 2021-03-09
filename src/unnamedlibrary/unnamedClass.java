@@ -5,6 +5,8 @@
  */
 package unnamedlibrary;
 
+import java.awt.Color;
+import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -34,10 +36,26 @@ class unnamedClass implements DocumentListener {
     }
 }
 
-class unnamedException extends Exception {
+abstract class unnamedException extends Exception {
+    public unnamedException(String exc){
+        super(exc);
+    }
     
 }
 
 class unnamedBookMenuException extends unnamedException {
+    private Color fgtxt = new Color(187,187,187); // Default foreground color for text
+    
+    public unnamedBookMenuException(String exc) {
+        super(exc);
+    }
+    
+    public void highlightBookMenu(JLabel lbl){
+        lbl.setForeground(Color.yellow);
+    }
+    
+    public void dehighlightBookMenu(JLabel lbl){
+        lbl.setForeground(fgtxt);
+    }
     
 }

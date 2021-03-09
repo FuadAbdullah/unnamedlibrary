@@ -516,8 +516,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             highlightEmpty();
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
         }      
