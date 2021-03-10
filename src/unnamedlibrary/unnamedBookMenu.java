@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package unnamedlibrary;
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,42 +12,36 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.NumberFormatter;
-import org.joda.time.*;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
- * @author fab07
+ * @author FuadAbdullah
  */
 public class unnamedBookMenu extends javax.swing.JFrame {
-
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
-    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
-    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
-    final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
-    Color fgtxt = new Color(187,187,187); // Default foreground color for text
-    int newBookID; // To store new book ID
-    DefaultComboBoxModel bkList; // ComboBoxModel for Book ID
+    // <editor-fold defaultstate="collapsed" desc="Book Menu Private Variables"> 
+    // Description for private variables
+    // -------------------------------------
+    // bID stores book ID
+    // saveDir stores working directory
+    // fgtxt is the color code seen in the normal label and text. Default color.
+    // newBookID stores new book ID after increment
+    // bkList stores elements for book combobox options    
+    // -------------------------------------
+    String bID, saveDir;
+    final String bpfix = "BOO";
+    Color fgtxt = new Color(187,187,187);
+    int newBookID;
+    DefaultComboBoxModel bkList;
+    // </editor-fold>    
     
-    /**
-     * Creates new form unnamedBook
-     */
+    // Book menu constructor
     public unnamedBookMenu() {
         initComponents();
         initGUI();
@@ -273,18 +266,10 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         txtBookPublisher.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtBookPublisher.setText("Publisher of the book");
 
-        try {
-            txtPublishDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtPublishDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
         txtPublishDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        try {
-            txtArrivalDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtArrivalDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
         txtArrivalDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtBookQuantity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
@@ -419,7 +404,9 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+   
+    // <editor-fold defaultstate="collapsed" desc="Button Events">
+    // This method returns the user to main menu page via cancel button
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel any book editing, deleting or adding process. Continue?", "Returning to main menu!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -429,18 +416,6 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void getTodayDate(JFormattedTextField txt){
-        // To get current date
-        Calendar bdate = Calendar.getInstance();
-        SimpleDateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
-        
-        // To display date into publish date textfield
-        txt.setText(datef.format(bdate.getTime()));
-    }
-    
-    // NOTE TO SELF FOR TOMORROW
-    // IMPLEMENT LOAD FROM EXISTING BOOK ID > DELETE > UPDATE 
-    // FOLLOW THIS ORDER WILL BE MUCH EASIER
     // This method handles addition of books into the system
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
@@ -450,10 +425,118 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         addBookInformation();
     }//GEN-LAST:event_btnAddActionPerformed
 
+    // This method triggers book details loader via user interaction with Book ID combobox
+    private void cbxBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBookIDActionPerformed
+        // TODO add your handling code here:
+        // Clear previous fields value
+        clearBook();
+        deHighlightEmpty();
+        // Loads index with Book ID only
+        if (cbxBookID.getSelectedIndex() != 0 && cbxBookID.getSelectedIndex() != -1) {
+            loadBookID();
+            btnAdd.setEnabled(false);
+            btnDelete.setEnabled(true);
+            btnUpdate.setEnabled(true);
+        } else {
+            // Disabling action buttons when no book is loaded. Add button is still available to accept new book
+            btnAdd.setEnabled(true);
+            btnDelete.setEnabled(false);
+            btnUpdate.setEnabled(false);
+        }
+        
+    }//GEN-LAST:event_cbxBookIDActionPerformed
+
+    // This method deletes the book via delete button
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int selection = JOptionPane.showConfirmDialog(null, "Are you sure? This action will delete the book from the system but will still be available inside the database.", "Deleting a book!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (selection == JOptionPane.YES_OPTION) {
+            deleteBook();
+            setBookOption();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    // This method updates the book via update button
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        updateBookInformation();
+        loadBookID();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    // This method resets the field via reset button
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        clearBook();
+        deHighlightEmpty();
+        cbxBookID.setSelectedIndex(0);
+    }//GEN-LAST:event_btnResetActionPerformed
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">  
+    
+    // This method acquire today's date
+    private void getTodayDate(JFormattedTextField txt){
+        // To get current date
+        Calendar bdate = Calendar.getInstance();
+        SimpleDateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
+        
+        // To display date into publish date textfield
+        txt.setText(datef.format(bdate.getTime()));
+    }
+    
+    // This method will set option list for book ID using ComboBoxModel
+    private void setBookOption(){
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        bkList = new DefaultComboBoxModel();
+        // Adding default text
+        bkList.addElement("Select Book ID");
+        cbxBookID.setModel(bkList);
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File booktxt = new File(saveDir + "book.txt");
+        Scanner intBook;
+        try {
+            // This part loads all book information
+            intBook = new Scanner(booktxt);
+            // This is to increment the discovered client assignment index
+            int i = 0;
+            // Read lines from the file until no more are left.
+            while (intBook.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intBook.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace("BOO", "");
+                if (i < 200) {
+                    if ("false".equals(matchedID[9])) {
+                        bkList.addElement(matchedID[0]);
+                        i++;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Maximum book entry limit reached! Stopping at 200th record.", "Book list maxed out!", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+            // OptionPane.showMessageDialog(null, i);
+            intBook.close();
+            // Check if there are no clients at all for each type
+            if (bkList.getSize() == 1) {
+                bkList.removeAllElements();
+                bkList.addElement("No book(s) available.");
+            }
+            // Attempt to list all fetched client ID into the list box
+            cbxBookID.setModel(bkList);
+            // Select index 0 as default
+            cbxBookID.setSelectedIndex(0);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     // This method handles the insertion of book
     private void addBookInformation(){
-        // Declaring file extension used
-        ext = ".txt";        
         saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
         // Formatting ID into formal 6-digit mask
         DecimalFormat dc = new DecimalFormat("000000");
@@ -464,11 +547,11 @@ public class unnamedBookMenu extends javax.swing.JFrame {
             emptyFields();
             // Storing Borrowing entries into variables
             // Check if the date is unset or left empty
-            if ("  /  /    ".equals(txtPublishDate.getText()) || "01/01/2001".equals(txtPublishDate.getText())) {
+            if ("".equals(txtPublishDate.getText())) {
                 JOptionPane.showMessageDialog(null, "Publish date is empty or unset! Autosetting value to today's date", "Invalid publish date!", JOptionPane.ERROR_MESSAGE);
                 getTodayDate(txtPublishDate); // Setting publish textfield to today's date
             }
-            if ("  /  /    ".equals(txtArrivalDate.getText()) || "01/01/2001".equals(txtArrivalDate.getText())) {
+            if ("".equals(txtArrivalDate.getText())) {
                 JOptionPane.showMessageDialog(null, "Arrival date is empty or unset! Autosetting value to today's date", "Invalid arrival date!", JOptionPane.ERROR_MESSAGE);
                 getTodayDate(txtArrivalDate); // Setting publish textfield to today's date
             }
@@ -521,97 +604,6 @@ public class unnamedBookMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
         }      
     }
-    
-    // This method will reset the color of the highlighted labels to default foreground
-    private void deHighlightEmpty(){
-        lblBookTitle.setForeground(fgtxt);
-        lblBookGenre.setForeground(fgtxt);
-        lblBookSummary.setForeground(fgtxt);
-        lblBookPublisher.setForeground(fgtxt);
-        lblBookAuthor.setForeground(fgtxt);
-    }
-    
-    // This method will highlight empty fields with yellow color upon call
-    private void highlightEmpty() {
-        if ("".equals(txtBookTitle.getText())) {
-           lblBookTitle.setForeground(Color.yellow);
-        }
-        if ("".equals(txtBookGenre.getText())) {
-            lblBookGenre.setForeground(Color.yellow);
-        }
-        if ("".equals(txtBookSummary.getText())) {
-            lblBookSummary.setForeground(Color.yellow);
-        }        
-        if ("".equals(txtBookPublisher.getText())) {
-            lblBookPublisher.setForeground(Color.yellow);
-        }
-        if ("".equals(txtBookAuthor.getText())) {
-            lblBookAuthor.setForeground(Color.yellow);
-        }  
-    }
-    
-    // This method is to handle empty book fields
-    // Create a new exception class!
-    private void emptyFields() throws Exception {
-        if ("".equals(txtBookTitle.getText())) {
-            throw new Exception("Empty book title");
-        }
-        if ("".equals(txtBookGenre.getText())) {
-            throw new Exception("Empty book genre");
-        }
-        if ("".equals(txtBookSummary.getText())) {
-            throw new Exception("Empty book summary");
-        }        
-        if ("".equals(txtBookPublisher.getText())) {
-            throw new Exception("Empty book publisher");
-        }
-        if ("".equals(txtBookAuthor.getText())) {
-            throw new Exception("Empty book author");
-        }  
-    }
-    
-    private void cbxBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBookIDActionPerformed
-        // TODO add your handling code here:
-        // Clear previous fields value
-        clearBook();
-        deHighlightEmpty();
-        // Loads index with Book ID only
-        if (cbxBookID.getSelectedIndex() != 0 && cbxBookID.getSelectedIndex() != -1) {
-            loadBookID();
-            btnAdd.setEnabled(false);
-            btnDelete.setEnabled(true);
-            btnUpdate.setEnabled(true);
-        } else {
-            // Disabling action buttons when no book is loaded. Add button is still available to accept new book
-            btnAdd.setEnabled(true);
-            btnDelete.setEnabled(false);
-            btnUpdate.setEnabled(false);
-        }
-        
-    }//GEN-LAST:event_cbxBookIDActionPerformed
-
-    // This method deletes the book
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int selection = JOptionPane.showConfirmDialog(null, "Are you sure? This action will delete the book from the system but will still be available inside the database.", "Deleting a book!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (selection == JOptionPane.YES_OPTION) {
-            deleteBook();
-            setBookOption();
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    // This method updates the book
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
-        updateBookInformation();
-        loadBookID();
-    }//GEN-LAST:event_btnUpdateActionPerformed
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
-        clearBook();
-        deHighlightEmpty();
-        cbxBookID.setSelectedIndex(0);
-    }//GEN-LAST:event_btnResetActionPerformed
     
     // This method updates the selected book with information found in the fields
     private void updateBookInformation(){
@@ -693,14 +685,12 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         }
     }
     
-    // This method will set option list for book ID using ComboBoxModel
-    private void setBookOption(){
+    // This method will load the selected book ID
+    private void loadBookID(){
+        // Assigning the bID to the selected index value
+        bID = (String) cbxBookID.getSelectedItem();
         // This is to ensure the entire method have access to borrow matchedID array
         String[] matchedID = null;
-        bkList = new DefaultComboBoxModel();
-        // Adding default text
-        bkList.addElement("Select Book ID");
-        cbxBookID.setModel(bkList);
         saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
         // For debugging purpose only
         // JOptionPane.showMessageDialog(null, bID);
@@ -709,8 +699,6 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         try {
             // This part loads all book information
             intBook = new Scanner(booktxt);
-            // This is to increment the discovered client assignment index
-            int i = 0;
             // Read lines from the file until no more are left.
             while (intBook.hasNext())
             {
@@ -719,27 +707,20 @@ public class unnamedBookMenu extends javax.swing.JFrame {
                 // Split the line by using the delimiter ":" (semicolon) and store into array.
                 matchedID = bEntry.split(":");
                 matchedID[0] = matchedID[0].replace("BOO", "");
-                if (i < 200) {
-                    if ("false".equals(matchedID[9])) {
-                        bkList.addElement(matchedID[0]);
-                        i++;
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Maximum book entry limit reached! Stopping at 200th record.", "Book list maxed out!", JOptionPane.ERROR_MESSAGE);
-                    break;
+                // JOptionPane.showMessageDialog(null, i);
+                if (cbxBookID.getSelectedItem().equals(matchedID[0])) {
+                    txtBookTitle.setText(matchedID[1]);
+                    txtBookGenre.setText(matchedID[2]);
+                    txtBookSummary.setText(matchedID[3]);
+                    txtBookQuantity.setText(matchedID[4]);
+                    txtBookPublisher.setText(matchedID[5]);
+                    txtBookAuthor.setText(matchedID[6]);
+                    txtPublishDate.setText(matchedID[7]);
+                    txtArrivalDate.setText(matchedID[8]);
                 }
             }
             // OptionPane.showMessageDialog(null, i);
             intBook.close();
-            // Check if there are no clients at all for each type
-            if (bkList.getSize() == 1) {
-                bkList.removeAllElements();
-                bkList.addElement("No book(s) available.");
-            }
-            // Attempt to list all fetched client ID into the list box
-            cbxBookID.setModel(bkList);
-            // Select index 0 as default
-            cbxBookID.setSelectedIndex(0);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -814,48 +795,6 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         }
     }
     
-    // This method will load the selected book ID
-    private void loadBookID(){
-        // Assigning the bID to the selected index value
-        bID = (String) cbxBookID.getSelectedItem();
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        fetchedBook = false;
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File booktxt = new File(saveDir + "book.txt");
-        Scanner intBook;
-        try {
-            // This part loads all book information
-            intBook = new Scanner(booktxt);
-            // Read lines from the file until no more are left.
-            while (intBook.hasNext())
-            {
-                // Read the next line.
-                String bEntry = intBook.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                matchedID[0] = matchedID[0].replace("BOO", "");
-                // JOptionPane.showMessageDialog(null, i);
-                if (cbxBookID.getSelectedItem().equals(matchedID[0])) {
-                    txtBookTitle.setText(matchedID[1]);
-                    txtBookGenre.setText(matchedID[2]);
-                    txtBookSummary.setText(matchedID[3]);
-                    txtBookQuantity.setText(matchedID[4]);
-                    txtBookPublisher.setText(matchedID[5]);
-                    txtBookAuthor.setText(matchedID[6]);
-                    txtPublishDate.setText(matchedID[7]);
-                    txtArrivalDate.setText(matchedID[8]);
-                }
-            }
-            // OptionPane.showMessageDialog(null, i);
-            intBook.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     // This method clears book related fields
     private void clearBook(){
         // To clean up previous or default values from fields
@@ -909,6 +848,176 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method will highlight empty fields with yellow color upon call
+    private void highlightEmpty() {
+        if ("".equals(txtBookTitle.getText())) {
+           lblBookTitle.setForeground(Color.yellow);
+        }
+        if ("".equals(txtBookGenre.getText())) {
+            lblBookGenre.setForeground(Color.yellow);
+        }
+        if ("".equals(txtBookSummary.getText())) {
+            lblBookSummary.setForeground(Color.yellow);
+        }        
+        if ("".equals(txtBookPublisher.getText())) {
+            lblBookPublisher.setForeground(Color.yellow);
+        }
+        if ("".equals(txtBookAuthor.getText())) {
+            lblBookAuthor.setForeground(Color.yellow);
+        }  
+    }
+    
+    // This method will reset the color of the highlighted labels to default foreground
+    private void deHighlightEmpty(){
+        lblBookTitle.setForeground(fgtxt);
+        lblBookGenre.setForeground(fgtxt);
+        lblBookSummary.setForeground(fgtxt);
+        lblBookPublisher.setForeground(fgtxt);
+        lblBookAuthor.setForeground(fgtxt);
+    }
+    
+    // This method is to handle empty book fields
+    // Create a new exception class!
+    private void emptyFields() throws Exception {
+        if ("".equals(txtBookTitle.getText())) {
+            throw new Exception("Empty book title");
+        }
+        if ("".equals(txtBookGenre.getText())) {
+            throw new Exception("Empty book genre");
+        }
+        if ("".equals(txtBookSummary.getText())) {
+            throw new Exception("Empty book summary");
+        }        
+        if ("".equals(txtBookPublisher.getText())) {
+            throw new Exception("Empty book publisher");
+        }
+        if ("".equals(txtBookAuthor.getText())) {
+            throw new Exception("Empty book author");
+        }  
+    }
+    
+    // This method handles all validation related to the fields
+    private void inputCharacterValidator(){
+        txtBookTitle.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtBookTitle.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextField(txt, txtBookTitle);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookTitle);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookTitle);
+            }
+        });
+        txtBookGenre.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtBookGenre.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextField(txt, txtBookGenre);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookGenre);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookGenre);
+            }
+        });
+        txtBookSummary.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtBookSummary.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextArea(txt, txtBookSummary);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextArea(txt, txtBookSummary);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextArea(txt, txtBookSummary);
+            }
+        });
+        txtBookPublisher.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtBookPublisher.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextField(txt, txtBookPublisher);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookPublisher);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookPublisher);
+            }
+        });
+        txtBookAuthor.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtBookAuthor.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextField(txt, txtBookAuthor);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookAuthor);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtBookAuthor);
+            }
+        });
+    }
+    
+    // This method handles JTextField validation
+    // The validation only allow A-Z 1-9 and !@#$%^&*(){}[]"';\/?|.,<>~`_+=- symbols to be inserted
+    private void invalidStringTextField(String input, JTextField txt){
+        Runnable doDelete = new Runnable(){
+            public void set(){
+                final String input = txt.getText();
+                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
+                if (matching == false && !"".equals(input)) {
+                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+                    String output = input.substring(0, input.length() - 1);
+                    txt.setText(output);
+                }
+            }
+            @Override
+            public void run(){
+                set();
+            }
+        };
+        SwingUtilities.invokeLater(doDelete);
+    }
+    
+    // This method handles JTextArea validation
+    // The validation only allow A-Z 1-9 and !@#$%^&*()"'; symbols to be inserted
+    private void invalidStringTextArea(String input, JTextArea txt){
+        Runnable doDelete = new Runnable(){
+            public void set(){
+                final String input = txt.getText();
+                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
+                if (matching == false && !"".equals(input)) {
+                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+                    String output = input.substring(0, input.length() - 1);
+                    txt.setText(output);
+                }
+            }
+            @Override
+            public void run(){
+                set();
+            }
+        };
+        SwingUtilities.invokeLater(doDelete);
+    }
+    
+    // This is the form load method
     private void initGUI(){
         // Set the initial value for new book
         bookIncrementor();
@@ -925,7 +1034,13 @@ public class unnamedBookMenu extends javax.swing.JFrame {
                 }
             }
         });
+        // Check if invalid input is inserted
+        inputCharacterValidator();
     }
+ 
+    // </editor-fold>
+    
+    
     
     /**
      * @param args the command line arguments

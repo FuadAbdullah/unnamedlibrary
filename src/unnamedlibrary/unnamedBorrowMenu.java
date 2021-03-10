@@ -49,15 +49,11 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
     int ctype; // Value to represent selected Client combo box
     DefaultComboBoxModel cList, bkList; // ComboBoxModel for Book ID
      
-    private void testIconDisplay(){
-    }
-    
     /**
      * Creates new form unnamedBorrowMenu
      */
     public unnamedBorrowMenu() {
         initComponents();
-        testIconDisplay();
         initGUI();
     }
 

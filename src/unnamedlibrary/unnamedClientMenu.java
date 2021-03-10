@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package unnamedlibrary;
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,43 +12,35 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.NumberFormatter;
-import org.joda.time.*;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
- * @author fab07
+ * @author FuadAbdullah
  */
 public class unnamedClientMenu extends javax.swing.JFrame {
-
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
-    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
-    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
-    final String bpfix = "BOO", brpfix = "BOR";// For book and borrow ID prefixes
-    Color fgtxt = new Color(187,187,187); // Default foreground color for text
-    int newClientID; // To store new book ID
-    int ctype; // Value to represent selected Client combo box
-    DefaultComboBoxModel cList; // ComboBoxModel for Book ID
+    // <editor-fold defaultstate="collapsed" desc="Client Menu Private Variables"> 
+    // Description for private variables
+    // -------------------------------------
+    // cspecies stores client type prefixes
+    // cID stores client ID
+    // saveDir stores working directory
+    // fgtxt is the color code seen in the normal label and text. Default color.
+    // newClientID stores new client ID after increment
+    // ctype stores the selection index of the client type
+    // cList stores elements for client combobox options    
+    // -------------------------------------
+    private String cspecies, cID, saveDir;
+    private final Color fgtxt = new Color(187,187,187);
+    private int newClientID, ctype;
+    private DefaultComboBoxModel cList;
+    // </editor-fold>
     
-    /**
-     * Creates new form unnamedBook
-     */
+    // Client menu constructor
     public unnamedClientMenu() {
         initComponents();
         initGUI();
@@ -265,11 +256,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         txtClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        try {
-            txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
         txtClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         try {
@@ -280,6 +267,11 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         txtClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientEmailAddress.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtClientEmailAddressFocusLost(evt);
+            }
+        });
 
         txtClientHomeAddress.setColumns(20);
         txtClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -307,11 +299,6 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         cbxClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxClientGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
         cbxClientGender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cbxClientGender.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxClientGenderActionPerformed(evt);
-            }
-        });
 
         lblClientType.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
         lblClientType.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -427,6 +414,8 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold defaultstate="collapsed" desc="Button Events">    
+    // This method brings user to main menu via the cancel button
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel any client editing, deleting or adding process. Continue?", "Returning to main menu!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -436,10 +425,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    // NOTE TO SELF FOR TOMORROW
-    // IMPLEMENT LOAD FROM EXISTING BOOK ID > DELETE > UPDATE 
-    // FOLLOW THIS ORDER WILL BE MUCH EASIER
-    // This method handles addition of books into the system
+    // This method adds the inserted book information via add button
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         // Reset the highlighted empty fields to original foreground color
@@ -447,156 +433,8 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         // To add the client
         addClientInformation();
     }//GEN-LAST:event_btnAddActionPerformed
-
-    // This method will fetch the client type
-    // Can be used for both client loading or addition
-    private void getClientType(){
-        ctype = cbxClientType.getSelectedIndex(); // Get client type
-
-        if (ctype <= 0) { // Will disable the list from any user interaction
-            lblClientID.setText("Load Existing Client:");
-            cspecies = "NUL";
-        } else { // Will display fields according to selected user type
-            lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
-            switch (ctype){
-                case 1:
-                cspecies = "STA";
-                break;
-            case 2:
-                cspecies = "STU";
-                break;
-            default:
-                cspecies = "NUL";
-                break;
-            }
-            // cbxClientID.setEnabled(true);
-            // btnAdd.setEnabled(true);
-        }
-    }
-    
-    // This method handles the insertion of client
-    private void addClientInformation(){
-        // Declaring file extension used
-        ext = ".txt";        
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // Formatting ID into formal 6-digit mask
-        DecimalFormat dc = new DecimalFormat("000000");
-        try {
-            // Fetching IDs from the textfields
-            cID = dc.format(newClientID);
-            // Check if textfields are empty
-            emptyFields();
-            // Storing Borrowing entries into variables
-            // Checking if gender is unselected
-            if (cbxClientGender.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(null, "Gender is unset! Autosetting value to male", "Gender unselected!", JOptionPane.ERROR_MESSAGE);
-                cbxClientGender.setSelectedIndex(1); // Setting the gender to male which is index 1
-            }
-            if (cbxClientType.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(null, "Client type is unset! Autosetting value to Staff", "Client type unselected!", JOptionPane.ERROR_MESSAGE);
-                cbxClientGender.setSelectedIndex(1); // Setting the client type to staff which is index 1
-            }
-            String cFirstName = txtClientFirstName.getText();
-            String cLastName = txtClientLastName.getText();
-            String cDoB = txtClientDoB.getText();
-            String cGender = (String) cbxClientGender.getSelectedItem();
-            String cPhoneNumber = txtClientPhoneNumber.getText();
-            String cEmailAddress = txtClientEmailAddress.getText();
-            String cHomeAddress = txtClientHomeAddress.getText();
-            // FileWriter and PrintWriter to create and write into book.txt
-            try {
-                // FileWriter to write into a new file called client.txt
-                FileWriter cd = new FileWriter(saveDir + "client.txt", true); 
-                // PrintWriter to print into client.txt
-                PrintWriter cdp = new PrintWriter(cd); 
-                // To print the line into Borrowing textfile
-                cdp.println(cspecies + cID + ":" +
-                             cFirstName + ":" +
-                             cLastName + ":" +
-                             cDoB + ":" +
-                             cGender + ":" +
-                             cPhoneNumber + ":" + 
-                             cEmailAddress + ":" +
-                             cHomeAddress + ":" +
-                             "false"); // false to indicate hasn't been deleted status
-                cdp.close();
-                // To display completed borrowing process status
-                JOptionPane.showMessageDialog(null, "Client is successfully added! Press OK to return to client management form.", "Adding client succeeded!", JOptionPane.INFORMATION_MESSAGE);
-                // To refresh new ID 
-                clientIncrementor();
-                // JOptionPane.showMessageDialog(null, newClientID);
-                // To reload the client information
-                // Integrate the reload part with combo box implementation of Client ID
-                setClientOption();
-                // Refresh the currently displayed client with the latest ID
-                cbxClientID.setSelectedIndex(cbxClientID.getItemCount() - 1);
-            } catch (IOException ex) {
-                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        catch (Exception ex) {
-            highlightEmpty();
-            JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
-            // Continue with displaying which field was affected. ensure it appears before the mnessagebox
-        }      
-    }
-    
-    // This method will reset the color of the highlighted labels to default foreground
-    private void deHighlightEmpty(){
-        lblClientType.setForeground(fgtxt);
-        lblClientFirstName.setForeground(fgtxt);
-        lblClientLastName.setForeground(fgtxt);
-        lblClientDoB.setForeground(fgtxt);
-        lblClientPhoneNumber.setForeground(fgtxt);
-        lblClientEmailAddress.setForeground(fgtxt);
-        lblClientHomeAddress.setForeground(fgtxt);
-    }
-    
-    // This method will highlight empty fields with yellow color upon call
-    private void highlightEmpty() {
-        if (cbxClientType.getSelectedIndex() <= 0) {
-            lblClientType.setForeground(Color.yellow);
-        }
-        if ("".equals(txtClientFirstName.getText())) {
-            lblClientFirstName.setForeground(Color.yellow);
-        }
-        if ("".equals(txtClientLastName.getText())) {
-            lblClientLastName.setForeground(Color.yellow);
-        }
-        if ("".equals(txtClientDoB.getText())) {
-            lblClientDoB.setForeground(Color.yellow);
-        }
-        if ("".equals(txtClientPhoneNumber.getText())) {
-            lblClientPhoneNumber.setForeground(Color.yellow);
-        }
-        if ("".equals(txtClientEmailAddress.getText())) {
-            lblClientEmailAddress.setForeground(Color.yellow);
-        }
-        if ("".equals(txtClientHomeAddress.getText())) {
-            lblClientHomeAddress.setForeground(Color.yellow);
-        }   
-    }
-    
-    // This method is to handle empty book fields
-    // Create a new exception class!
-    private void emptyFields() throws Exception {
-        if ("".equals(txtClientFirstName.getText())) {
-            throw new Exception("Empty client first name");
-        }
-        if ("".equals(txtClientLastName.getText())) {
-            throw new Exception("Empty client last name");
-        }
-        if ("".equals(txtClientPhoneNumber.getText())) {
-            throw new Exception("Empty client phone number");
-        }
-        if ("".equals(txtClientEmailAddress.getText())) {
-            throw new Exception("Empty client email address");
-        }
-        if ("".equals(txtClientHomeAddress.getText())) {
-            throw new Exception("Empty client home address");
-        }  
-    }
-    
+      
+    // This method is triggered by interacting with Client ID combobox
     private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
         // TODO add your handling code here:
         // Clear previous fields value
@@ -617,7 +455,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_cbxClientIDActionPerformed
 
-    // This method deletes the book
+    // This method deletes the book via delete button
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         int selection = JOptionPane.showConfirmDialog(null, "Are you sure? This action will delete the client from the system but will still be available inside the database.", "Deleting a client!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (selection == JOptionPane.YES_OPTION) {
@@ -626,17 +464,15 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    // This method updates the book
+    // This method updates the book via update button
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        // Reset the highlighted empty fields to original foreground color
+        deHighlightEmpty();
         updateClientInformation();
-        loadClientID();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void cbxClientGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientGenderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxClientGenderActionPerformed
-
+    // This method is triggered by interacting with Client Type combobox
     private void cbxClientTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientTypeActionPerformed
         // TODO add your handling code here:
         deHighlightEmpty();
@@ -658,90 +494,45 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxClientTypeActionPerformed
 
+    // This method resets the fields via reset button
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
         deHighlightEmpty();
         clearClient();
         cbxClientID.setSelectedIndex(0);
     }//GEN-LAST:event_btnResetActionPerformed
-    
-    // This method updates the selected book with information found in the fields
-    private void updateClientInformation(){
+
+    // This method validates inserted client email address when the field loses focus
+    private void txtClientEmailAddressFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtClientEmailAddressFocusLost
         // TODO add your handling code here:
-        try {
-            // To get directory  
-            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-            // To get the book ID
-            cID = (String) cbxClientID.getSelectedItem();
-            // To rename original book.txt to book.bak
-            File clientOri = new File(saveDir + "client.txt");
-            File clientBak = new File(saveDir + "clientBak.txt");
-            // To check if clientBak.txt is present or not
-            if (!clientBak.exists()){
-                clientOri.createNewFile();
-            }
-            // This is for debugging only!
-            // JOptionPane.showMessageDialog(null, "renamed");
-            // This is to rename the existing book.txt to clientBak.txt
-            clientOri.renameTo(clientBak);
-            // This is to open, find and replace a specific book record
-            // Requires temporary file to store current state
-            // FileWriter to write into a new file called book.txt
-            FileWriter cd = new FileWriter(saveDir + "client.txt"); 
-            // PrintWriter to print into book.txt
-            PrintWriter cdp = new PrintWriter(cd); 
-            // This is to open and read clientBak.txt 
-            File clienttxt = new File(saveDir + "clientBak.txt");
-            // This is to instantiate the file opened earlier
-            Scanner inputFile = new Scanner(clienttxt);
-            // This array is to contain all lines
-            String[] matchedID;
-            // This is only for debugging!
-            // boolean itWorked = false;
-            // Read lines from the file until no more are left.
-            while (inputFile.hasNext())
-            {
-                // This is for debugging only!
-                // JOptionPane.showMessageDialog(null, "In loop");
-                // Read the next line.
-                String bEntry = inputFile.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                // Check if the read line has current book ID
-                if (matchedID[0].equals(cspecies + cID)) {
-                    // Inserting the new information from the text fields into the book line
-                    matchedID[1] = txtClientFirstName.getText();
-                    matchedID[2] = txtClientLastName.getText();
-                    matchedID[3] = txtClientDoB.getText();
-                    matchedID[4] = (String) cbxClientGender.getSelectedItem();
-                    matchedID[5] = txtClientPhoneNumber.getText();
-                    matchedID[6] = txtClientEmailAddress.getText();
-                    matchedID[7] = txtClientHomeAddress.getText();
-                    matchedID[8] = "false";
-                    // JOptionPane.showMessageDialog(null, "Yes it worked");
-                }
-                // Rewrite the new book.txt with values found in clientBak.txt
-                cdp.println(matchedID[0] + ":" +
-                            matchedID[1] + ":" +
-                            matchedID[2] + ":" +
-                            matchedID[3] + ":" +
-                            matchedID[4] + ":" +
-                            matchedID[5] + ":" +
-                            matchedID[6] + ":" +
-                            matchedID[7] + ":" +
-                            matchedID[8]);
+        final String txt = txtClientEmailAddress.getText();
+        invalidStringEmail(txt, txtClientEmailAddress, true);
+    }//GEN-LAST:event_txtClientEmailAddressFocusLost
 
+    // </editor-fold>  
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">     
+    // This method will fetch the client type
+    // Can be used for both client loading or addition
+    private void getClientType(){
+        // Get client type
+        ctype = cbxClientType.getSelectedIndex(); 
+        if (ctype <= 0) { // Will disable the list from any user interaction
+            lblClientID.setText("Load Existing Client:");
+            cspecies = "NUL";
+        } else { // Will display fields according to selected user type
+            lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
+            switch (ctype){
+                case 1:
+                cspecies = "STA";
+                break;
+            case 2:
+                cspecies = "STU";
+                break;
+            default:
+                cspecies = "NUL";
+                break;
             }
-            // Close the clientBak.txt reader
-            inputFile.close();
-            // This deletes clientBak.txt
-            clientBak.delete();
-            // This closes the book.txt printer 
-            cdp.close();
-            JOptionPane.showMessageDialog(null, "Client record has been updated!", "Client updated!", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
-
         }
     }
     
@@ -820,6 +611,203 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method handles the insertion of client
+    private void addClientInformation(){
+        // Declaring file extension used
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // Formatting ID into formal 6-digit mask
+        DecimalFormat dc = new DecimalFormat("000000");
+        try {
+            // Fetching IDs from the textfields
+            cID = dc.format(newClientID);
+            // Check if textfields are empty
+            emptyFields();
+            // Storing Borrowing entries into variables
+            // Checking if gender is unselected
+            if (cbxClientGender.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(null, "Gender is unset! Autosetting value to male", "Gender unselected!", JOptionPane.ERROR_MESSAGE);
+                cbxClientGender.setSelectedIndex(1); // Setting the gender to male which is index 1
+            }
+            if (cbxClientType.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(null, "Client type is unset! Autosetting value to Staff", "Client type unselected!", JOptionPane.ERROR_MESSAGE);
+                cbxClientGender.setSelectedIndex(1); // Setting the client type to staff which is index 1
+            }
+            String cFirstName = txtClientFirstName.getText();
+            String cLastName = txtClientLastName.getText();
+            String cDoB = txtClientDoB.getText();
+            String cGender = (String) cbxClientGender.getSelectedItem();
+            String cPhoneNumber = txtClientPhoneNumber.getText();
+            String cEmailAddress = txtClientEmailAddress.getText();
+            String cHomeAddress = txtClientHomeAddress.getText();
+            // FileWriter and PrintWriter to create and write into book.txt
+            try {
+                // FileWriter to write into a new file called client.txt
+                FileWriter cd = new FileWriter(saveDir + "client.txt", true); 
+                // PrintWriter to print into client.txt
+                PrintWriter cdp = new PrintWriter(cd); 
+                // To print the line into Borrowing textfile
+                cdp.println(cspecies + cID + ":" +
+                             cFirstName + ":" +
+                             cLastName + ":" +
+                             cDoB + ":" +
+                             cGender + ":" +
+                             cPhoneNumber + ":" + 
+                             cEmailAddress + ":" +
+                             cHomeAddress + ":" +
+                             "false"); // false to indicate hasn't been deleted status
+                cdp.close();
+                // To display completed borrowing process status
+                JOptionPane.showMessageDialog(null, "Client is successfully added! Press OK to return to client management form.", "Adding client succeeded!", JOptionPane.INFORMATION_MESSAGE);
+                // To refresh new ID 
+                clientIncrementor();
+                // JOptionPane.showMessageDialog(null, newClientID);
+                // To reload the client information
+                // Integrate the reload part with combo box implementation of Client ID
+                setClientOption();
+                // Refresh the currently displayed client with the latest ID
+                cbxClientID.setSelectedIndex(cbxClientID.getItemCount() - 1);
+            } catch (IOException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            highlightEmpty();
+            JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
+            // Continue with displaying which field was affected. ensure it appears before the mnessagebox
+        }      
+    }
+    
+    // This method updates the selected book with information found in the fields
+    private void updateClientInformation(){
+        // TODO add your handling code here:
+        try {
+            // Check if textfields are empty
+            emptyFields();
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // To get the book ID
+            cID = (String) cbxClientID.getSelectedItem();
+            // To rename original book.txt to book.bak
+            File clientOri = new File(saveDir + "client.txt");
+            File clientBak = new File(saveDir + "clientBak.txt");
+            // To check if clientBak.txt is present or not
+            if (!clientBak.exists()){
+                clientOri.createNewFile();
+            }
+            // This is for debugging only!
+            // JOptionPane.showMessageDialog(null, "renamed");
+            // This is to rename the existing book.txt to clientBak.txt
+            clientOri.renameTo(clientBak);
+            // This is to open, find and replace a specific book record
+            // Requires temporary file to store current state
+            // FileWriter to write into a new file called book.txt
+            FileWriter cd = new FileWriter(saveDir + "client.txt"); 
+            // PrintWriter to print into book.txt
+            PrintWriter cdp = new PrintWriter(cd); 
+            // This is to open and read clientBak.txt 
+            File clienttxt = new File(saveDir + "clientBak.txt");
+            // This is to instantiate the file opened earlier
+            Scanner inputFile = new Scanner(clienttxt);
+            // This array is to contain all lines
+            String[] matchedID;
+            // This is only for debugging!
+            // boolean itWorked = false;
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // This is for debugging only!
+                // JOptionPane.showMessageDialog(null, "In loop");
+                // Read the next line.
+                String bEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                // Check if the read line has current book ID
+                if (matchedID[0].equals(cspecies + cID)) {
+                    // Inserting the new information from the text fields into the book line
+                    matchedID[1] = txtClientFirstName.getText();
+                    matchedID[2] = txtClientLastName.getText();
+                    matchedID[3] = txtClientDoB.getText();
+                    matchedID[4] = (String) cbxClientGender.getSelectedItem();
+                    matchedID[5] = txtClientPhoneNumber.getText();
+                    matchedID[6] = txtClientEmailAddress.getText();
+                    matchedID[7] = txtClientHomeAddress.getText();
+                    matchedID[8] = "false";
+                    // JOptionPane.showMessageDialog(null, "Yes it worked");
+                }
+                // Rewrite the new book.txt with values found in clientBak.txt
+                cdp.println(matchedID[0] + ":" +
+                            matchedID[1] + ":" +
+                            matchedID[2] + ":" +
+                            matchedID[3] + ":" +
+                            matchedID[4] + ":" +
+                            matchedID[5] + ":" +
+                            matchedID[6] + ":" +
+                            matchedID[7] + ":" +
+                            matchedID[8]);
+
+            }
+            // Close the clientBak.txt reader
+            inputFile.close();
+            // This deletes clientBak.txt
+            clientBak.delete();
+            // This closes the book.txt printer 
+            cdp.close();
+            JOptionPane.showMessageDialog(null, "Client record has been updated!", "Client updated!", JOptionPane.INFORMATION_MESSAGE);
+            loadClientID();
+        } catch (Exception ex) {
+            highlightEmpty();
+            JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+        
+    // This method will load the selected book ID
+    private void loadClientID(){
+        // Assigning the cID to the selected index value
+        cID = (String) cbxClientID.getSelectedItem();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner intClient;
+        try {
+            // This part loads all book information
+            intClient = new Scanner(clienttxt);
+            // Read lines from the file until no more are left.
+            while (intClient.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intClient.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace(cspecies, "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (cbxClientID.getSelectedItem().equals(matchedID[0])) {
+                    txtClientFirstName.setText(matchedID[1]);
+                    txtClientLastName.setText(matchedID[2]);
+                    txtClientDoB.setText(matchedID[3]);
+                    switch (matchedID[4]) {
+                        case "Male":
+                            cbxClientGender.setSelectedIndex(1);
+                            break;
+                        case "Female":
+                            cbxClientGender.setSelectedIndex(2);
+                            break;
+                        default:
+                            cbxClientGender.setSelectedIndex(1);
+                    }
+                    txtClientPhoneNumber.setText(matchedID[5]);
+                    txtClientEmailAddress.setText(matchedID[6]);
+                    txtClientHomeAddress.setText(matchedID[7]);
+                }
+            }
+            intClient.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     // This method will set the deleted flag of the book
     private void deleteClient(){
         // TODO add your handling code here:
@@ -888,55 +876,6 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }
     
-    // This method will load the selected book ID
-    private void loadClientID(){
-        // Assigning the cID to the selected index value
-        cID = (String) cbxClientID.getSelectedItem();
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        fetchedBook = false;
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File clienttxt = new File(saveDir + "client.txt");
-        Scanner intClient;
-        try {
-            // This part loads all book information
-            intClient = new Scanner(clienttxt);
-            // Read lines from the file until no more are left.
-            while (intClient.hasNext())
-            {
-                // Read the next line.
-                String bEntry = intClient.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                matchedID[0] = matchedID[0].replace(cspecies, "");
-                // JOptionPane.showMessageDialog(null, i);
-                if (cbxClientID.getSelectedItem().equals(matchedID[0])) {
-                    txtClientFirstName.setText(matchedID[1]);
-                    txtClientLastName.setText(matchedID[2]);
-                    txtClientDoB.setText(matchedID[3]);
-                    switch (matchedID[4]) {
-                        case "Male":
-                            cbxClientGender.setSelectedIndex(1);
-                            break;
-                        case "Female":
-                            cbxClientGender.setSelectedIndex(2);
-                            break;
-                        default:
-                            cbxClientGender.setSelectedIndex(1);
-                    }
-                    txtClientPhoneNumber.setText(matchedID[5]);
-                    txtClientEmailAddress.setText(matchedID[6]);
-                    txtClientHomeAddress.setText(matchedID[7]);
-                }
-            }
-            intClient.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     // This method clears book related fields
     private void clearClient(){
         // To clean up previous or default values from fields
@@ -998,6 +937,178 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method will highlight empty fields with yellow color upon call
+    private void highlightEmpty() {
+        if (cbxClientType.getSelectedIndex() <= 0) {
+            lblClientType.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientFirstName.getText())) {
+            lblClientFirstName.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientLastName.getText())) {
+            lblClientLastName.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientDoB.getText())) {
+            lblClientDoB.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientPhoneNumber.getText())) {
+            lblClientPhoneNumber.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientEmailAddress.getText())) {
+            lblClientEmailAddress.setForeground(Color.yellow);
+        }
+        if ("".equals(txtClientHomeAddress.getText())) {
+            lblClientHomeAddress.setForeground(Color.yellow);
+        }   
+    }
+    
+    // This method will reset the color of the highlighted labels to default foreground
+    private void deHighlightEmpty(){
+        lblClientType.setForeground(fgtxt);
+        lblClientFirstName.setForeground(fgtxt);
+        lblClientLastName.setForeground(fgtxt);
+        lblClientDoB.setForeground(fgtxt);
+        lblClientPhoneNumber.setForeground(fgtxt);
+        lblClientEmailAddress.setForeground(fgtxt);
+        lblClientHomeAddress.setForeground(fgtxt);
+    }
+    
+    // This method is to handle empty book fields
+    // Create a new exception class!
+    private void emptyFields() throws Exception {
+        if ("".equals(txtClientFirstName.getText())) {
+            throw new Exception("Empty client first name");
+        }
+        if ("".equals(txtClientLastName.getText())) {
+            throw new Exception("Empty client last name");
+        }
+        if ("".equals(txtClientDoB.getText())) {
+            throw new Exception("Empty client date of birth");
+        }
+        if ("".equals(txtClientPhoneNumber.getText())) {
+            throw new Exception("Empty client phone number");
+        }
+        if ("".equals(txtClientEmailAddress.getText())) {
+            throw new Exception("Empty client email address");
+        }
+        if ("".equals(txtClientHomeAddress.getText())) {
+            throw new Exception("Empty client home address");
+        }
+        if (invalidStringEmail(txtClientEmailAddress.getText(), txtClientEmailAddress, false)) {
+            throw new Exception("Invalid email address format");
+        }
+    }
+    
+    // This method handles JTextField validation
+    // The validation only allow A-Z 1-9 and !@#$%^&*(){}[]"';\/?|.,<>~`_+=- symbols to be inserted
+    private void invalidStringTextField(String input, JTextField txt){
+        Runnable doDelete = new Runnable(){
+            public void set(){
+                final String input = txt.getText();
+                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
+                if (matching == false && !"".equals(input)) {
+                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+                    String output = input.substring(0, input.length() - 1);
+                    txt.setText(output);
+                }
+            }
+            @Override
+            public void run(){
+                set();
+            }
+        };
+        SwingUtilities.invokeLater(doDelete);
+    }
+    
+    // This method handles JTextField validation for email
+    // The validation only allow for email format abc@mail.com
+    private boolean invalidStringEmail(String input, JTextField txt, boolean dispenseMessage){
+        boolean invalidEmail = false;
+        input = txt.getText();
+        boolean matching = input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+        if (matching == false && !"".equals(input)) {
+            if (dispenseMessage) {
+                JOptionPane.showMessageDialog(null, "Invalid input! Email must follow the format: abc@mail.com", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+            }
+            String output = "";
+            txt.setText(output);
+            invalidEmail = true;
+        };
+        return invalidEmail;
+    }
+    
+    // This method handles JTextArea validation
+    // The validation only allow A-Z 1-9 and !@#$%^&*()"'; symbols to be inserted
+    private void invalidStringTextArea(String input, JTextArea txt){
+        Runnable doDelete = new Runnable(){
+            public void set(){
+                final String input = txt.getText();
+                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
+                if (matching == false && !"".equals(input)) {
+                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+                    String output = input.substring(0, input.length() - 1);
+                    txt.setText(output);
+                }
+            }
+            @Override
+            public void run(){
+                set();
+            }
+        };
+        SwingUtilities.invokeLater(doDelete);
+    }
+    
+    // This method handles all validation related to the fields
+    private void inputCharacterValidator(){
+        txtClientFirstName.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtClientFirstName.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextField(txt, txtClientFirstName);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtClientFirstName);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtClientFirstName);
+            }
+        });
+        txtClientLastName.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtClientLastName.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextField(txt, txtClientLastName);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtClientLastName);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextField(txt, txtClientLastName);
+            }
+        });
+        txtClientHomeAddress.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            final String txt = txtClientHomeAddress.getText();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                invalidStringTextArea(txt, txtClientHomeAddress);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                invalidStringTextArea(txt, txtClientHomeAddress);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                invalidStringTextArea(txt, txtClientHomeAddress);
+            }
+        });
+        
+    }
+    
+    // This is form load method
     private void initGUI(){
         cbxClientID.setEnabled(false);
         btnAdd.setEnabled(false);
@@ -1016,7 +1127,11 @@ public class unnamedClientMenu extends javax.swing.JFrame {
                 }
             }
         });
+        // Check if invalid input is inserted
+        inputCharacterValidator();
     }
+    
+    // </editor-fold>  
     
     /**
      * @param args the command line arguments
