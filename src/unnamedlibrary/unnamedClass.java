@@ -17,7 +17,7 @@ import javax.swing.event.DocumentListener;
 
 // This document listener is made concrete due to limitation
 // with JFrame form
-class unnamedClass implements DocumentListener {
+class unnamedDocumentListener implements DocumentListener {
     
     @Override
     public void insertUpdate(DocumentEvent e) {

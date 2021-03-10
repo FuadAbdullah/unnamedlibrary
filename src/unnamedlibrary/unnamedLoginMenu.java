@@ -5,16 +5,10 @@
  */
 package unnamedlibrary;
 import com.formdev.flatlaf.FlatDarkLaf;
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,25 +22,24 @@ import java.util.Scanner;
 
 /**
  *
- * @author fab07
+ * @author FuadAbdullah
  */
 public class unnamedLoginMenu extends javax.swing.JFrame {
     
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, lID, saveDir;
-    String username; // Store current user's username
-    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
-    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
-    final String bpfix = "BOO", brpfix = "BOR";// For book and borrow ID prefixes
-    Color fgtxt = new Color(187,187,187); // Default foreground color for text
-    int newClientID; // To store new book ID
-    int ctype; // Value to represent selected Client combo box
-    DefaultComboBoxModel cList; // ComboBoxModel for Book ID
-    boolean filledUsername = false, filledPassword = false; // Boolean to hide or show Login button depending on rules fulfillment
+    // <editor-fold defaultstate="collapsed" desc="Login Menu Private Variables"> 
+    // Description for private variables
+    // -------------------------------------
+    // lID stores librarian ID
+    // saveDir stores working directory
+    // username stores librarian username
+    // filledUsername flag to check if username field is filled in
+    // filledPassword flag to check if password field is filled in
+    // -------------------------------------
+    String lID, saveDir, username;
+    boolean filledUsername = false, filledPassword = false;
+    // </editor-fold>
     
-    /**
-     * Creates new form unnamedLogin
-     */
+    // Login menu constructor
     public unnamedLoginMenu() {
         initComponents();
         initGUI();
@@ -327,14 +320,15 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    // TO COMMENT
+    
+    // <editor-fold defaultstate="collapsed" desc="Button Events">
+    // This method allows password field to get focus once enter is pressed in username field
     private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
         // TODO add your handling code here:
         txtPassword.requestFocus();
     }//GEN-LAST:event_txtUsernameActionPerformed
 
-    // TO COMMENT
+    // This method authorize the librarian login attempt via login button
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         if (accountValidator()) {
@@ -348,7 +342,63 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    // This method handles username and password
+    // This method allows for either login or register button to get focus once enter is pressed in password field
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+        if (btnLogin.isVisible()) {
+            btnLogin.doClick();
+        }
+        else{
+            btnRegister.requestFocus();
+        }
+    }//GEN-LAST:event_txtPasswordActionPerformed
+
+    // This method allows for the opening of Github page via Github icon click
+    private void lblGitHubMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGitHubMouseClicked
+        // TODO add your handling code here:
+        String url = "https://github.com/FuadAbdullah/unnamedlibrary";
+        
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (URISyntaxException | IOException ex) {
+            JOptionPane.showMessageDialog(null, "Something went wrong while trying to access the website", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_lblGitHubMouseClicked
+
+    // This method allows for the opening of Linkedin profile via Linkedin icon click
+    private void lblLinkedinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLinkedinMouseClicked
+        // TODO add your handling code here:
+        String url = "https://www.linkedin.com/in/muhammad-fuad-abdullah-4b4812193/";
+        
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (URISyntaxException | IOException ex) {
+            JOptionPane.showMessageDialog(null, "Something went wrong while trying to access the website", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_lblLinkedinMouseClicked
+
+    // This method opens librarian registration form via register button
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        // TODO add your handling code here:
+        new unnamedRegisterMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegisterActionPerformed
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods"> 
+    
+    // This method determines if btnLogin should be displayed or not depending on boolean flag statuses
+    private void showLoginButton(){
+        if (filledUsername && filledPassword){
+            btnLogin.setVisible(true);
+        }
+        else
+        {
+            btnLogin.setVisible(false);
+        }
+    }
+    
+    // This method authorize the librarian using inserted username and password
     private boolean accountValidator() {
         // TODO add your handling code here:
         boolean isAuthenticated = false;
@@ -413,121 +463,6 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         }
     }
     
-    // TO COMMENT
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        // TODO add your handling code here:
-        if (btnLogin.isVisible()) {
-            btnLogin.doClick();
-        }
-        else{
-            btnRegister.requestFocus();
-        }
-    }//GEN-LAST:event_txtPasswordActionPerformed
-
-    // TO COMMENT
-    private void lblGitHubMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGitHubMouseClicked
-        // TODO add your handling code here:
-        String url = "https://github.com/FuadAbdullah/unnamedlibrary";
-        
-        try {
-            Desktop.getDesktop().browse(new URI(url));
-        } catch (URISyntaxException | IOException ex) {
-            JOptionPane.showMessageDialog(null, "Something went wrong while trying to access the website", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_lblGitHubMouseClicked
-
-    // TO COMMENT
-    private void lblLinkedinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLinkedinMouseClicked
-        // TODO add your handling code here:
-        String url = "https://www.linkedin.com/in/muhammad-fuad-abdullah-4b4812193/";
-        
-        try {
-            Desktop.getDesktop().browse(new URI(url));
-        } catch (URISyntaxException | IOException ex) {
-            JOptionPane.showMessageDialog(null, "Something went wrong while trying to access the website", "Uh-oh!", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_lblLinkedinMouseClicked
-
-    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        // TODO add your handling code here:
-        new unnamedRegisterMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnRegisterActionPerformed
-
-    // This method determines if btnLogin should be displayed or not depending on the rules fulfillment
-    private void showLoginButton(){
-        if (filledUsername && filledPassword){
-            btnLogin.setVisible(true);
-        }
-        else
-        {
-            btnLogin.setVisible(false);
-        }
-    }
-    
-    private void initGUI(){
-        // Create the required directory for first time boot
-        createDir();
-        // Create the required database textfiles for first time boot
-        createDB();
-        btnLogin.setVisible(false); // This will prevent the login button from being pressed right after startup
-        // This anon class handles textfield changes for username entry
-        txtUsername.getDocument().addDocumentListener(new unnamedClass(){
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                if (txtUsername.getText().equals("")){
-                    filledUsername = false;
-                }
-                else {
-                    filledUsername = true;
-                }
-                showLoginButton();
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if (txtUsername.getText().equals("")){
-                    filledUsername = false;
-                }
-                showLoginButton();
-            }
-        });
-        
-        // This anon class handles textfield changes for password entry
-        txtPassword.getDocument().addDocumentListener(new unnamedClass(){
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                if (txtPassword.getText().equals("")){
-                    filledPassword = false;
-                } 
-                else {
-                    filledPassword = true;
-                }
-                showLoginButton();
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if (txtPassword.getText().equals("")){
-                    filledPassword = false;
-                }
-                showLoginButton();
-            }
-        });
-
-        // This anon class handles window closing event
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e){
-                int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (selection == JOptionPane.YES_OPTION) {
-                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                } else {
-                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                }
-            }
-        });
-    }
-    
     // This method will check and create the directory if it is not available. Usually for first run
     private void createDir(){
         try {
@@ -563,6 +498,72 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
+    
+    // This is form load method
+    private void initGUI(){
+        // Create the required directory for first time boot
+        createDir();
+        // Create the required database textfiles for first time boot
+        createDB();
+        btnLogin.setVisible(false); // This will prevent the login button from being pressed right after startup
+        // This anon class handles textfield changes for username entry
+        txtUsername.getDocument().addDocumentListener(new unnamedDocumentListener(){
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (txtUsername.getText().equals("")){
+                    filledUsername = false;
+                }
+                else {
+                    filledUsername = true;
+                }
+                showLoginButton();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (txtUsername.getText().equals("")){
+                    filledUsername = false;
+                }
+                showLoginButton();
+            }
+        });
+        
+        // This anon class handles textfield changes for password entry
+        txtPassword.getDocument().addDocumentListener(new unnamedDocumentListener(){
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (txtPassword.getText().equals("")){
+                    filledPassword = false;
+                } 
+                else {
+                    filledPassword = true;
+                }
+                showLoginButton();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (txtPassword.getText().equals("")){
+                    filledPassword = false;
+                }
+                showLoginButton();
+            }
+        });
+
+        // This anon class handles window closing event
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e){
+                int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selection == JOptionPane.YES_OPTION) {
+                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                } else {
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
+    }
+    
+    // </editor-fold>
     
     /**
      * @param args the command line arguments
