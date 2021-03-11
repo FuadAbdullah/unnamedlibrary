@@ -318,15 +318,13 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="txtArrivalDate" min="-2" pref="130" max="-2" attributes="0"/>
                                           <Component id="txtPublishDate" min="-2" pref="130" max="-2" attributes="0"/>
-                                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                              <Component id="txtBookQuantity" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                                  <Component id="txtBookPublisher" alignment="1" min="-2" pref="322" max="-2" attributes="0"/>
-                                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                                      <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
-                                                      <Component id="txtBookGenre" alignment="0" max="32767" attributes="0"/>
-                                                      <Component id="txtBookTitle" alignment="0" min="-2" pref="322" max="-2" attributes="0"/>
-                                                  </Group>
+                                          <Component id="txtBookQuantity" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                              <Component id="txtBookPublisher" alignment="1" min="-2" pref="322" max="-2" attributes="0"/>
+                                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                                  <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
+                                                  <Component id="txtBookGenre" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="txtBookTitle" alignment="0" min="-2" pref="322" max="-2" attributes="0"/>
                                               </Group>
                                               <Component id="txtBookAuthor" alignment="1" min="-2" pref="322" max="-2" attributes="0"/>
                                           </Group>

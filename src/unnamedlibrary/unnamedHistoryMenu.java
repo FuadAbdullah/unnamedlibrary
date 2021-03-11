@@ -4,29 +4,17 @@
  * and open the template in the editor.
  */
 package unnamedlibrary;
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.NumberFormatter;
 import org.joda.time.*;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -37,18 +25,40 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class unnamedHistoryMenu extends javax.swing.JFrame {
     
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir, returnDate;
-    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
-    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned, isDeleted; 
-    final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
-    Color fgtxt = new Color(187,187,187); // Default foreground color for text
-    int ctype; // Value to represent selected Client combo box
-    DefaultListModel cList, brList; // Declaring a list model to store Client ID, Borrowing ID
+    // <editor-fold defaultstate="collapsed" desc="History Menu Private Variables"> 
+    // Description for private variables
+    // -------------------------------------
+    // cspecies stores client type prefixes
+    // brID stores borrowing ID
+    // cID stores client ID
+    // bID stores book ID
+    // saveDir stores working directory
+    // returnDate stores the date of return
+    // fetchedClient flag to determine if client information has been fetched
+    // fetchedBook flag to determine if book information has been fetched
+    // fetchedBorrow flag to determine if borrow information has been fetcehd
+    // isOverdue flag to determine if the borrowing record fetched is overdue
+    // hasRenewed flag to determine if the borrowing record has been renewed previously
+    // hasFine flag to determine if the borrowing record has unpaid fine
+    // hasReturned to determine if the borrowing record has its books returned
+    // isDeleted to determine if a book has been deleted and not to be loaded into the fields
+    // bpfix stores prefix for book
+    // brpfix stores prefix for borrow
+    // fgtxt is the color code seen in the normal label and text. Default color.
+    // ctype stores the selection index of the client type
+    // cList stores elements for client combobox options   
+    // brList stores elements for borrowing combobox options
+    // -------------------------------------
+    private String cspecies, brID, cID, bID, saveDir, returnDate;
+    private boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
+    private boolean isOverdue, hasRenewed, hasFine, hasReturned, isDeleted; 
+    private final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
+    private Color fgtxt = new Color(187,187,187); // Default foreground color for text
+    private int ctype; // Value to represent selected Client combo box
+    private DefaultListModel cList, brList; // Declaring a list model to store Client ID, Borrowing ID
+    // </editor-fold>
     
-    /**
-     * Creates new form unnamedHistory
-     */
+    // History menu constructor
     public unnamedHistoryMenu() {
         initComponents();
         initGUI();
@@ -231,7 +241,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                         .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(986, 986, 986)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 974, Short.MAX_VALUE)
                 .addComponent(btnCancel)
                 .addGap(24, 24, 24))
         );
@@ -456,11 +466,6 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         txtClientID.setFocusable(false);
         txtClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtClientID.setRequestFocusEnabled(false);
-        txtClientID.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtClientIDFocusGained(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -832,17 +837,8 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtClientIDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtClientIDFocusGained
-        // TODO add your handling code here:
-
-        String[] ctype = new String[]{"Staff/Student ID", "Staff ID", "Student ID"};
-        String temp = txtClientID.getText();
-
-        if (Arrays.asList(ctype).contains(temp)) {
-            txtClientID.setText("");
-        }
-    }//GEN-LAST:event_txtClientIDFocusGained
-
+    // <editor-fold defaultstate="collapsed" desc="Buttons">
+    // This method returns the user to the main menu via cancel button 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         new unnamedMainMenu().setVisible(true);
@@ -939,6 +935,8 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_cbxClientIDActionPerformed
 
+    // This method triggers loading of client information 
+    // and borrowing ids upon selection change via client listbox 
     private void lstClientValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstClientValueChanged
         // TODO add your handling code here:
         // For debugging only!
@@ -1025,92 +1023,8 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lstClientValueChanged
     
-    // This method handles clearance of global values
-    private void resetValue(){
-        cID = "";
-        bID = "";
-        brID = "";
-        returnDate = "";
-        lblIsReturned.setForeground(fgtxt);
-        lblIsReturned.setText("Has not been returned.");
-        lblIsRenewed.setForeground(fgtxt);
-        lblIsRenewed.setText("Has not been renewed.");
-        lblIsOverdue.setVisible(false);
-        lblMessage.setVisible(false);
-        lblMessage.setText("");
-    }
-    
-    // This method handles clearance of book related textfields
-    private void clearBookFields(){
-        // To clean up previous or default values from fields
-        txtBorrowID.setText("");
-        txtBorrowDate.setText("");
-        txtBorrowDue.setText("");
-        txtBookID.setText("");
-        txtBookTitle.setText("");
-        txtBookGenre.setText("");
-        txtBookSummary.setText("");
-        txtBookQuantity.setText("");
-        txtBookPublisher.setText("");
-        txtBookAuthor.setText("");
-        txtPublishDate.setText("");
-        txtArrivalDate.setText("");
-        txtFineAmount.setText("");
-    }
-    
-    // This method handles clearance of client related textfields
-    private void clearClientFields(){
-        // To empty previous or default values from fields
-        txtClientID.setText("");
-        txtClientFirstName.setText("");
-        txtClientLastName.setText("");
-        txtClientDoB.setText("");
-        txtClientGender.setText("");
-        txtClientPhoneNumber.setText("");
-        txtClientEmailAddress.setText("");
-        txtClientHomeAddress.setText("");
-    }
-    // This method handles insertion of client related textfields
-    private void insertClientFields(){
-        // This handles formatter for the integer to consist of 6 digits
-        DecimalFormat dc = new DecimalFormat("000000");
-        // This is to ensure the entire method have access to the matchedID array
-        String[] matchedID;
-        cID = lstClient.getSelectedValue();
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File clienttxt = new File(saveDir + "client.txt");
-        Scanner inputFile;
-        try {
-            inputFile = new Scanner(clienttxt);
-            // Read lines from the file until no more are left.
-            while (inputFile.hasNext())
-            {
-                // Read the next line.
-                String cEntry = inputFile.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = cEntry.split(":");
-                if (matchedID[0].equals(cspecies + cID)){
-                    fetchedClient = true;
-                    matchedID[0] = matchedID[0].replace(cspecies, "");
-                    txtClientID.setText(matchedID[0]);
-                    txtClientFirstName.setText(matchedID[1]);
-                    txtClientLastName.setText(matchedID[2]);
-                    txtClientDoB.setText(matchedID[3]);
-                    txtClientGender.setText(matchedID[4]);
-                    txtClientPhoneNumber.setText(matchedID[5]);
-                    txtClientEmailAddress.setText(matchedID[6]);
-                    txtClientHomeAddress.setText(matchedID[7]);
-                }
-            }
-            inputFile.close();
-            // fetchedBookClientInfo();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+    // This method triggers loading of borrowing and book information
+    // via borrowing list box
     private void lstBorrowValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstBorrowValueChanged
         // TODO add your handling code here:
         clearBookFields();
@@ -1255,11 +1169,101 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_lstBorrowValueChanged
 
+    // This method resets the fields via reset button
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
         cbxClientID.setSelectedIndex(0);
     }//GEN-LAST:event_btnResetActionPerformed
-
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    // This method handles clearance of reused values
+    private void resetValue(){
+        cID = "";
+        bID = "";
+        brID = "";
+        returnDate = "";
+        lblIsReturned.setForeground(fgtxt);
+        lblIsReturned.setText("Has not been returned.");
+        lblIsRenewed.setForeground(fgtxt);
+        lblIsRenewed.setText("Has not been renewed.");
+        lblIsOverdue.setVisible(false);
+        lblMessage.setVisible(false);
+        lblMessage.setText("");
+    }
+    
+    // This method handles clearance of book related textfields
+    private void clearBookFields(){
+        // To clean up previous or default values from fields
+        txtBorrowID.setText("");
+        txtBorrowDate.setText("");
+        txtBorrowDue.setText("");
+        txtBookID.setText("");
+        txtBookTitle.setText("");
+        txtBookGenre.setText("");
+        txtBookSummary.setText("");
+        txtBookQuantity.setText("");
+        txtBookPublisher.setText("");
+        txtBookAuthor.setText("");
+        txtPublishDate.setText("");
+        txtArrivalDate.setText("");
+        txtFineAmount.setText("");
+    }
+    
+    // This method handles clearance of client related textfields
+    private void clearClientFields(){
+        // To empty previous or default values from fields
+        txtClientID.setText("");
+        txtClientFirstName.setText("");
+        txtClientLastName.setText("");
+        txtClientDoB.setText("");
+        txtClientGender.setText("");
+        txtClientPhoneNumber.setText("");
+        txtClientEmailAddress.setText("");
+        txtClientHomeAddress.setText("");
+    }
+    
+    // This method handles insertion of client related textfields
+    private void insertClientFields(){
+        // This handles formatter for the integer to consist of 6 digits
+        DecimalFormat dc = new DecimalFormat("000000");
+        // This is to ensure the entire method have access to the matchedID array
+        String[] matchedID;
+        cID = lstClient.getSelectedValue();
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner inputFile;
+        try {
+            inputFile = new Scanner(clienttxt);
+            // Read lines from the file until no more are left.
+            while (inputFile.hasNext())
+            {
+                // Read the next line.
+                String cEntry = inputFile.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = cEntry.split(":");
+                if (matchedID[0].equals(cspecies + cID)){
+                    fetchedClient = true;
+                    matchedID[0] = matchedID[0].replace(cspecies, "");
+                    txtClientID.setText(matchedID[0]);
+                    txtClientFirstName.setText(matchedID[1]);
+                    txtClientLastName.setText(matchedID[2]);
+                    txtClientDoB.setText(matchedID[3]);
+                    txtClientGender.setText(matchedID[4]);
+                    txtClientPhoneNumber.setText(matchedID[5]);
+                    txtClientEmailAddress.setText(matchedID[6]);
+                    txtClientHomeAddress.setText(matchedID[7]);
+                }
+            }
+            inputFile.close();
+            // fetchedBookClientInfo();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     // This method handles clearance of borrow list
     private void clearBorrowList(){
         // Disable the list
@@ -1306,6 +1310,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method sets overdue borrowing records that are past due date
     private void setOverdue() {
         
         try {
@@ -1405,6 +1410,9 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         
     }
     
+    // This method is very complicated to explain but this method
+    // handles most of the critical aspect of the renewing system
+    // as it handles date, flags and buttons display
     private void fetchedBookClientInfo(){
         // Debugging only!
         // JOptionPane.showMessageDialog(null, fetchedBorrow + " " + fetchedClient + " " + fetchedBook + " " + hasFine + " " + isOverdue + " " + hasRenewed);
@@ -1455,16 +1463,30 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
                 lblMessage.setVisible(true);
                 lblMessage.setText("Client has returned the book(s) on " + returnDate + ".");
             } else if (hasRenewed && !isOverdue) {
-                // Displaying client is in renew term
-                if (datediff == 0) {
-                    // Setting the label of due date to red
-                    lblBorrowDue.setForeground(Color.red);
+                if (datediff >= 0 && datediff <= 7) {
+                    // Displaying client is in renew term
+                    if (datediff == 0) {
+                        // Setting the label of due date to red
+                        lblBorrowDue.setForeground(Color.red);
+                    }                      
                     lblMessage.setVisible(true);
                     lblMessage.setText("Client may return the book(s) today. ");
                 } else {
+                    // Subtracting 7 days from the due date for the early submission
+                    int earlydate = datediff - 7;
                     lblMessage.setVisible(true);
-                    lblMessage.setText("Extended borrowing term ends in " + datediff + " day(s).");
+                    lblMessage.setText("In extended borrowing term. Can return in " + earlydate + " day(s).");
                 }
+//                // Displaying client is in renew term
+//                if (datediff == 0) {
+//                    // Setting the label of due date to red
+//                    lblBorrowDue.setForeground(Color.red);
+//                    lblMessage.setVisible(true);
+//                    lblMessage.setText("Client may return the book(s) today. ");
+//                } else {
+//                    lblMessage.setVisible(true);
+//                    lblMessage.setText("Extended borrowing term ends in " + datediff + " day(s).");
+//                }
             } else if (isOverdue && !hasReturned) {
                 // This statement handles fine calculation after load borrow information is pressed
                 // It will store the amount need to be paid straightaway
@@ -1491,6 +1513,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
         }
     }
     
+    // This is the form load method
     private void initGUI(){
         lblIsOverdue.setVisible(false);
         lblMessage.setVisible(false);
@@ -1508,7 +1531,7 @@ public class unnamedHistoryMenu extends javax.swing.JFrame {
             }
         });
     }
-    
+    // </editor-fold>
     
     /**
      * @param args the command line arguments

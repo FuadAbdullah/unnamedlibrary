@@ -8,23 +8,26 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.text.DecimalFormat;
 import java.util.Scanner;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 /**
  *
- * @author fab07
+ * @author FuadAbdullah
  */
 public class unnamedMainMenu extends javax.swing.JFrame {
-
-    String saveDir, username, lID;
     
-    /**
-     * Creates new form unnamedMainMenu
-     */
+    // <editor-fold defaultstate="collapsed" desc="Main Menu Private Variables">
+    // Description for private variables
+    // -------------------------------------
+    // saveDir stores working directory
+    // username stores the currently logged in librarian username
+    // lID stores the currently looged in librarian ID
+    // -------------------------------------
+    private String saveDir, username, lID;
+    // </editor-fold>
+    
+    // Main menu form
     public unnamedMainMenu() {
         initComponents();
         initGUI();
@@ -250,7 +253,8 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    // TO COMMENT
+    // <editor-fold defaultstate="collapsed" desc="Buttons">
+    // This method terminates the current librarian session via log out button
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Logging out!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -263,20 +267,6 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    // This method is to delete the session cache upon logout
-    private void cacheClear(){
-        try {
-            // To get directory  
-            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-            File cache = new File(saveDir + "cache.txt");
-            if (cache.exists()) {
-                cache.delete();
-            }
-        } catch (Exception ex) {
-            
-        }
-    }
-    
     // This method closes main menu and opens borrowing form
     private void btnBorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrowActionPerformed
         // TODO add your handling code here:
@@ -284,36 +274,43 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnBorrowActionPerformed
 
+    // This method opens the renew page via renew button
     private void btnRenewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRenewActionPerformed
         // TODO add your handling code here:
         new unnamedRenewMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRenewActionPerformed
 
+    // This method opens the return borrowing page via return button
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
         // TODO add your handling code here:
         new unnamedReturnMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnReturnActionPerformed
 
+    // This method opens the borrowing history page via history button
     private void btnHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistoryActionPerformed
         // TODO add your handling code here:
         new unnamedHistoryMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnHistoryActionPerformed
 
+    // This method opens the book management page via manage book button
     private void btnManageBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageBookActionPerformed
         // TODO add your handling code here:
         new unnamedBookMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnManageBookActionPerformed
 
+    // This method opens the client management page via manage client button
     private void btnManageClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageClientActionPerformed
         // TODO add your handling code here:
         new unnamedClientMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnManageClientActionPerformed
-
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
     // This method will change the welcome text to display currently logged in user information
     private void welcomeText(){
         if (lID != null && username != null) {
@@ -361,6 +358,21 @@ public class unnamedMainMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method is to delete the session cache upon logout
+    private void cacheClear(){
+        try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            File cache = new File(saveDir + "cache.txt");
+            if (cache.exists()) {
+                cache.delete();
+            }
+        } catch (Exception ex) {
+            
+        }
+    }
+    
+    // This is form load method
     private void initGUI(){
         
         getCache();
@@ -377,6 +389,7 @@ public class unnamedMainMenu extends javax.swing.JFrame {
             }
         });
     }
+    // </editor-fold>
     
     /**
      * @param args the command line arguments

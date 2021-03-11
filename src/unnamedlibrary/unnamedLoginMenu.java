@@ -35,8 +35,8 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
     // filledUsername flag to check if username field is filled in
     // filledPassword flag to check if password field is filled in
     // -------------------------------------
-    String lID, saveDir, username;
-    boolean filledUsername = false, filledPassword = false;
+    private String lID, saveDir, username;
+    private boolean filledUsername = false, filledPassword = false;
     // </editor-fold>
     
     // Login menu constructor
