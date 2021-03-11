@@ -23,6 +23,7 @@ import javax.swing.event.DocumentEvent;
  * @author FuadAbdullah
  */
 public class unnamedClientMenu extends javax.swing.JFrame {
+    
     // <editor-fold defaultstate="collapsed" desc="Client Menu Private Variables"> 
     // Description for private variables
     // -------------------------------------
@@ -505,8 +506,8 @@ public class unnamedClientMenu extends javax.swing.JFrame {
     // This method validates inserted client email address when the field loses focus
     private void txtClientEmailAddressFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtClientEmailAddressFocusLost
         // TODO add your handling code here:
-        final String txt = txtClientEmailAddress.getText();
-        invalidStringEmail(txt, txtClientEmailAddress, true);
+        unnamedEmailValidation vd = new unnamedEmailValidation();     
+        vd.runValidate(txtClientEmailAddress, true);
     }//GEN-LAST:event_txtClientEmailAddressFocusLost
 
     // </editor-fold>  
@@ -536,7 +537,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }
     
-    // This method will set option list for book ID using ComboBoxModel
+    // This method will set option list for client ID using ComboBoxModel
     private void setClientOption(){
         // This is to ensure the entire method have access to borrow matchedID array
         String[] matchedID = null;
@@ -677,7 +678,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }      
     }
     
-    // This method updates the selected book with information found in the fields
+    // This method updates the selected client with information found in the fields
     private void updateClientInformation(){
         // TODO add your handling code here:
         try {
@@ -760,7 +761,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }
         
-    // This method will load the selected book ID
+    // This method will load the selected client ID
     private void loadClientID(){
         // Assigning the cID to the selected index value
         cID = (String) cbxClientID.getSelectedItem();
@@ -808,7 +809,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }
     
-    // This method will set the deleted flag of the book
+    // This method will set the deleted flag of the client
     private void deleteClient(){
         // TODO add your handling code here:
         try {
@@ -876,7 +877,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         }
     }
     
-    // This method clears book related fields
+    // This method clears client related fields
     private void clearClient(){
         // To clean up previous or default values from fields
         txtClientFirstName.setText("");
@@ -889,7 +890,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         cID = "";
     }
     
-    // This method will check through borrowing.txt and look for latest ID and increments from there
+    // This method will check through client.txt and look for latest ID and increments from there
     private void clientIncrementor(){
         // This is to ensure the entire method have access to the matchedID array
         String[] matchedID = null;
@@ -976,6 +977,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
     // This method is to handle empty book fields
     // Create a new exception class!
     private void emptyFields() throws Exception {
+        unnamedEmailValidation vd = new unnamedEmailValidation();
         if ("".equals(txtClientFirstName.getText())) {
             throw new Exception("Empty client first name");
         }
@@ -994,115 +996,56 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         if ("".equals(txtClientHomeAddress.getText())) {
             throw new Exception("Empty client home address");
         }
-        if (invalidStringEmail(txtClientEmailAddress.getText(), txtClientEmailAddress, false)) {
+        if (vd.runValidate(txtClientEmailAddress, false)) {
             throw new Exception("Invalid email address format");
         }
-    }
-    
-    // This method handles JTextField validation
-    // The validation only allow A-Z 1-9 and !@#$%^&*(){}[]"';\/?|.,<>~`_+=- symbols to be inserted
-    private void invalidStringTextField(String input, JTextField txt){
-        Runnable doDelete = new Runnable(){
-            public void set(){
-                final String input = txt.getText();
-                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
-                if (matching == false && !"".equals(input)) {
-                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-                    String output = input.substring(0, input.length() - 1);
-                    txt.setText(output);
-                }
-            }
-            @Override
-            public void run(){
-                set();
-            }
-        };
-        SwingUtilities.invokeLater(doDelete);
-    }
-    
-    // This method handles JTextField validation for email
-    // The validation only allow for email format abc@mail.com
-    private boolean invalidStringEmail(String input, JTextField txt, boolean dispenseMessage){
-        boolean invalidEmail = false;
-        input = txt.getText();
-        boolean matching = input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
-        if (matching == false && !"".equals(input)) {
-            if (dispenseMessage) {
-                JOptionPane.showMessageDialog(null, "Invalid input! Email must follow the format: abc@mail.com", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-            }
-            String output = "";
-            txt.setText(output);
-            invalidEmail = true;
-        };
-        return invalidEmail;
-    }
-    
-    // This method handles JTextArea validation
-    // The validation only allow A-Z 1-9 and !@#$%^&*()"'; symbols to be inserted
-    private void invalidStringTextArea(String input, JTextArea txt){
-        Runnable doDelete = new Runnable(){
-            public void set(){
-                final String input = txt.getText();
-                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
-                if (matching == false && !"".equals(input)) {
-                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-                    String output = input.substring(0, input.length() - 1);
-                    txt.setText(output);
-                }
-            }
-            @Override
-            public void run(){
-                set();
-            }
-        };
-        SwingUtilities.invokeLater(doDelete);
     }
     
     // This method handles all validation related to the fields
     private void inputCharacterValidator(){
         txtClientFirstName.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtClientFirstName.getText();
+            unnamedFirstNameValidation vd = new unnamedFirstNameValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextField(txt, txtClientFirstName);
+                vd.runValidate(txtClientFirstName);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtClientFirstName);
+                vd.runValidate(txtClientFirstName);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtClientFirstName);
+                vd.runValidate(txtClientFirstName);
             }
         });
         txtClientLastName.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtClientLastName.getText();
+            unnamedLastNameValidation vd = new unnamedLastNameValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextField(txt, txtClientLastName);
+                vd.runValidate(txtClientLastName);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtClientLastName);
+                vd.runValidate(txtClientLastName);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtClientLastName);
+                vd.runValidate(txtClientLastName);
             }
         });
         txtClientHomeAddress.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtClientHomeAddress.getText();
+            unnamedAddressValidation vd = new unnamedAddressValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextArea(txt, txtClientHomeAddress);
+                vd.runValidate(txtClientHomeAddress);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextArea(txt, txtClientHomeAddress);
+                vd.runValidate(txtClientHomeAddress);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextArea(txt, txtClientHomeAddress);
+                vd.runValidate(txtClientHomeAddress);
             }
         });
         

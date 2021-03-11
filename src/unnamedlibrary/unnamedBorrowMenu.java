@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package unnamedlibrary;
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,45 +12,46 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.JFormattedTextField.AbstractFormatter;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicPanelUI;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.NumberFormatter;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
- * @author fab07
+ * @author FuadAbdullah
  */
 public class unnamedBorrowMenu extends javax.swing.JFrame {
-
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, saveDir;
-    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
-    boolean fetchedClient, fetchedBook, selectedDate; // Booleans for client and book fetch statuses
-    final String bpfix = "BOO", brpfix = "BOR"; // For book and borrow ID prefixes
-    Color fgtxt = new Color(187,187,187); // Default foreground color for text
-    int ctype; // Value to represent selected Client combo box
-    DefaultComboBoxModel cList, bkList; // ComboBoxModel for Book ID
-     
-    /**
-     * Creates new form unnamedBorrowMenu
-     */
+    
+    // <editor-fold defaultstate="collapsed" desc="Borrow Menu Private Variables"> 
+    // Description for private variables
+    // -------------------------------------
+    // cspecies stores client type prefixes
+    // brID stores borrowing ID
+    // bID stores book ID
+    // cID stores client ID
+    // saveDir stores working directory
+    // fetchedClient flag is to determine if client information has been fetched
+    // fetchedBook flag is to determine if book information has been fetched
+    // selectedDate flag is to determine if the date is set using Set Date button
+    // fgtxt is the color code seen in the normal label and text. Default color.
+    // ctype stores the selection index of the client type
+    // cList stores elements for client combobox options
+    // bkList stores elements for book combobox options
+    private String cspecies, brID, cID, bID, saveDir;
+    private boolean fetchedClient, fetchedBook, selectedDate;
+    private final String bpfix = "BOO", brpfix = "BOR";
+    private Color fgtxt = new Color(187,187,187);
+    private int ctype;
+    private DefaultComboBoxModel cList, bkList;
+    // </editor-fold>
+    
+    // Borrowing menu constructor
     public unnamedBorrowMenu() {
         initComponents();
         initGUI();
@@ -163,12 +163,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         lblBookID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblBookID.setText("Book ID:");
 
-        try {
-            txtBorrowDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        txtBorrowDate.setText("DD/MM/YYYY");
+        txtBorrowDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
         txtBorrowDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         btnGetDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -722,6 +717,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold defaultstate="collapsed" desc="Buttons"> 
     // This code handles Client ID behaviour upon selection
     private void cbxClientTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientTypeActionPerformed
         // TODO add your handling code here:
@@ -756,114 +752,11 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_cbxClientTypeActionPerformed
 
-    // This method will fetch the client type
-    // Can be used for both client loading or addition
-    private void getClientType(){
-        ctype = cbxClientType.getSelectedIndex(); // Get client type
-        if (ctype <= 0) { // Will disable the list from any user interaction
-            lblClientID.setText("Load Existing Client:");
-            cspecies = "NUL";
-        } else { // Will display fields according to selected user type
-            lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
-            switch (ctype){
-                case 1:
-                cspecies = "STA";
-                break;
-            case 2:
-                cspecies = "STU";
-                break;
-            default:
-                cspecies = "NUL";
-                break;
-            }
-            // cbxClientID.setEnabled(true);
-            // btnAdd.setEnabled(true);
-        }
-    }
-    
-    // This method will set option list for book ID using ComboBoxModel
-    private void setClientOption(){
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        cList = new DefaultComboBoxModel();
-        String cLabel; // Declared to store title of the selected client type
-        switch (cspecies) {
-            case "STA":
-                cLabel = "Staff";
-                break;
-            case "STU":
-                cLabel = "Student";
-                break;
-            default:
-                cLabel = "Existing";
-        }
-        // Adding default text
-        cList.addElement("Select " + cLabel + " ID");
-        cbxClientID.setModel(cList);
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File clienttxt = new File(saveDir + "client.txt");
-        Scanner intClient;
-        try {
-            // This part loads all book information
-            intClient = new Scanner(clienttxt);
-            // This is to increment the discovered client assignment index
-            int i = 0;
-            // Read lines from the file until no more are left.
-            while (intClient.hasNext())
-            {
-                // Read the next line.
-                String bEntry = intClient.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                String temptype = null;
-                if (matchedID[0].contains("STA")) {
-                    temptype = "STA";
-                } else if (matchedID[0].contains("STU")) {
-                    temptype = "STU";
-                }
-                // Get the digits out
-                String preOut = matchedID[0].replace(temptype, "");
-                // JOptionPane.showMessageDialog(null, preOut);
-                // Replace the string part with empty digits, leaving only the prefix
-                String numOut = matchedID[0].replace(preOut, "");
-                // JOptionPane.showMessageDialog(null, numOut);
-                if (i < 200) {
-                    if ("false".equals(matchedID[8]) && cspecies.equals(numOut)) {
-                        matchedID[0] = matchedID[0].replace(cspecies, "");
-                        cList.addElement(matchedID[0]);
-                        i++;
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Maximum client entry limit reached! Stopping at 200th record.", "Client list maxed out!", JOptionPane.ERROR_MESSAGE);
-                    break;
-                }
-            }
-            // OptionPane.showMessageDialog(null, i);
-            intClient.close();
-            // Check if there are no clients at all for each type
-            if (cList.getSize() == 1) {
-                cList.removeAllElements();
-                cList.addElement("No client(s) available.");
-            }
-            // Attempt to list all fetched client ID into the list box
-            cbxClientID.setModel(cList);
-            // Select index 0 as default
-            cbxClientID.setSelectedIndex(0);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-        
     // Main method of this page as the booking details created and saved here
     // Files include borrowing details, and staff/student information
     // book details will be rewritten with new information about available quantity
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-        // Declaring file extension used
-        ext = ".txt";        
         saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
         // Formatting ID into formal 6-digit mask
         DecimalFormat dc = new DecimalFormat("000000");
@@ -1102,6 +995,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    // This method resets the field and selection via reset button
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
         lblBorrowDue.setForeground(fgtxt);
@@ -1111,6 +1005,147 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         fetchedBookClientInfo();
     }//GEN-LAST:event_btnResetActionPerformed
 
+    // This method sets the inserted date as borrowing and due date via set date button
+    private void btnSetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetDateActionPerformed
+        // TODO add your handling code here:
+        try {
+            setBorrowDate();
+            selectedDate = true;
+            fetchedBookClientInfo();
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input! Date must follow the format: DD/MM/YYYY", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSetDateActionPerformed
+
+    // This method triggers the loading sequence of client information through client combo box
+    private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
+        // TODO add your handling code here:
+        // Continue with client loading code from client menu
+        // Clear previous fields value
+        clearClient();
+        // Loads index with Book ID only
+        if (cbxClientID.getSelectedIndex() > 0) {
+            loadClientID();
+        }
+        fetchedBookClientInfo();
+    }//GEN-LAST:event_cbxClientIDActionPerformed
+
+    // This method triggers the loading sequecne of book information through book combo box
+    private void cbxBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBookIDActionPerformed
+        // TODO add your handling code here:
+        // Clear previous fields value
+        // This method called here also clears
+        // selectedDate flag. Unintentional feature but a welcome one
+        clearBook();
+        // Loads index with Book ID only
+        if (cbxBookID.getSelectedIndex() != 0 && cbxBookID.getSelectedIndex() != -1) {
+            loadBookID();
+        }
+        fetchedBookClientInfo();
+    }//GEN-LAST:event_cbxBookIDActionPerformed
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods"> 
+    // This method will fetch the client type
+    // Can be used for both client loading or addition
+    private void getClientType(){
+        ctype = cbxClientType.getSelectedIndex(); // Get client type
+        if (ctype <= 0) { // Will disable the list from any user interaction
+            lblClientID.setText("Load Existing Client:");
+            cspecies = "NUL";
+        } else { // Will display fields according to selected user type
+            lblClientID.setText("Load Existing " + cbxClientType.getSelectedItem().toString() + ":");
+            switch (ctype){
+                case 1:
+                cspecies = "STA";
+                break;
+            case 2:
+                cspecies = "STU";
+                break;
+            default:
+                cspecies = "NUL";
+                break;
+            }
+            // cbxClientID.setEnabled(true);
+            // btnAdd.setEnabled(true);
+        }
+    }
+    
+    // This method will set option list for book ID using ComboBoxModel
+    private void setClientOption(){
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        cList = new DefaultComboBoxModel();
+        String cLabel; // Declared to store title of the selected client type
+        switch (cspecies) {
+            case "STA":
+                cLabel = "Staff";
+                break;
+            case "STU":
+                cLabel = "Student";
+                break;
+            default:
+                cLabel = "Existing";
+        }
+        // Adding default text
+        cList.addElement("Select " + cLabel + " ID");
+        cbxClientID.setModel(cList);
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner intClient;
+        try {
+            // This part loads all book information
+            intClient = new Scanner(clienttxt);
+            // This is to increment the discovered client assignment index
+            int i = 0;
+            // Read lines from the file until no more are left.
+            while (intClient.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intClient.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                String temptype = null;
+                if (matchedID[0].contains("STA")) {
+                    temptype = "STA";
+                } else if (matchedID[0].contains("STU")) {
+                    temptype = "STU";
+                }
+                // Get the digits out
+                String preOut = matchedID[0].replace(temptype, "");
+                // JOptionPane.showMessageDialog(null, preOut);
+                // Replace the string part with empty digits, leaving only the prefix
+                String numOut = matchedID[0].replace(preOut, "");
+                // JOptionPane.showMessageDialog(null, numOut);
+                if (i < 200) {
+                    if ("false".equals(matchedID[8]) && cspecies.equals(numOut)) {
+                        matchedID[0] = matchedID[0].replace(cspecies, "");
+                        cList.addElement(matchedID[0]);
+                        i++;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Maximum client entry limit reached! Stopping at 200th record.", "Client list maxed out!", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+            // OptionPane.showMessageDialog(null, i);
+            intClient.close();
+            // Check if there are no clients at all for each type
+            if (cList.getSize() == 1) {
+                cList.removeAllElements();
+                cList.addElement("No client(s) available.");
+            }
+            // Attempt to list all fetched client ID into the list box
+            cbxClientID.setModel(cList);
+            // Select index 0 as default
+            cbxClientID.setSelectedIndex(0);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     // This method handles manual borrow date setting
     private void setBorrowDate(){
         // Default dd/MM/yyyy formatter for Joda LocalDate instances
@@ -1127,221 +1162,6 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         // To highlight the due date
         lblBorrowDue.setForeground(Color.red);
         
-    }
-    
-    private void btnSetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetDateActionPerformed
-        // TODO add your handling code here:
-        try {
-            setBorrowDate();
-            selectedDate = true;
-            fetchedBookClientInfo();
-        } catch(Exception ex) {
-            JOptionPane.showMessageDialog(null, "Invalid input! Date must follow the format: DD/MM/YYYY", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnSetDateActionPerformed
-
-    private void cbxClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClientIDActionPerformed
-        // TODO add your handling code here:
-        // Continue with client loading code from client menu
-        // Clear previous fields value
-        clearClient();
-        // Loads index with Book ID only
-        if (cbxClientID.getSelectedIndex() > 0) {
-            loadClientID();
-        }
-        fetchedBookClientInfo();
-    }//GEN-LAST:event_cbxClientIDActionPerformed
-
-    private void cbxBookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxBookIDActionPerformed
-        // TODO add your handling code here:
-        // Clear previous fields value
-        // This method called here also clears
-        // selectedDate flag. Unintentional feature but a welcome one
-        clearBook();
-        // Loads index with Book ID only
-        if (cbxBookID.getSelectedIndex() != 0 && cbxBookID.getSelectedIndex() != -1) {
-            loadBookID();
-        }
-        fetchedBookClientInfo();
-    }//GEN-LAST:event_cbxBookIDActionPerformed
-
-    // This method will load the selected book ID
-    private void loadBookID(){
-        // Assigning the bID to the selected index value
-        bID = (String) cbxBookID.getSelectedItem();
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        boolean qty0 = false;
-        fetchedBook = false;
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File booktxt = new File(saveDir + "book.txt");
-        Scanner intBook;
-        try {
-            // This part loads all book information
-            intBook = new Scanner(booktxt);
-            // Read lines from the file until no more are left.
-            while (intBook.hasNext())
-            {
-                // Read the next line.
-                String bEntry = intBook.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                matchedID[0] = matchedID[0].replace("BOO", "");
-                // JOptionPane.showMessageDialog(null, i);
-                if (cbxBookID.getSelectedItem().equals(matchedID[0])) {
-                    fetchedBook = true;
-                    txtBookTitle.setText(matchedID[1]);
-                    txtBookGenre.setText(matchedID[2]);
-                    txtBookSummary.setText(matchedID[3]);
-                    txtBookQuantity.setText(matchedID[4]);
-                    txtBookPublisher.setText(matchedID[5]);
-                    txtBookAuthor.setText(matchedID[6]);
-                    txtPublishDate.setText(matchedID[7]);
-                    txtArrivalDate.setText(matchedID[8]);
-                     if (Integer.parseInt(matchedID[4]) <= 0) {
-                        qty0 = true;
-                    } 
-                }
-            }
-            // OptionPane.showMessageDialog(null, i);
-            intBook.close();
-            if (qty0) { // Check and see if the quantity of book is 0
-                lblBookQuantity.setForeground(Color.yellow);
-                fetchedBook = false;
-                JOptionPane.showMessageDialog(null, "There is not enough book of this title available for borrowing!", "Book quantity is 0!", JOptionPane.ERROR_MESSAGE);
-                qty0 = false;
-            }
-            fetchedBookClientInfo();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    // This method will load the selected book ID
-    private void loadClientID(){
-        // Assigning the cID to the selected index value
-        cID = (String) cbxClientID.getSelectedItem();
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        fetchedClient = false;
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File clienttxt = new File(saveDir + "client.txt");
-        Scanner intClient;
-        try {
-            // This part loads all book information
-            intClient = new Scanner(clienttxt);
-            // Read lines from the file until no more are left.
-            while (intClient.hasNext())
-            {
-                // Read the next line.
-                String bEntry = intClient.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = bEntry.split(":");
-                matchedID[0] = matchedID[0].replace(cspecies, "");
-                // JOptionPane.showMessageDialog(null, i);
-                if (cbxClientID.getSelectedItem().equals(matchedID[0])) {
-                    fetchedClient = true;
-                    txtClientFirstName.setText(matchedID[1]);
-                    txtClientLastName.setText(matchedID[2]);
-                    txtClientDoB.setText(matchedID[3]);
-                    txtClientGender.setText(matchedID[4]);
-                    txtClientPhoneNumber.setText(matchedID[5]);
-                    txtClientEmailAddress.setText(matchedID[6]);
-                    txtClientHomeAddress.setText(matchedID[7]);
-                }
-            }
-            intClient.close();
-            fetchedBookClientInfo();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    // This method clears book related fields
-    private void clearClient(){
-        // To clean up previous or default values from fields
-        fetchedClient = false;
-        txtClientFirstName.setText("");
-        txtClientLastName.setText("");
-        txtClientDoB.setText("");
-        txtClientGender.setText("");
-        txtClientPhoneNumber.setText("");
-        txtClientEmailAddress.setText("");
-        txtClientHomeAddress.setText("");
-        cID = "";
-    }
-    
-    private void clearBook(){
-        fetchedBook = false;
-        selectedDate = false;
-        txtBorrowDate.setText("");
-        txtBorrowDue.setText("");
-        txtBookTitle.setText("");
-        txtBookGenre.setText("");
-        txtBookSummary.setText("");
-        txtBookQuantity.setText("");
-        txtBookPublisher.setText("");
-        txtBookAuthor.setText("");
-        txtPublishDate.setText("");
-        txtArrivalDate.setText("");
-        bID = "";
-        brID = "";
-        lblBookQuantity.setForeground(fgtxt);
-        lblBorrowDue.setForeground(fgtxt);
-    }
-    
-    
-    private void fetchedBookClientInfo(){
-        if (fetchedBook && fetchedClient && selectedDate) {
-            btnSubmit.setEnabled(true);
-        } else {
-            btnSubmit.setEnabled(false);
-        }
-    }
-    
-    // This method will check through borrowing.txt and look for latest ID and increments from there
-    private void borrowIncrementor(){
-        DecimalFormat dc = new DecimalFormat("000000");
-        // This is to ensure the entire method have access to the matchedID array
-        String[] matchedID = null;
-        try {
-            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-            // For debugging purpose only
-            // JOptionPane.showMessageDialog(null, bID);
-            File booktxt = new File(saveDir + "borrowing.txt");
-            Scanner inputFile;
-            try {
-                String lastBookID;
-                inputFile = new Scanner(booktxt);
-                // Read lines from the file until no more are left.
-                while (inputFile.hasNext())
-                {
-                   // Read the next line.
-                   String bEntry = inputFile.nextLine();
-                   // Split the line by using the delimiter ":" (semicolon) and store into array.
-                   matchedID = bEntry.split(":");
-                   matchedID[0] = matchedID[0].replace("BOR", "");
-                }
-                inputFile.close();
-                int newBorrowID;
-                if (matchedID == null) {
-                    JOptionPane.showMessageDialog(null, "No borrow(s) record found! Restarting database entry.", "Borrow database is empty!", JOptionPane.ERROR_MESSAGE);
-                    newBorrowID = 1;
-                } else {
-                    newBorrowID = Integer.parseInt(matchedID[0]) + 1;
-                }
-                txtBorrowID.setText(dc.format(newBorrowID));
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-        }
     }
     
     // This method will set option list for book ID using ComboBoxModel
@@ -1396,6 +1216,187 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method will load the selected book ID
+    private void loadBookID(){
+        // Assigning the bID to the selected index value
+        bID = (String) cbxBookID.getSelectedItem();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        boolean qty0 = false;
+        fetchedBook = false;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File booktxt = new File(saveDir + "book.txt");
+        Scanner intBook;
+        try {
+            // This part loads all book information
+            intBook = new Scanner(booktxt);
+            // Read lines from the file until no more are left.
+            while (intBook.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intBook.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace("BOO", "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (cbxBookID.getSelectedItem().equals(matchedID[0])) {
+                    fetchedBook = true;
+                    txtBookTitle.setText(matchedID[1]);
+                    txtBookGenre.setText(matchedID[2]);
+                    txtBookSummary.setText(matchedID[3]);
+                    txtBookQuantity.setText(matchedID[4]);
+                    txtBookPublisher.setText(matchedID[5]);
+                    txtBookAuthor.setText(matchedID[6]);
+                    txtPublishDate.setText(matchedID[7]);
+                    txtArrivalDate.setText(matchedID[8]);
+                     if (Integer.parseInt(matchedID[4]) <= 0) {
+                        qty0 = true;
+                    } 
+                }
+            }
+            // OptionPane.showMessageDialog(null, i);
+            intBook.close();
+            if (qty0) { // Check and see if the quantity of book is 0
+                lblBookQuantity.setForeground(Color.yellow);
+                fetchedBook = false;
+                JOptionPane.showMessageDialog(null, "There is not enough book of this title available for borrowing!", "Book quantity is 0!", JOptionPane.ERROR_MESSAGE);
+                qty0 = false;
+            }
+            fetchedBookClientInfo();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // This method will load the selected client ID
+    private void loadClientID(){
+        // Assigning the cID to the selected index value
+        cID = (String) cbxClientID.getSelectedItem();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        fetchedClient = false;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File clienttxt = new File(saveDir + "client.txt");
+        Scanner intClient;
+        try {
+            // This part loads all book information
+            intClient = new Scanner(clienttxt);
+            // Read lines from the file until no more are left.
+            while (intClient.hasNext())
+            {
+                // Read the next line.
+                String bEntry = intClient.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = bEntry.split(":");
+                matchedID[0] = matchedID[0].replace(cspecies, "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (cbxClientID.getSelectedItem().equals(matchedID[0])) {
+                    fetchedClient = true;
+                    txtClientFirstName.setText(matchedID[1]);
+                    txtClientLastName.setText(matchedID[2]);
+                    txtClientDoB.setText(matchedID[3]);
+                    txtClientGender.setText(matchedID[4]);
+                    txtClientPhoneNumber.setText(matchedID[5]);
+                    txtClientEmailAddress.setText(matchedID[6]);
+                    txtClientHomeAddress.setText(matchedID[7]);
+                }
+            }
+            intClient.close();
+            fetchedBookClientInfo();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // This method clears client related fields
+    private void clearClient(){
+        // To clean up previous or default values from fields
+        fetchedClient = false;
+        txtClientFirstName.setText("");
+        txtClientLastName.setText("");
+        txtClientDoB.setText("");
+        txtClientGender.setText("");
+        txtClientPhoneNumber.setText("");
+        txtClientEmailAddress.setText("");
+        txtClientHomeAddress.setText("");
+        cID = "";
+    }
+    
+    // This method clears book related fields
+    private void clearBook(){
+        fetchedBook = false;
+        selectedDate = false;
+        txtBorrowDate.setText("");
+        txtBorrowDue.setText("");
+        txtBookTitle.setText("");
+        txtBookGenre.setText("");
+        txtBookSummary.setText("");
+        txtBookQuantity.setText("");
+        txtBookPublisher.setText("");
+        txtBookAuthor.setText("");
+        txtPublishDate.setText("");
+        txtArrivalDate.setText("");
+        bID = "";
+        brID = "";
+        lblBookQuantity.setForeground(fgtxt);
+        lblBorrowDue.setForeground(fgtxt);
+    }
+    
+    // This method checks the flag to enable or disable submit button
+    private void fetchedBookClientInfo(){
+        if (fetchedBook && fetchedClient && selectedDate) {
+            btnSubmit.setEnabled(true);
+        } else {
+            btnSubmit.setEnabled(false);
+        }
+    }
+    
+    // This method will check through borrowing.txt and look for latest ID and increments from there
+    private void borrowIncrementor(){
+        DecimalFormat dc = new DecimalFormat("000000");
+        // This is to ensure the entire method have access to the matchedID array
+        String[] matchedID = null;
+        try {
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            // For debugging purpose only
+            // JOptionPane.showMessageDialog(null, bID);
+            File booktxt = new File(saveDir + "borrowing.txt");
+            Scanner inputFile;
+            try {
+                String lastBookID;
+                inputFile = new Scanner(booktxt);
+                // Read lines from the file until no more are left.
+                while (inputFile.hasNext())
+                {
+                   // Read the next line.
+                   String bEntry = inputFile.nextLine();
+                   // Split the line by using the delimiter ":" (semicolon) and store into array.
+                   matchedID = bEntry.split(":");
+                   matchedID[0] = matchedID[0].replace("BOR", "");
+                }
+                inputFile.close();
+                int newBorrowID;
+                if (matchedID == null) {
+                    JOptionPane.showMessageDialog(null, "No borrow(s) record found! Restarting database entry.", "Borrow database is empty!", JOptionPane.ERROR_MESSAGE);
+                    newBorrowID = 1;
+                } else {
+                    newBorrowID = Integer.parseInt(matchedID[0]) + 1;
+                }
+                txtBorrowID.setText(dc.format(newBorrowID));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(unnamedBorrowMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input! Book ID can only consist of numbers", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    // This is a form load method
     private void initGUI(){
         // This anon class handles window closing event
         borrowIncrementor();
@@ -1413,7 +1414,7 @@ public class unnamedBorrowMenu extends javax.swing.JFrame {
         });
         
     }
-    
+    // </editor-fold>
     
     /**
      * @param args the command line arguments

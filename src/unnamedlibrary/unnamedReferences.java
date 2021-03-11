@@ -42,6 +42,9 @@ public class unnamedReferences {
     //  https://mkyong.com/java/how-to-create-directory-in-java/
     //  https://stackoverflow.com/questions/15206586/getting-attempt-to-mutate-notification-exception
     //  https://stackoverflow.com/questions/15472764/regular-expression-to-allow-spaces-between-words
+    //  https://stackoverflow.com/questions/8204680/java-regex-email
+    //  https://www.w3schools.com/java/java_abstract.asp
+    //  https://www.w3schools.com/java/java_encapsulation.asp
     
     
     

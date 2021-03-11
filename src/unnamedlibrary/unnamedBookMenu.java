@@ -25,6 +25,7 @@ import javax.swing.event.DocumentEvent;
  * @author FuadAbdullah
  */
 public class unnamedBookMenu extends javax.swing.JFrame {
+    
     // <editor-fold defaultstate="collapsed" desc="Book Menu Private Variables"> 
     // Description for private variables
     // -------------------------------------
@@ -34,11 +35,11 @@ public class unnamedBookMenu extends javax.swing.JFrame {
     // newBookID stores new book ID after increment
     // bkList stores elements for book combobox options    
     // -------------------------------------
-    String bID, saveDir;
-    final String bpfix = "BOO";
-    Color fgtxt = new Color(187,187,187);
-    int newBookID;
-    DefaultComboBoxModel bkList;
+    private String bID, saveDir;
+    private final String bpfix = "BOO";
+    private Color fgtxt = new Color(187,187,187);
+    private int newBookID;
+    private DefaultComboBoxModel bkList;
     // </editor-fold>    
     
     // Book menu constructor
@@ -331,15 +332,14 @@ public class unnamedBookMenu extends javax.swing.JFrame {
                         .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtArrivalDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtPublishDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtBookQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtBookPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                        .addComponent(txtBookGenre, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtBookTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(txtBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtBookQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtBookPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(txtBookGenre, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtBookTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(panFormLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -895,126 +895,84 @@ public class unnamedBookMenu extends javax.swing.JFrame {
             throw new Exception("Empty book author");
         }  
     }
-    
+
     // This method handles all validation related to the fields
     private void inputCharacterValidator(){
         txtBookTitle.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtBookTitle.getText();
+            unnamedTitleValidation vd = new unnamedTitleValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextField(txt, txtBookTitle);
+                vd.runValidate(txtBookTitle);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookTitle);
+                vd.runValidate(txtBookTitle);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookTitle);
+                vd.runValidate(txtBookTitle);
             }
         });
         txtBookGenre.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtBookGenre.getText();
+            unnamedGenreValidation vd = new unnamedGenreValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextField(txt, txtBookGenre);
+                vd.runValidate(txtBookGenre);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookGenre);
+                vd.runValidate(txtBookGenre);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookGenre);
+                vd.runValidate(txtBookGenre);
             }
         });
         txtBookSummary.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtBookSummary.getText();
+            unnamedSummaryValidation vd = new unnamedSummaryValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextArea(txt, txtBookSummary);
+                vd.runValidate(txtBookSummary);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextArea(txt, txtBookSummary);
+                vd.runValidate(txtBookSummary);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextArea(txt, txtBookSummary);
+                vd.runValidate(txtBookSummary);
             }
         });
         txtBookPublisher.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtBookPublisher.getText();
+            unnamedPublisherValidation vd = new unnamedPublisherValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextField(txt, txtBookPublisher);
+                vd.runValidate(txtBookPublisher);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookPublisher);
+                vd.runValidate(txtBookPublisher);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookPublisher);
+                vd.runValidate(txtBookPublisher);
             }
         });
         txtBookAuthor.getDocument().addDocumentListener(new unnamedDocumentListener() {
-            final String txt = txtBookAuthor.getText();
+            unnamedAuthorValidation vd = new unnamedAuthorValidation();
             @Override
             public void changedUpdate(DocumentEvent e){
-                invalidStringTextField(txt, txtBookAuthor);
+                vd.runValidate(txtBookAuthor);
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookAuthor);
+                vd.runValidate(txtBookAuthor);
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                invalidStringTextField(txt, txtBookAuthor);
+                vd.runValidate(txtBookAuthor);
             }
         });
-    }
-    
-    // This method handles JTextField validation
-    // The validation only allow A-Z 1-9 and !@#$%^&*(){}[]"';\/?|.,<>~`_+=- symbols to be inserted
-    private void invalidStringTextField(String input, JTextField txt){
-        Runnable doDelete = new Runnable(){
-            public void set(){
-                final String input = txt.getText();
-                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
-                if (matching == false && !"".equals(input)) {
-                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-                    String output = input.substring(0, input.length() - 1);
-                    txt.setText(output);
-                }
-            }
-            @Override
-            public void run(){
-                set();
-            }
-        };
-        SwingUtilities.invokeLater(doDelete);
-    }
-    
-    // This method handles JTextArea validation
-    // The validation only allow A-Z 1-9 and !@#$%^&*()"'; symbols to be inserted
-    private void invalidStringTextArea(String input, JTextArea txt){
-        Runnable doDelete = new Runnable(){
-            public void set(){
-                final String input = txt.getText();
-                boolean matching = input.matches("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
-                if (matching == false && !"".equals(input)) {
-                    JOptionPane.showMessageDialog(null, "Invalid input! Field can only consist of letters, numbers and \"!@#$%^&*(){}[]\"\';\\/?|.,><~`_+=-\" symbols", "Invalid input type!", JOptionPane.ERROR_MESSAGE);
-                    String output = input.substring(0, input.length() - 1);
-                    txt.setText(output);
-                }
-            }
-            @Override
-            public void run(){
-                set();
-            }
-        };
-        SwingUtilities.invokeLater(doDelete);
     }
     
     // This is the form load method
@@ -1039,8 +997,6 @@ public class unnamedBookMenu extends javax.swing.JFrame {
     }
  
     // </editor-fold>
-    
-    
     
     /**
      * @param args the command line arguments

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package unnamedlibrary;
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,48 +11,36 @@ import java.io.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.NumberFormatter;
-import org.joda.time.*;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
- * @author fab07
+ * @author FuadAbdullah
  */
 public class unnamedRegisterMenu extends javax.swing.JFrame {
-
-    String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, lID, saveDir;
-    boolean cerr, berr, brerr; // Client error, book error, borrow date error, borrowing id error
-    boolean fetchedClient, fetchedBook, fetchedBorrow;// Booleans for client, book and borrow fetch statuses
-    boolean isOverdue, hasRenewed, hasFine, hasReturned; 
-    final String bpfix = "BOO", brpfix = "BOR", lpfix = "LIB";// For book and borrow ID prefixes
-    Color fgtxt = new Color(187,187,187); // Default foreground color for text
-    int newLibrarianID; // To store new book ID
-    int ctype; // Value to represent selected Client combo box
-    DefaultComboBoxModel cList; // ComboBoxModel for Book ID
     
+    // <editor-fold defaultstate="collapsed" desc="Register Menu Private Variables"> 
+    // Description for private variables
+    // -------------------------------------
+    // lID stores librarian ID
+    // lpfix stores librarian prefix
+    // saveDir stores working directory
+    // fgtxt is the color code seen in the normal label and text. Default color.
+    // newLibrarianID stores new librarian ID after increment
+    // -------------------------------------
+    // String brtxt, ctxt, btxt, ext, cspecies, brID, cID, bID, lID, saveDir;
+    private String lID, saveDir;
+    private final String lpfix = "LIB";// For book and borrow ID prefixes
+    private Color fgtxt = new Color(187,187,187); // Default foreground color for text
+    private int newLibrarianID; // To store new book ID
+    // </editor-fold>
     
-    /**
-     * Creates new form unnamedBook
-     */
+    // Register menu constructor
     public unnamedRegisterMenu() {
         initComponents();
         initGUI();
@@ -232,11 +219,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
         txtLibrarianLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
-        try {
-            txtLibrarianDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtLibrarianDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
         txtLibrarianDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         try {
@@ -247,6 +230,11 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         txtLibrarianPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtLibrarianEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianEmailAddress.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtLibrarianEmailAddressFocusLost(evt);
+            }
+        });
 
         txtLibrarianHomeAddress.setColumns(20);
         txtLibrarianHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -261,11 +249,6 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         cbxLibrarianGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxLibrarianGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
         cbxLibrarianGender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cbxLibrarianGender.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxLibrarianGenderActionPerformed(evt);
-            }
-        });
 
         lblLibrarianUsername.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         lblLibrarianUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -392,6 +375,9 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold defaultstate="collapsed" desc="Button Events">
+    
+    // This method returns the user to login menu via return button
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         int selection = JOptionPane.showConfirmDialog(null, "Closing this form now will cancel the ongoing registration. Continue?", "Returning to login screen!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -401,10 +387,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    // NOTE TO SELF FOR TOMORROW
-    // IMPLEMENT LOAD FROM EXISTING BOOK ID > DELETE > UPDATE 
-    // FOLLOW THIS ORDER WILL BE MUCH EASIER
-    // This method handles addition of books into the system
+    // This method handles registration of librarian into the system via register button
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         // TODO add your handling code here:
         // Reset the highlighted empty fields to original foreground color
@@ -413,10 +396,80 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         addLibrarianInformation();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    // This method resets the registration form via reset button
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        clearLibrarian();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    // This method triggers for email validation after email textfield loses focus
+    private void txtLibrarianEmailAddressFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLibrarianEmailAddressFocusLost
+        // TODO add your handling code here:
+//        final String txt = txtLibrarianEmailAddress.getText();
+//        invalidStringEmail(txt, txtLibrarianEmailAddress, true);
+        unnamedEmailValidation vd = new unnamedEmailValidation();     
+        vd.runValidate(txtLibrarianEmailAddress, true);
+    }//GEN-LAST:event_txtLibrarianEmailAddressFocusLost
+
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
+    // This method handles username validation to check if 
+    // the username has already been taken by comparing
+    // records in the librarian text file
+    private boolean usernameValidator(){
+        // Assigning the lID to the selected index value
+        String userTemp = txtLibrarianUsername.getText();
+        // This is to ensure the entire method have access to borrow matchedID array
+        String[] matchedID = null;
+        boolean notAvailable = false;
+        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+        // For debugging purpose only
+        // JOptionPane.showMessageDialog(null, bID);
+        File librariantxt = new File(saveDir + "librarian.txt");
+        Scanner intLibrarian;
+        try {
+            if (!librariantxt.exists()) {
+                librariantxt.createNewFile();
+            }   
+            // This part loads all book information
+            intLibrarian = new Scanner(librariantxt);
+            // Read lines from the file until no more are left.
+            while (intLibrarian.hasNext())
+            {
+                // Read the next line.
+                String lEntry = intLibrarian.nextLine();
+                // Split the line by using the delimiter ":" (semicolon) and store into array.
+                matchedID = lEntry.split(":");
+                // matchedID[0] = matchedID[0].replace("LIB", "");
+                // JOptionPane.showMessageDialog(null, i);
+                if (userTemp.equals(matchedID[1])) {
+                     notAvailable = true;
+                }
+            }
+            intLibrarian.close();
+        } catch (Exception ex) {
+            
+        }
+        return notAvailable;
+    }
+    
+    // This method handles password comparison 
+    private boolean similarPassword(){
+        boolean isSimilar = false;
+        String currPass = String.valueOf(txtLibrarianPassword.getPassword());
+        String comparePass = String.valueOf(txtLibrarianRepeatPass.getPassword());
+        if ("".equals(currPass) || "".equals(comparePass)) {
+            isSimilar = false;
+        } else if (currPass.equals(comparePass)) {
+            isSimilar = true;
+        }
+        return isSimilar;
+    }
+    
     // This method handles the insertion of client
-    private void addLibrarianInformation(){
-        // Declaring file extension used
-        ext = ".txt";        
+    private void addLibrarianInformation(){ 
         saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
         // Formatting ID into formal 6-digit mask
         DecimalFormat dc = new DecimalFormat("000000");
@@ -480,159 +533,17 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         catch (Exception ex) {
             highlightEmpty();
             if (usernameValidator()) {
-                JOptionPane.showMessageDialog(null, "Username is already taken by another librarian! Use a different username to proceed.", "Username is in use!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Username is already taken by another librarian! Use a different username to proceed.", "Username is in use!", JOptionPane.WARNING_MESSAGE);
             }
             if (!similarPassword()) {
-                JOptionPane.showMessageDialog(null, "Password is not matching!", "Username is in use!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Password is not matching!", "Password mismatch!", JOptionPane.WARNING_MESSAGE);
             } 
-            JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.ERROR_MESSAGE);
-            
+            JOptionPane.showMessageDialog(null, "Invalid input! Please check your input to proceed.", "Invalid insertion detected!", JOptionPane.WARNING_MESSAGE);
             // Continue with displaying which field was affected. ensure it appears before the mnessagebox
         }      
     }
     
-    // This method will reset the color of the highlighted labels to default foreground
-    private void deHighlightEmpty(){
-        lblLibrarianUsername.setForeground(fgtxt);
-        lblLibrarianPassword.setForeground(fgtxt);
-        lblLibrarianRepeatPass.setForeground(fgtxt);
-        lblLibrarianFirstName.setForeground(fgtxt);
-        lblLibrarianLastName.setForeground(fgtxt);
-        lblLibrarianDoB.setForeground(fgtxt);
-        lblLibrarianPhoneNumber.setForeground(fgtxt);
-        lblLibrarianEmailAddress.setForeground(fgtxt);
-        lblLibrarianHomeAddress.setForeground(fgtxt);
-    }
-    
-    // This method handles username validation to check if 
-    // the username has already been taken by comparing
-    // records in the librarian text file
-    private boolean usernameValidator(){
-        // Assigning the lID to the selected index value
-        String userTemp = txtLibrarianUsername.getText();
-        // This is to ensure the entire method have access to borrow matchedID array
-        String[] matchedID = null;
-        fetchedBook = false;
-        boolean notAvailable = false;
-        saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
-        // For debugging purpose only
-        // JOptionPane.showMessageDialog(null, bID);
-        File librariantxt = new File(saveDir + "librarian.txt");
-        Scanner intLibrarian;
-        try {
-            if (!librariantxt.exists()) {
-                librariantxt.createNewFile();
-            }   
-            // This part loads all book information
-            intLibrarian = new Scanner(librariantxt);
-            // Read lines from the file until no more are left.
-            while (intLibrarian.hasNext())
-            {
-                // Read the next line.
-                String lEntry = intLibrarian.nextLine();
-                // Split the line by using the delimiter ":" (semicolon) and store into array.
-                matchedID = lEntry.split(":");
-                // matchedID[0] = matchedID[0].replace("LIB", "");
-                // JOptionPane.showMessageDialog(null, i);
-                if (userTemp.equals(matchedID[1])) {
-                     notAvailable = true;
-                }
-            }
-            intLibrarian.close();
-        } catch (Exception ex) {
-            
-        }
-        return notAvailable;
-    }
-    
-    // This method handles password comparison 
-    private boolean similarPassword(){
-        boolean isSimilar = false;
-        String currPass = String.valueOf(txtLibrarianPassword.getPassword());
-        String comparePass = String.valueOf(txtLibrarianRepeatPass.getPassword());
-        if ("".equals(currPass) || "".equals(comparePass)) {
-            isSimilar = false;
-        } else if (currPass.equals(comparePass)) {
-            isSimilar = true;
-        }
-        return isSimilar;
-    }
-    
-    // This method will highlight empty fields with yellow color upon call
-    private void highlightEmpty() {
-        if ("".equals(txtLibrarianUsername.getText())) {
-            lblLibrarianUsername.setForeground(Color.yellow);
-        }
-        if ("".equals(String.valueOf(txtLibrarianPassword.getPassword()))) {
-            lblLibrarianPassword.setForeground(Color.yellow);
-        }
-        if ("".equals(String.valueOf(txtLibrarianRepeatPass.getPassword()))) {
-            lblLibrarianRepeatPass.setForeground(Color.yellow);
-        }
-        if ("".equals(txtLibrarianFirstName.getText())) {
-            lblLibrarianFirstName.setForeground(Color.yellow);
-        }
-        if ("".equals(txtLibrarianLastName.getText())) {
-            lblLibrarianLastName.setForeground(Color.yellow);
-        }
-        if ("  /  /    ".equals(txtLibrarianDoB.getText())) {
-            lblLibrarianDoB.setForeground(Color.yellow);
-        }
-        if ("".equals(txtLibrarianPhoneNumber.getText())) {
-            lblLibrarianPhoneNumber.setForeground(Color.yellow);
-        }
-        if ("".equals(txtLibrarianEmailAddress.getText())) {
-            lblLibrarianEmailAddress.setForeground(Color.yellow);
-        }
-        if ("".equals(txtLibrarianHomeAddress.getText())) {
-            lblLibrarianHomeAddress.setForeground(Color.yellow);
-        }   
-    }
-    
-    // This method is to handle empty book fields
-    // Create a new exception class!
-    private void emptyFields() throws Exception {
-        if ("".equals(txtLibrarianUsername.getText())) {
-            throw new Exception("Empty username");
-        }
-        if ("".equals(String.valueOf(txtLibrarianPassword.getPassword()))) {
-            throw new Exception("Empty password");
-        }
-        if ("".equals(String.valueOf(txtLibrarianRepeatPass.getPassword()))) {
-            throw new Exception("Empty repeat password");
-        }
-        if ("".equals(txtLibrarianFirstName.getText())) {
-            throw new Exception("Empty first name");
-        }
-        if ("".equals(txtLibrarianLastName.getText())) {
-            throw new Exception("Empty last name");
-        }
-        if ("  /  /    ".equals(txtLibrarianDoB.getText())) {
-            throw new Exception("Empty date of birth");
-        }
-        if ("".equals(txtLibrarianPhoneNumber.getText())) {
-            throw new Exception("Empty phone number");
-        }
-        if ("".equals(txtLibrarianEmailAddress.getText())) {
-            throw new Exception("Empty email address");
-        }
-        if ("".equals(txtLibrarianHomeAddress.getText())) {
-            throw new Exception("Empty home address");
-        }  
-    }
-    
-    
-    
-    private void cbxLibrarianGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLibrarianGenderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxLibrarianGenderActionPerformed
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
-        clearLibrarian();
-    }//GEN-LAST:event_btnResetActionPerformed
-    
-    // This method clears book related fields
+    // This method clears librarian related fields
     private void clearLibrarian(){
         // To clean up previous or default values from fields
         txtLibrarianUsername.setText("");
@@ -648,7 +559,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         lID = "";
     }
     
-    // This method will check through borrowing.txt and look for latest ID and increments from there
+    // This method will check through librarian.txt and look for latest ID and increments from there
     private void librarianIncrementor(){
         // This is to ensure the entire method have access to the matchedID array
         String[] matchedID = null;
@@ -694,6 +605,182 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method will highlight empty fields with yellow color upon call
+    private void highlightEmpty() {
+        if ("".equals(txtLibrarianUsername.getText())) {
+            lblLibrarianUsername.setForeground(Color.yellow);
+        }
+        if ("".equals(String.valueOf(txtLibrarianPassword.getPassword()))) {
+            lblLibrarianPassword.setForeground(Color.yellow);
+        }
+        if ("".equals(String.valueOf(txtLibrarianRepeatPass.getPassword()))) {
+            lblLibrarianRepeatPass.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianFirstName.getText())) {
+            lblLibrarianFirstName.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianLastName.getText())) {
+            lblLibrarianLastName.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianDoB.getText())) {
+            lblLibrarianDoB.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianPhoneNumber.getText())) {
+            lblLibrarianPhoneNumber.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianEmailAddress.getText())) {
+            lblLibrarianEmailAddress.setForeground(Color.yellow);
+        }
+        if ("".equals(txtLibrarianHomeAddress.getText())) {
+            lblLibrarianHomeAddress.setForeground(Color.yellow);
+        }   
+    }
+    
+    // This method will reset the color of the highlighted labels to default foreground
+    private void deHighlightEmpty(){
+        lblLibrarianUsername.setForeground(fgtxt);
+        lblLibrarianPassword.setForeground(fgtxt);
+        lblLibrarianRepeatPass.setForeground(fgtxt);
+        lblLibrarianFirstName.setForeground(fgtxt);
+        lblLibrarianLastName.setForeground(fgtxt);
+        lblLibrarianDoB.setForeground(fgtxt);
+        lblLibrarianPhoneNumber.setForeground(fgtxt);
+        lblLibrarianEmailAddress.setForeground(fgtxt);
+        lblLibrarianHomeAddress.setForeground(fgtxt);
+    }
+    
+    // This method is to handle empty book fields
+    // Create a new exception class!
+    private void emptyFields() throws Exception {
+        unnamedEmailValidation vd = new unnamedEmailValidation();
+        if ("".equals(txtLibrarianUsername.getText())) {
+            throw new Exception("Empty username");
+        }
+        if ("".equals(String.valueOf(txtLibrarianPassword.getPassword()))) {
+            throw new Exception("Empty password");
+        }
+        if ("".equals(String.valueOf(txtLibrarianRepeatPass.getPassword()))) {
+            throw new Exception("Empty repeat password");
+        }
+        if ("".equals(txtLibrarianFirstName.getText())) {
+            throw new Exception("Empty first name");
+        }
+        if ("".equals(txtLibrarianLastName.getText())) {
+            throw new Exception("Empty last name");
+        }
+        if ("".equals(txtLibrarianDoB.getText())) {
+            throw new Exception("Empty date of birth");
+        }
+        if ("".equals(txtLibrarianPhoneNumber.getText())) {
+            throw new Exception("Empty phone number");
+        }
+        if ("".equals(txtLibrarianEmailAddress.getText())) {
+            throw new Exception("Empty email address");
+        }
+        if ("".equals(txtLibrarianHomeAddress.getText())) {
+            throw new Exception("Empty home address");
+        }
+        if (vd.runValidate(txtLibrarianEmailAddress, false)) {
+            throw new Exception("Invalid email address format");
+        }
+    }
+    
+    // This method handles all validation related to the fields
+    private void inputCharacterValidator(){
+        txtLibrarianUsername.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            unnamedUsernameValidation vd = new unnamedUsernameValidation();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                vd.runValidate(txtLibrarianUsername);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianUsername);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianUsername);
+            }
+        });
+        txtLibrarianPassword.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            unnamedPasswordValidation vd = new unnamedPasswordValidation();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                vd.runValidate(txtLibrarianPassword);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianPassword);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianPassword);
+            }
+        });
+        
+        txtLibrarianRepeatPass.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            unnamedPasswordValidation vd = new unnamedPasswordValidation();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                vd.runValidate(txtLibrarianRepeatPass);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianRepeatPass);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianRepeatPass);
+            }
+        });
+        txtLibrarianFirstName.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            unnamedFirstNameValidation vd = new unnamedFirstNameValidation();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                vd.runValidate(txtLibrarianFirstName);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianFirstName);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianFirstName);
+            }
+        });
+        txtLibrarianLastName.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            unnamedLastNameValidation vd = new unnamedLastNameValidation();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                vd.runValidate(txtLibrarianLastName);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianLastName);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianLastName);
+            }
+        });
+        txtLibrarianHomeAddress.getDocument().addDocumentListener(new unnamedDocumentListener() {
+            unnamedAddressValidation vd = new unnamedAddressValidation();
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                vd.runValidate(txtLibrarianHomeAddress);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianHomeAddress);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                vd.runValidate(txtLibrarianHomeAddress);
+            }
+        });
+    }
+    
+    // This is the form load method
     private void initGUI(){
         // Set the initial value for new book
         librarianIncrementor();
@@ -708,7 +795,10 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
                 }
             }
         });
+        inputCharacterValidator();
     }
+    
+    // </editor-fold>
     
     /**
      * @param args the command line arguments
