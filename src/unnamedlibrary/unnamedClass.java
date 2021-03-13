@@ -40,16 +40,21 @@ class unnamedDocumentListener implements DocumentListener {
 // This abstract class contains the fundamental methods required of a validation
 abstract class unnamedStringValidation {
     
-    private String title, msg, regex;
+    private String title, msg, regex, nregex;
     
     public unnamedStringValidation() {
         title = "Invalid input type!";
         msg = "Field can only consist of letters, numbers and spacing.";
-        regex = "[a-zA-Z0-9 ]+";
+        regex = "^[a-zA-Z0-9 ]+";
+        nregex = "[^a-zA-Z0-9 ]";
     }
     
     public void setRegex(String regex){
         this.regex = regex;
+    }
+    
+    public void setNegateRegex(String nregex){
+        this.nregex = nregex;
     }
     
     public void setPopup(String title, String msg){
@@ -59,6 +64,10 @@ abstract class unnamedStringValidation {
     
     public String getRegex(){
         return regex;
+    }
+    
+    public String getNegateRegex(){
+        return nregex;
     }
     
     public String getTitle(){
@@ -80,7 +89,10 @@ abstract class unnamedStringValidation {
                 boolean matching = input.matches(getRegex());
                 if (!matching && !"".equals(input)) {
                     runPopup();
-                    String output = input.substring(0, input.length() - 1);
+                    // String output = input.substring(0, input.length() - 1);
+                    // String illegalSymbols = input.replaceAll(getRegex(), "");
+                    // String output = input.replaceAll(illegalSymbols, "");
+                    String output = input.replaceAll(getNegateRegex(), "");
                     txt.setText(output);
                 }
             }
@@ -100,7 +112,8 @@ class unnamedUsernameValidation extends unnamedStringValidation {
     public unnamedUsernameValidation() {
         super();
         setPopup("Invalid username!", "Username can only consist of letters, numbers and escaped symbols.");
-        setRegex("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+=]+");
+        setRegex("^[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+=]+");
+        setNegateRegex("[^-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+=]");
     }
 }
 
@@ -110,7 +123,8 @@ class unnamedPasswordValidation extends unnamedStringValidation {
     public unnamedPasswordValidation() {
         super();
         setPopup("Invalid password!", "Password can only consist of letters, numbers and escaped symbols.");
-        setRegex("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+=]+");
+        setRegex("^[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+=]+");
+        setNegateRegex("[^-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+=]");
     }
     
     public void runValidate(JPasswordField txt){
@@ -120,7 +134,10 @@ class unnamedPasswordValidation extends unnamedStringValidation {
                 boolean matching = input.matches(getRegex());
                 if (!matching && !"".equals(input)) {
                     runPopup();
-                    String output = input.substring(0, input.length() - 1);
+                    // String output = input.substring(0, input.length() - 1);
+                    // String illegalSymbols = input.replaceAll(getRegex(), "");
+                    // String output = input.replaceAll(illegalSymbols, "");
+                    String output = input.replaceAll(getNegateRegex(), "");
                     txt.setText(output);
                 }
             }
@@ -165,7 +182,8 @@ class unnamedNameValidation extends unnamedStringValidation {
     public unnamedNameValidation() {
         super();
         setPopup("Invalid name!", "Name can only consist of letters and spacing.");
-        setRegex("[a-zA-Z ]+");
+        setRegex("^[a-zA-Z ]+");
+        setNegateRegex("[^a-zA-Z ]");
     }
 }
 
@@ -190,7 +208,8 @@ class unnamedAddressValidation extends unnamedStringValidation {
     public unnamedAddressValidation() {
         super();
         setPopup("Invalid home address!", "Home address can only consist of letters, numbers, spacing and acceptable symbols.");
-        setRegex("[-a-zA-Z0-9()&., ]+");
+        setRegex("^[-a-zA-Z0-9()&., ]+");
+        setNegateRegex("[^-a-zA-Z0-9()&., ]");
     }
     
     public void runValidate(JTextArea txt){
@@ -200,7 +219,10 @@ class unnamedAddressValidation extends unnamedStringValidation {
                 boolean matching = input.matches(getRegex());
                 if (!matching && !"".equals(input)) {
                     runPopup();
-                    String output = input.substring(0, input.length() - 1);
+                    // String output = input.substring(0, input.length() - 1);
+                    // String illegalSymbols = input.replaceAll(getRegex(), "");
+                    // String output = input.replaceAll(illegalSymbols, "");
+                    String output = input.replaceAll(getNegateRegex(), "");
                     txt.setText(output);
                 }
             }
@@ -219,7 +241,8 @@ class unnamedTitleValidation extends unnamedStringValidation {
     unnamedTitleValidation(){
         super();
         setPopup("Invalid book title!", "Book title can only consist of letters, numbers, spacing and escaped symbols.");
-        setRegex("[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
+        setRegex("^[-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]+");
+        setNegateRegex("[^-a-zA-Z0-9!@#$%^&*()\\{\\}\\[\\]\"\';\\\\/?|.,><~`_+= ]");
     }
 }
 
@@ -228,7 +251,8 @@ class unnamedGenreValidation extends unnamedStringValidation {
     unnamedGenreValidation(){
         super();
         setPopup("Invalid book genre!", "Book genre can only consist of letters, numbers, spacing and acceptable symbols.");
-        setRegex("[-a-zA-Z0-9()&., ]+");
+        setRegex("^[-a-zA-Z0-9()&., ]+");
+        setNegateRegex("[^-a-zA-Z0-9()&., ]");
     }
 }
 
@@ -237,7 +261,8 @@ class unnamedSummaryValidation extends unnamedStringValidation {
     unnamedSummaryValidation(){
         super();
         setPopup("Invalid book summary!", "Book summary can only consist of letters, numbers, spacing and acceptable symbols.");
-        setRegex("[-a-zA-Z0-9()&., ]+");
+        setRegex("^[-a-zA-Z0-9()&., ]+");
+        setNegateRegex("[^-a-zA-Z0-9()&., ]");
     }
     
     public void runValidate(JTextArea txt){
@@ -247,7 +272,10 @@ class unnamedSummaryValidation extends unnamedStringValidation {
                 boolean matching = input.matches(getRegex());
                 if (!matching && !"".equals(input)) {
                     runPopup();
-                    String output = input.substring(0, input.length() - 1);
+                    // String output = input.substring(0, input.length() - 1);
+                    // String illegalSymbols = input.replaceAll(getRegex(), "");
+                    // String output = input.replaceAll(getRegex(), "");
+                    String output = input.replaceAll(getNegateRegex(), "");
                     txt.setText(output);
                 }
             }
@@ -258,7 +286,6 @@ class unnamedSummaryValidation extends unnamedStringValidation {
         };
         SwingUtilities.invokeLater(doDelete);
     }
-    
 }
 
 // This subclass handles book publisher validation
@@ -266,7 +293,8 @@ class unnamedPublisherValidation extends unnamedStringValidation {
     unnamedPublisherValidation(){
         super();
         setPopup("Invalid book publisher!", "Book publisher can only consist of letters, numbers, spacing and acceptable symbols.");
-        setRegex("[-a-zA-Z0-9()&., ]+");
+        setRegex("^[-a-zA-Z0-9()&., ]+");
+        setNegateRegex("[^-a-zA-Z0-9()&., ]");
     }
 }
 
@@ -275,7 +303,8 @@ class unnamedAuthorValidation extends unnamedStringValidation {
     unnamedAuthorValidation(){
         super();
         setPopup("Invalid book author!", "Book author can only consist of letters, numbers, spacing and acceptable symbols.");
-        setRegex("[-a-zA-Z0-9()&., ]+");
+        setRegex("^[-a-zA-Z0-9()&., ]+");
+        setNegateRegex("[^-a-zA-Z0-9()&., ]");
     }
 }
 // </editor-fold>

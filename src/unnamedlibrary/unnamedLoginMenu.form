@@ -117,20 +117,9 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
-                              <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="313" max="-2" attributes="0"/>
-                              <Component id="lblSubtitle" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace pref="206" max="32767" attributes="0"/>
-                  </Group>
                   <Component id="spTitle" alignment="1" max="32767" attributes="0"/>
+                  <Component id="lblTitle" alignment="1" pref="800" max="32767" attributes="0"/>
+                  <Component id="lblSubtitle" alignment="1" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -375,6 +364,7 @@
                   <Font name="Leelawadee UI Semilight" size="8" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Designed by: Fuad Abdullah"/>
+                <Property name="toolTipText" type="java.lang.String" value="Designed by: Fuad Abdullah"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblGitHub">

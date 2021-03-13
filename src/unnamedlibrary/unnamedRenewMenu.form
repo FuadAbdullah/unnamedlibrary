@@ -168,6 +168,7 @@
                     <StringItem index="2" value="Student"/>
                   </StringArray>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Selects client type."/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
@@ -203,6 +204,7 @@
                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                   <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Start date of the borrowing."/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Leelawadee UI" size="18" style="0"/>
@@ -247,6 +249,7 @@
                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                   <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="End date of the borrowing."/>
                 <Property name="focusLostBehavior" type="int" value="3"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -266,6 +269,7 @@
                   <Font name="Leelawadee UI" size="18" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cancel Renew"/>
+                <Property name="toolTipText" type="java.lang.String" value="Returns to main menu page."/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
@@ -280,6 +284,7 @@
                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                   <Format format="######" subtype="-1" type="0"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Current book ID."/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Leelawadee UI" size="18" style="0"/>
@@ -316,6 +321,7 @@
                     <StringItem index="0" value="Client ID"/>
                   </StringArray>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Selects and loads client information."/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
@@ -337,6 +343,7 @@
                     <StringItem index="0" value="Borrow ID"/>
                   </StringArray>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Selects and loads borrow details"/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
@@ -542,6 +549,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Leelawadee UI" size="18" style="0"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="First name of the client."/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="requestFocusEnabled" type="boolean" value="false"/>
                   </Properties>
@@ -552,6 +560,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Leelawadee UI" size="18" style="0"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Last name of the client."/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="requestFocusEnabled" type="boolean" value="false"/>
                   </Properties>
@@ -562,6 +571,7 @@
                     <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                       <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Date of birth of the client."/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Leelawadee UI" size="18" style="0"/>
@@ -576,6 +586,7 @@
                       <Format format="##########" subtype="-1" type="5"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value=""/>
+                    <Property name="toolTipText" type="java.lang.String" value="Phone number of the client."/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Leelawadee UI" size="18" style="0"/>
@@ -599,6 +610,8 @@
                         </Property>
                         <Property name="lineWrap" type="boolean" value="true"/>
                         <Property name="rows" type="int" value="5"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Home address of the client."/>
+                        <Property name="wrapStyleWord" type="boolean" value="true"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="requestFocusEnabled" type="boolean" value="false"/>
                       </Properties>
@@ -611,6 +624,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Leelawadee UI" size="18" style="0"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Email address of the client."/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="requestFocusEnabled" type="boolean" value="false"/>
                   </Properties>
@@ -623,6 +637,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Leelawadee UI" size="18" style="0"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Gender of the client."/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="requestFocusEnabled" type="boolean" value="false"/>
                   </Properties>
@@ -736,6 +751,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#.##" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Total fine amount."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
@@ -787,6 +803,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Pay Fine"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Pays fine and returns the book."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -801,6 +818,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Renew"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Renews the current borrow record."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -816,6 +834,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Reset"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Empties the fields from existing values."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -919,7 +938,7 @@
                                   <Component id="jScrollPane2" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
                                   <Component id="lblBookSummary" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="txtBookQuantity" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblBookQuantity" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -934,7 +953,7 @@
                                   <Component id="txtBookAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblBookAuthor" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblArrivalDate" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblPublishDate" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1027,6 +1046,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Name of the book."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="requestFocusEnabled" type="boolean" value="false"/>
                       </Properties>
@@ -1037,6 +1057,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Genre of the book."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="requestFocusEnabled" type="boolean" value="false"/>
                       </Properties>
@@ -1047,6 +1068,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Name of book publisher."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="requestFocusEnabled" type="boolean" value="false"/>
                       </Properties>
@@ -1057,6 +1079,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Publisher&apos;s publishing date for the book."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
@@ -1070,6 +1093,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Date of when the book arrived at the library."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
@@ -1083,6 +1107,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="######" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Quantity of books available."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
@@ -1096,6 +1121,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Name of book author."/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="requestFocusEnabled" type="boolean" value="false"/>
                       </Properties>
@@ -1118,6 +1144,8 @@
                             </Property>
                             <Property name="lineWrap" type="boolean" value="true"/>
                             <Property name="rows" type="int" value="3"/>
+                            <Property name="toolTipText" type="java.lang.String" value="Brief summary of the book."/>
+                            <Property name="wrapStyleWord" type="boolean" value="true"/>
                             <Property name="focusable" type="boolean" value="false"/>
                             <Property name="requestFocusEnabled" type="boolean" value="false"/>
                           </Properties>

@@ -99,6 +99,7 @@
                   <Font name="Leelawadee UI" size="18" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Return"/>
+                <Property name="toolTipText" type="java.lang.String" value="Returns to main menu page."/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
@@ -212,6 +213,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Delete"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Deletes the currently selected book."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -235,6 +237,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Update"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Updates the currently selected book."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -249,6 +252,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Add"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Inserts the book details as a new book entry."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -263,6 +267,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Reset"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Empties the fields from existing values."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -469,6 +474,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Name of the book."/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtBookGenre">
@@ -476,6 +482,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Genre of the book."/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtBookPublisher">
@@ -483,6 +490,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Name of book publisher."/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="txtPublishDate">
@@ -490,6 +498,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Publisher&apos;s publishing date for the book."/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
@@ -500,6 +509,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Date of when the book arrived at the library."/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
@@ -510,6 +520,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="######" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Quantity of books available."/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
@@ -520,6 +531,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Name of book author."/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JSeparator" name="jSeparator3">
@@ -539,6 +551,8 @@
                             </Property>
                             <Property name="lineWrap" type="boolean" value="true"/>
                             <Property name="rows" type="int" value="3"/>
+                            <Property name="toolTipText" type="java.lang.String" value="Brief summary of the book."/>
+                            <Property name="wrapStyleWord" type="boolean" value="true"/>
                           </Properties>
                         </Component>
                       </SubComponents>
@@ -562,6 +576,7 @@
                             <StringItem index="0" value="Book ID"/>
                           </StringArray>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Selects and loads book details."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>

@@ -107,6 +107,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnCancel.setText("Return");
+        btnCancel.setToolTipText("Returns to main menu page.");
         btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +154,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         btnDelete.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnDelete.setText("Delete");
+        btnDelete.setToolTipText("Deletes the currently selected client.");
         btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,6 +168,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         btnUpdate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnUpdate.setText("Update");
+        btnUpdate.setToolTipText("Updates the currently selected client.");
         btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +178,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         btnAdd.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnAdd.setText("Add");
+        btnAdd.setToolTipText("Inserts the client details as a new client entry.");
         btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,6 +188,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnReset.setText("Reset");
+        btnReset.setToolTipText("Empties the fields from existing values.");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,10 +259,13 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         lblClientEmailAddress.setText("Email Address:");
 
         txtClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientFirstName.setToolTipText("First name of the client.");
 
         txtClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientLastName.setToolTipText("Last name of the client.");
 
         txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtClientDoB.setToolTipText("Date of birth of the client.");
         txtClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         try {
@@ -265,9 +273,11 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtClientPhoneNumber.setToolTipText("Phone number of the client.");
         txtClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientEmailAddress.setToolTipText("Email address of the client.");
         txtClientEmailAddress.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtClientEmailAddressFocusLost(evt);
@@ -278,6 +288,8 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         txtClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtClientHomeAddress.setLineWrap(true);
         txtClientHomeAddress.setRows(3);
+        txtClientHomeAddress.setToolTipText("Home address of the client.");
+        txtClientHomeAddress.setWrapStyleWord(true);
         jScrollPane2.setViewportView(txtClientHomeAddress);
 
         lblClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -286,6 +298,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Existing Client" }));
+        cbxClientID.setToolTipText("Selects and loads client information.");
         cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxClientID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,6 +312,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         cbxClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxClientGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
+        cbxClientGender.setToolTipText("Selects the gender of the client.");
         cbxClientGender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         lblClientType.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 18)); // NOI18N
@@ -307,6 +321,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         cbxClientType.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxClientType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
+        cbxClientType.setToolTipText("Selects client type.");
         cbxClientType.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxClientType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

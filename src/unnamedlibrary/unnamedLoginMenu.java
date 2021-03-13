@@ -136,16 +136,9 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         panTop.setLayout(panTopLayout);
         panTopLayout.setHorizontalGroup(
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panTopLayout.createSequentialGroup()
-                .addGroup(panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panTopLayout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(lblTitle))
-                    .addGroup(panTopLayout.createSequentialGroup()
-                        .addGap(313, 313, 313)
-                        .addComponent(lblSubtitle)))
-                .addContainerGap(206, Short.MAX_VALUE))
             .addComponent(spTitle, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(lblTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+            .addComponent(lblSubtitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panTopLayout.setVerticalGroup(
             panTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,6 +250,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
 
         lblDesigner.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 8)); // NOI18N
         lblDesigner.setText("Designed by: Fuad Abdullah");
+        lblDesigner.setToolTipText("Designed by: Fuad Abdullah");
 
         lblGitHub.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 14)); // NOI18N
         lblGitHub.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

@@ -108,6 +108,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnCancel.setText("Return");
+        btnCancel.setToolTipText("Returns to main menu page.");
         btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +155,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
 
         btnDelete.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnDelete.setText("Delete");
+        btnDelete.setToolTipText("Deletes the currently selected book.");
         btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,6 +169,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
 
         btnUpdate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnUpdate.setText("Update");
+        btnUpdate.setToolTipText("Updates the currently selected book.");
         btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +179,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
 
         btnAdd.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnAdd.setText("Add");
+        btnAdd.setToolTipText("Inserts the book details as a new book entry.");
         btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,6 +189,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
 
         btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnReset.setText("Reset");
+        btnReset.setToolTipText("Empties the fields from existing values.");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,26 +264,35 @@ public class unnamedBookMenu extends javax.swing.JFrame {
         lblArrivalDate.setText("Book Arrival Date:");
 
         txtBookTitle.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookTitle.setToolTipText("Name of the book.");
 
         txtBookGenre.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookGenre.setToolTipText("Genre of the book.");
 
         txtBookPublisher.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookPublisher.setToolTipText("Name of book publisher.");
 
         txtPublishDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtPublishDate.setToolTipText("Publisher's publishing date for the book.");
         txtPublishDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtArrivalDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtArrivalDate.setToolTipText("Date of when the book arrived at the library.");
         txtArrivalDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtBookQuantity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtBookQuantity.setToolTipText("Quantity of books available.");
         txtBookQuantity.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtBookAuthor.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookAuthor.setToolTipText("Name of book author.");
 
         txtBookSummary.setColumns(20);
         txtBookSummary.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtBookSummary.setLineWrap(true);
         txtBookSummary.setRows(3);
+        txtBookSummary.setToolTipText("Brief summary of the book.");
+        txtBookSummary.setWrapStyleWord(true);
         jScrollPane2.setViewportView(txtBookSummary);
 
         lblPublishDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -287,6 +301,7 @@ public class unnamedBookMenu extends javax.swing.JFrame {
 
         cbxBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxBookID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Book ID" }));
+        cbxBookID.setToolTipText("Selects and loads book details.");
         cbxBookID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxBookID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
