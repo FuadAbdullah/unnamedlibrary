@@ -399,6 +399,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
     // This method resets the registration form via reset button
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
+        deHighlightEmpty();
         clearLibrarian();
     }//GEN-LAST:event_btnResetActionPerformed
 
