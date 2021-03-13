@@ -104,6 +104,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnCancel.setText("Return");
+        btnCancel.setToolTipText("Returns to login menu.");
         btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +151,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
         btnRegister.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnRegister.setText("Register");
+        btnRegister.setToolTipText("Creates the librarian account.");
         btnRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,6 +161,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
         btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnReset.setText("Reset");
+        btnReset.setToolTipText("Empties the fields from existing values.");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -216,10 +219,13 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         lblLibrarianEmailAddress.setText("Email Address:");
 
         txtLibrarianFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianFirstName.setToolTipText("First name of the client.");
 
         txtLibrarianLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianLastName.setToolTipText("Last name of the client.");
 
         txtLibrarianDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtLibrarianDoB.setToolTipText("Date of birth of the client.");
         txtLibrarianDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         try {
@@ -227,9 +233,11 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtLibrarianPhoneNumber.setToolTipText("Phone number of the client.");
         txtLibrarianPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
 
         txtLibrarianEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianEmailAddress.setToolTipText("Email address of the client.");
         txtLibrarianEmailAddress.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtLibrarianEmailAddressFocusLost(evt);
@@ -240,6 +248,8 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         txtLibrarianHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtLibrarianHomeAddress.setLineWrap(true);
         txtLibrarianHomeAddress.setRows(3);
+        txtLibrarianHomeAddress.setToolTipText("Home address of the client.");
+        txtLibrarianHomeAddress.setWrapStyleWord(true);
         jScrollPane2.setViewportView(txtLibrarianHomeAddress);
 
         lblLibrarianHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -248,6 +258,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
         cbxLibrarianGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxLibrarianGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Male", "Female" }));
+        cbxLibrarianGender.setToolTipText("Selects the gender of the client.");
         cbxLibrarianGender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         lblLibrarianUsername.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -263,12 +274,13 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         lblLibrarianPassword.setText("Password:");
 
         txtLibrarianUsername.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtLibrarianUsername.setToolTipText("Username of the librarian.");
 
         txtLibrarianPassword.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        txtLibrarianPassword.setToolTipText("Insert your password");
+        txtLibrarianPassword.setToolTipText("Password of the librarian.");
 
         txtLibrarianRepeatPass.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
-        txtLibrarianRepeatPass.setToolTipText("Insert your password");
+        txtLibrarianRepeatPass.setToolTipText("Repeat password of the librarian.");
 
         javax.swing.GroupLayout panFormLayout = new javax.swing.GroupLayout(panForm);
         panForm.setLayout(panFormLayout);

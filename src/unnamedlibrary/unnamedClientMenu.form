@@ -102,6 +102,7 @@
                   <Font name="Leelawadee UI" size="18" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Return"/>
+                <Property name="toolTipText" type="java.lang.String" value="Returns to main menu page."/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
@@ -215,6 +216,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Delete"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Deletes the currently selected client."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -238,6 +240,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Update"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Updates the currently selected client."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -252,6 +255,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Add"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Inserts the client details as a new client entry."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -266,6 +270,7 @@
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Reset"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Empties the fields from existing values."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -462,6 +467,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="First name of the client."/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtClientLastName">
@@ -469,6 +475,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Last name of the client."/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="txtClientDoB">
@@ -476,6 +483,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="dd/MM/yyyy" subtype="-1" type="1"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Date of birth of the client."/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
@@ -486,6 +494,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
                           <Format format="##########" subtype="-1" type="5"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Phone number of the client."/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
@@ -496,6 +505,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Leelawadee UI" size="18" style="0"/>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Email address of the client."/>
                       </Properties>
                       <Events>
                         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtClientEmailAddressFocusLost"/>
@@ -518,6 +528,8 @@
                             </Property>
                             <Property name="lineWrap" type="boolean" value="true"/>
                             <Property name="rows" type="int" value="3"/>
+                            <Property name="toolTipText" type="java.lang.String" value="Home address of the client."/>
+                            <Property name="wrapStyleWord" type="boolean" value="true"/>
                           </Properties>
                         </Component>
                       </SubComponents>
@@ -541,6 +553,7 @@
                             <StringItem index="0" value="Select Existing Client"/>
                           </StringArray>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Selects and loads client information."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -573,6 +586,7 @@
                             <StringItem index="2" value="Female"/>
                           </StringArray>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Selects the gender of the client."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>
@@ -602,6 +616,7 @@
                             <StringItem index="2" value="Student"/>
                           </StringArray>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Selects client type."/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Hand Cursor"/>
                         </Property>

@@ -162,6 +162,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         cbxClientType.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxClientType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Staff", "Student" }));
+        cbxClientType.setToolTipText("Selects client type.");
         cbxClientType.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxClientType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,6 +180,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         txtBorrowDate.setEditable(false);
         txtBorrowDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtBorrowDate.setToolTipText("Start date of the borrowing.");
         txtBorrowDate.setFocusable(false);
         txtBorrowDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtBorrowDate.setRequestFocusEnabled(false);
@@ -198,6 +200,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         txtBorrowDue.setEditable(false);
         txtBorrowDue.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtBorrowDue.setToolTipText("End date of the borrowing.");
         txtBorrowDue.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
         txtBorrowDue.setFocusable(false);
         txtBorrowDue.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
@@ -206,6 +209,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         btnCancel.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnCancel.setText("Cancel Renew");
+        btnCancel.setToolTipText("Returns to main menu page.");
         btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +219,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         txtBookID.setEditable(false);
         txtBookID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtBookID.setToolTipText("Current book ID.");
         txtBookID.setFocusable(false);
         txtBookID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtBookID.setRequestFocusEnabled(false);
@@ -228,6 +233,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         cbxClientID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxClientID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Client ID" }));
+        cbxClientID.setToolTipText("Selects and loads client information.");
         cbxClientID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxClientID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,6 +243,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         cbxBorrowID.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         cbxBorrowID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrow ID" }));
+        cbxBorrowID.setToolTipText("Selects and loads borrow details");
         cbxBorrowID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxBorrowID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -353,16 +360,19 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         txtClientFirstName.setEditable(false);
         txtClientFirstName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientFirstName.setToolTipText("First name of the client.");
         txtClientFirstName.setFocusable(false);
         txtClientFirstName.setRequestFocusEnabled(false);
 
         txtClientLastName.setEditable(false);
         txtClientLastName.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientLastName.setToolTipText("Last name of the client.");
         txtClientLastName.setFocusable(false);
         txtClientLastName.setRequestFocusEnabled(false);
 
         txtClientDoB.setEditable(false);
         txtClientDoB.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtClientDoB.setToolTipText("Date of birth of the client.");
         txtClientDoB.setFocusable(false);
         txtClientDoB.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtClientDoB.setRequestFocusEnabled(false);
@@ -374,6 +384,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         txtClientPhoneNumber.setText("");
+        txtClientPhoneNumber.setToolTipText("Phone number of the client.");
         txtClientPhoneNumber.setFocusable(false);
         txtClientPhoneNumber.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtClientPhoneNumber.setRequestFocusEnabled(false);
@@ -383,17 +394,21 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         txtClientHomeAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtClientHomeAddress.setLineWrap(true);
         txtClientHomeAddress.setRows(5);
+        txtClientHomeAddress.setToolTipText("Home address of the client.");
+        txtClientHomeAddress.setWrapStyleWord(true);
         txtClientHomeAddress.setFocusable(false);
         txtClientHomeAddress.setRequestFocusEnabled(false);
         jScrollPane1.setViewportView(txtClientHomeAddress);
 
         txtClientEmailAddress.setEditable(false);
         txtClientEmailAddress.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientEmailAddress.setToolTipText("Email address of the client.");
         txtClientEmailAddress.setFocusable(false);
         txtClientEmailAddress.setRequestFocusEnabled(false);
 
         txtClientGender.setEditable(false);
         txtClientGender.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtClientGender.setToolTipText("Gender of the client.");
         txtClientGender.setFocusable(false);
         txtClientGender.setRequestFocusEnabled(false);
 
@@ -482,6 +497,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         txtFineAmount.setEditable(false);
         txtFineAmount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#.##"))));
+        txtFineAmount.setToolTipText("Total fine amount.");
         txtFineAmount.setFocusable(false);
         txtFineAmount.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtFineAmount.setRequestFocusEnabled(false);
@@ -504,6 +520,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         btnPayFine.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnPayFine.setText("Pay Fine");
+        btnPayFine.setToolTipText("Pays fine and returns the book.");
         btnPayFine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPayFine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -513,6 +530,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         btnRenew.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnRenew.setText("Renew");
+        btnRenew.setToolTipText("Renews the current borrow record.");
         btnRenew.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRenew.setEnabled(false);
         btnRenew.addActionListener(new java.awt.event.ActionListener() {
@@ -523,6 +541,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         btnReset.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         btnReset.setText("Reset");
+        btnReset.setToolTipText("Empties the fields from existing values.");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -622,39 +641,46 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
 
         txtBookTitle.setEditable(false);
         txtBookTitle.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookTitle.setToolTipText("Name of the book.");
         txtBookTitle.setFocusable(false);
         txtBookTitle.setRequestFocusEnabled(false);
 
         txtBookGenre.setEditable(false);
         txtBookGenre.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookGenre.setToolTipText("Genre of the book.");
         txtBookGenre.setFocusable(false);
         txtBookGenre.setRequestFocusEnabled(false);
 
         txtBookPublisher.setEditable(false);
         txtBookPublisher.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookPublisher.setToolTipText("Name of book publisher.");
         txtBookPublisher.setFocusable(false);
         txtBookPublisher.setRequestFocusEnabled(false);
 
         txtPublishDate.setEditable(false);
         txtPublishDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtPublishDate.setToolTipText("Publisher's publishing date for the book.");
         txtPublishDate.setFocusable(false);
         txtPublishDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtPublishDate.setRequestFocusEnabled(false);
 
         txtArrivalDate.setEditable(false);
         txtArrivalDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtArrivalDate.setToolTipText("Date of when the book arrived at the library.");
         txtArrivalDate.setFocusable(false);
         txtArrivalDate.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtArrivalDate.setRequestFocusEnabled(false);
 
         txtBookQuantity.setEditable(false);
         txtBookQuantity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        txtBookQuantity.setToolTipText("Quantity of books available.");
         txtBookQuantity.setFocusable(false);
         txtBookQuantity.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtBookQuantity.setRequestFocusEnabled(false);
 
         txtBookAuthor.setEditable(false);
         txtBookAuthor.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        txtBookAuthor.setToolTipText("Name of book author.");
         txtBookAuthor.setFocusable(false);
         txtBookAuthor.setRequestFocusEnabled(false);
 
@@ -663,6 +689,8 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
         txtBookSummary.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
         txtBookSummary.setLineWrap(true);
         txtBookSummary.setRows(3);
+        txtBookSummary.setToolTipText("Brief summary of the book.");
+        txtBookSummary.setWrapStyleWord(true);
         txtBookSummary.setFocusable(false);
         txtBookSummary.setRequestFocusEnabled(false);
         jScrollPane2.setViewportView(txtBookSummary);
@@ -734,7 +762,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBookSummary))
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBookQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBookQuantity))
@@ -746,7 +774,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBookAuthor))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblArrivalDate)
                     .addComponent(lblPublishDate))
