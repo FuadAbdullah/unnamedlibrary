@@ -371,6 +371,8 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
 
         getContentPane().add(panMain, java.awt.BorderLayout.CENTER);
 
+        getAccessibleContext().setAccessibleName("Register a librarian - unnamed Library Management System");
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
