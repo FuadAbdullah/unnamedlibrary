@@ -1088,6 +1088,8 @@ public class unnamedClientMenu extends javax.swing.JFrame {
                 }
             }
         });
+        // This property disables newline creation in JTextField
+        txtClientHomeAddress.getDocument().putProperty("filterNewlines", Boolean.TRUE);
         // Check if invalid input is inserted
         inputCharacterValidator();
     }

@@ -813,6 +813,8 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
                 }
             }
         });
+        // This property disables newline creation in JTextField
+        txtLibrarianHomeAddress.getDocument().putProperty("filterNewlines", Boolean.TRUE);
         inputCharacterValidator();
     }
     
