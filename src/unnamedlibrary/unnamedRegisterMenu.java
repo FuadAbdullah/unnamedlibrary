@@ -416,6 +416,20 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
+    // This method is to delete the session cache upon logout
+    private void cacheClear(){
+        try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            File cache = new File(saveDir + "cache.txt");
+            if (cache.exists()) {
+                cache.delete();
+            }
+        } catch (Exception ex) {
+            
+        }
+    }
+    
     // This method handles username validation to check if 
     // the username has already been taken by comparing
     // records in the librarian text file
@@ -790,6 +804,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e){
                 int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.YES_OPTION) {
+                    cacheClear();
                     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 } else {
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

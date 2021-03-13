@@ -332,12 +332,12 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         if (accountValidator()) {
-            JOptionPane.showMessageDialog(null, "Login successfully! Redirecting you to the main menu.", "Account Authenticated Successfully!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Login successfully! Redirecting you to the main menu.", "Account Authorized Successfully!", JOptionPane.INFORMATION_MESSAGE);
             startSession();
             new unnamedMainMenu().setVisible(true);
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Authentication failed! Your username or password may be wrong.", "Account Authentication Failed!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Authentication failed! Your username or password may be wrong.", "Account Authorization Failed!", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -387,6 +387,20 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
     
     // <editor-fold defaultstate="collapsed" desc="Methods"> 
     
+    // This method is to delete the session cache upon logout
+    private void cacheClear(){
+        try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            File cache = new File(saveDir + "cache.txt");
+            if (cache.exists()) {
+                cache.delete();
+            }
+        } catch (Exception ex) {
+            
+        }
+    }
+    
     // This method determines if btnLogin should be displayed or not depending on boolean flag statuses
     private void showLoginButton(){
         if (filledUsername && filledPassword){
@@ -401,7 +415,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
     // This method authorize the librarian using inserted username and password
     private boolean accountValidator() {
         // TODO add your handling code here:
-        boolean isAuthenticated = false;
+        boolean isAuthorized = false;
         try {
             // To get directory  
             saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
@@ -431,7 +445,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
                 matchedID = lEntry.split(":");
                 // Check if the read line has current book ID
                 if (tempUser.equals(matchedID[1]) && tempPass.equals(matchedID[2])) {
-                    isAuthenticated = true;
+                    isAuthorized = true;
                     lID = matchedID[0].replace("LIB", "");
                     username = matchedID[1];
                 }
@@ -442,7 +456,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
 
         }
-        return isAuthenticated;
+        return isAuthorized;
     }
     
     // This method is to create a temporary session that stores relevant user detail
@@ -555,6 +569,7 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e){
                 int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.YES_OPTION) {
+                    cacheClear();
                     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 } else {
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
