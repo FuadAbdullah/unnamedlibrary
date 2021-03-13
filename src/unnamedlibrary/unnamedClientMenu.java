@@ -952,7 +952,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         if ("".equals(txtClientDoB.getText())) {
             lblClientDoB.setForeground(Color.yellow);
         }
-        if ("".equals(txtClientPhoneNumber.getText())) {
+        if ("          ".equals(txtClientPhoneNumber.getText())) {
             lblClientPhoneNumber.setForeground(Color.yellow);
         }
         if ("".equals(txtClientEmailAddress.getText())) {
@@ -987,7 +987,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
         if ("".equals(txtClientDoB.getText())) {
             throw new Exception("Empty client date of birth");
         }
-        if ("".equals(txtClientPhoneNumber.getText())) {
+        if ("          ".equals(txtClientPhoneNumber.getText())) {
             throw new Exception("Empty client phone number");
         }
         if ("".equals(txtClientEmailAddress.getText())) {
