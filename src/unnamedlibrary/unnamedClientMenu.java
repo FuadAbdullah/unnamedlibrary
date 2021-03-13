@@ -411,6 +411,8 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
         getContentPane().add(panMain, java.awt.BorderLayout.CENTER);
 
+        getAccessibleContext().setAccessibleName("Manage clients - unnamed Library Management System");
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
