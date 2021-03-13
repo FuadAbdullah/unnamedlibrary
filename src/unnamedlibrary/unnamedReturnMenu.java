@@ -1043,7 +1043,7 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
         // Clear previous fields value
         clearClient();
         // Loads index with Book ID only
-        if (cbxClientType.getSelectedIndex() > 0) {
+        if (cbxClientID.getSelectedIndex() > 0) {
             // Enable the list for selection
             cbxBorrowID.setEnabled(true);
             loadClientID();
