@@ -1001,6 +1001,8 @@ public class unnamedBookMenu extends javax.swing.JFrame {
                 }
             }
         });
+        // This property disables newline creation in JTextField
+        txtBookSummary.getDocument().putProperty("filterNewlines", Boolean.TRUE);
         // Check if invalid input is inserted
         inputCharacterValidator();
     }

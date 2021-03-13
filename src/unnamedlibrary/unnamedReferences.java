@@ -45,6 +45,7 @@ public class unnamedReferences {
     //  https://stackoverflow.com/questions/8204680/java-regex-email
     //  https://www.w3schools.com/java/java_abstract.asp
     //  https://www.w3schools.com/java/java_encapsulation.asp
+    //  https://stackoverflow.com/questions/19569302/jtextarea-pressing-enter-adds-unnecessary-new-line
     
     
     

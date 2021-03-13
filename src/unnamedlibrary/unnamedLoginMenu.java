@@ -513,6 +513,28 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
         }
     }
     
+    // This method handles visibility of login button for username field
+    private void showLoginButton(JTextField txt){
+        if ("".equals(txt.getText())){
+            filledUsername = false;
+        } 
+        else {
+            filledUsername = true;
+        }
+        showLoginButton();
+    }
+    
+    // This method handles visibility of login button for password field
+    private void showLoginButton(JPasswordField txt){
+        if ("".equals(String.valueOf(txtPassword.getPassword()))){
+            filledPassword = false;
+        } 
+        else {
+            filledPassword = true;
+        }
+        showLoginButton();
+    }
+    
     // This is form load method
     private void initGUI(){
         // Create the required directory for first time boot
@@ -525,20 +547,18 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (txtUsername.getText().equals("")){
-                    filledUsername = false;
-                }
-                else {
-                    filledUsername = true;
-                }
-                showLoginButton();
+                showLoginButton(txtUsername);
             }
+
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (txtUsername.getText().equals("")){
-                    filledUsername = false;
-                }
-                showLoginButton();
+                showLoginButton(txtUsername);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                showLoginButton(txtUsername);
+
             }
         });
         
@@ -547,20 +567,18 @@ public class unnamedLoginMenu extends javax.swing.JFrame {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (txtPassword.getText().equals("")){
-                    filledPassword = false;
-                } 
-                else {
-                    filledPassword = true;
-                }
-                showLoginButton();
+                showLoginButton(txtPassword);
             }
+
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (txtPassword.getText().equals("")){
-                    filledPassword = false;
-                }
-                showLoginButton();
+                showLoginButton(txtPassword);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                showLoginButton(txtPassword);
+
             }
         });
 
