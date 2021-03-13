@@ -512,7 +512,22 @@ public class unnamedClientMenu extends javax.swing.JFrame {
 
     // </editor-fold>  
     
-    // <editor-fold defaultstate="collapsed" desc="Methods">     
+    // <editor-fold defaultstate="collapsed" desc="Methods">  
+    
+    // This method is to delete the session cache upon logout
+    private void cacheClear(){
+        try {
+            // To get directory  
+            saveDir = System.getProperty("user.dir") + "\\src\\localdb\\";
+            File cache = new File(saveDir + "cache.txt");
+            if (cache.exists()) {
+                cache.delete();
+            }
+        } catch (Exception ex) {
+            
+        }
+    }
+    
     // This method will fetch the client type
     // Can be used for both client loading or addition
     private void getClientType(){
@@ -1064,6 +1079,7 @@ public class unnamedClientMenu extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e){
                 int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Closing Window", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.YES_OPTION) {
+                    cacheClear();
                     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 } else {
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
