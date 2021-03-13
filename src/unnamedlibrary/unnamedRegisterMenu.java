@@ -625,7 +625,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         if ("".equals(txtLibrarianDoB.getText())) {
             lblLibrarianDoB.setForeground(Color.yellow);
         }
-        if ("".equals(txtLibrarianPhoneNumber.getText())) {
+        if ("          ".equals(txtLibrarianPhoneNumber.getText())) {
             lblLibrarianPhoneNumber.setForeground(Color.yellow);
         }
         if ("".equals(txtLibrarianEmailAddress.getText())) {
@@ -671,7 +671,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
         if ("".equals(txtLibrarianDoB.getText())) {
             throw new Exception("Empty date of birth");
         }
-        if ("".equals(txtLibrarianPhoneNumber.getText())) {
+        if ("          ".equals(txtLibrarianPhoneNumber.getText())) {
             throw new Exception("Empty phone number");
         }
         if ("".equals(txtLibrarianEmailAddress.getText())) {
