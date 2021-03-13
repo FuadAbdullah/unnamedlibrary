@@ -1434,8 +1434,6 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                 // Will mark the borrowing status as overdue in file when detected
                 if (!isOverdue) {
                     setOverdue();
-                    // Refresh the form with new data
-                    loadBorrowID();
                 }
                 fetchedBookClientInfo();
                 // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
@@ -1680,6 +1678,8 @@ public class unnamedReturnMenu extends javax.swing.JFrame {
                     // JOptionPane.showMessageDialog(null, "Yes it worked");
                     // Set the current file as 
                     // isOverdue = true;
+                    // Refresh the form with new data
+                    loadBorrowID();
                 } catch (Exception ex) {
                     
                 }

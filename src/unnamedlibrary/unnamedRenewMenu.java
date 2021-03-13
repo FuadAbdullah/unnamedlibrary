@@ -1308,7 +1308,7 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                     // Set the current file as 
                     // isOverdue = true;
                     // Refresh the form with new data
-                    // cbxBorrowID.setSelectedIndex(cbxBorrowID.getSelectedIndex());
+                    loadBorrowID();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex);
                 }
@@ -1564,8 +1564,6 @@ public class unnamedRenewMenu extends javax.swing.JFrame {
                 // Will mark the borrowing status as overdue in file when detected
                 if (!isOverdue) {
                     setOverdue();
-                    // Refresh the form with new data
-                    loadBorrowID();
                 }
                 fetchedBookClientInfo();
                 // JOptionPane.showMessageDialog(null, "FetchedBorrow status=" + fetchedBorrow);
