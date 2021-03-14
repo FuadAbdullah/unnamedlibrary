@@ -746,7 +746,6 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
                 vd.runValidate(txtLibrarianPassword);
             }
         });
-        
         txtLibrarianRepeatPass.getDocument().addDocumentListener(new unnamedDocumentListener() {
             unnamedPasswordValidation vd = new unnamedPasswordValidation();
             @Override

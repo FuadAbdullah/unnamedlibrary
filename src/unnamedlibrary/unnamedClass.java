@@ -49,6 +49,20 @@ abstract class unnamedStringValidation {
         nregex = "[^a-zA-Z0-9 ]";
     }
     
+    public unnamedStringValidation(String title, String msg, String regex, String nregex) {
+        this.title = title;
+        this.msg = msg;
+        this.regex = regex;
+        this.nregex = nregex;
+    }
+    
+    public unnamedStringValidation(String msg, String regex, String nregex) {
+        title = "Invalid input type!";
+        this.msg = msg;
+        this.regex = regex;
+        this.nregex = nregex;
+    }
+    
     public void setRegex(String regex){
         this.regex = regex;
     }
