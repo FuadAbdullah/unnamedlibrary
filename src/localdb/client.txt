@@ -1,3 +1,1 @@
-STA000001:Hariz:Zamri:05/05/2001:Male:0145678932:hariz.z@gmail.com:Cyberjaya:true
-STA000002:Kemal:Atarturk:08/01/1880:Male:0176503929:k.atarturk@gmail.com:Constantinople:true
-STU000003:Eimi:Fukada:01/01/1990:Male:0176503929:fukada.e@gmail.com:Japan:false
+STA000001:Hariz:Zamri:23/07/2001:Male:4516515616:hariz@gmail.com:Here.:false
