@@ -721,6 +721,8 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
             @Override
             public void changedUpdate(DocumentEvent e){
                 vd.runValidate(txtLibrarianUsername);
+                vd.setRegex("test");
+                vd.getRegex();
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -730,6 +732,7 @@ public class unnamedRegisterMenu extends javax.swing.JFrame {
             public void removeUpdate(DocumentEvent e) {
                 vd.runValidate(txtLibrarianUsername);
             }
+            
         });
         txtLibrarianPassword.getDocument().addDocumentListener(new unnamedDocumentListener() {
             unnamedPasswordValidation vd = new unnamedPasswordValidation();

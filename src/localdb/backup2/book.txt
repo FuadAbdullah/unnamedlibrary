@@ -1,0 +1,1 @@
+BOO000001:Introduction to Java - First Edition:Programming:The first edition covers fundamentals of programming an application using Java environment.:3:Hawthorne:Oracle:18/03/1998:23/07/2008:true
